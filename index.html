@@ -1,27 +1,294 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maevin Labs LLC</title>
-</head>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" href="assets/Logo - blue.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/Logo - blue.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/Logo - blue.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/Logo - blue.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Maevin Labs LLC</title>
+  <meta name="description" content="Maevin Labs builds thoughtful, modern digital products — from playful ideas to production‑ready apps." />
+  <link rel="icon" type="image/png" href="/assets/logo-blue.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/logo-blue.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/logo-blue.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/logo-blue.png" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preload" as="image" href="/assets/circle-container.png" />
+
+  <style>
+    :root {
+      --bg: #0b0c0f;
+      --card: #12141a;
+      --text: #e9eef7;
+      --muted: #a5afbf;
+      --accent: #4da3ff; /* Maevin blue */
+      --accent-soft: rgba(77, 163, 255, 0.15);
+      --radius: 14px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: var(--bg); /* matte, no gradients */
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a { color: var(--text); text-decoration: none; }
+    nav a { position: relative; }
+    nav a::after { content:""; position:absolute; left:0; bottom:-6px; height:2px; width:0; background: linear-gradient(90deg, var(--accent), transparent); transition: width .25s ease; }
+    nav a:hover::after { width: 16px; }
+    nav a { opacity: .8; margin-left: 18px; font-size: 14px; }
+    nav a:hover { opacity: 1; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 28px 20px 80px; }
+
+    /* Header */
+    header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand img { width: 40px; height: 40px; border-radius: 10px; }
+    .brand h1 { font-size: 30px; font-weight: 600; letter-spacing: .2px; margin: 0; }
+    
+
+    /* Hero */
+    .hero { text-align: center; padding: 80px 0 40px; }
+    .hero img { 
+      width: clamp(120px, 20vw, 220px);
+      height: auto;
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      animation: float 6s ease-in-out infinite;
+      filter: drop-shadow(0 10px 30px rgba(77,163,255,0.25));
+    }
+    .tagline { margin: 16px auto 0; font-size: 18px; color: var(--muted); max-width: 640px; line-height: 1.5; }
+    .eyebrow { display: inline-block; padding: 6px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 600; font-size: 12px; letter-spacing: .3px; margin-bottom: 16px; }
+
+    /* Projects / Writing */
+    .section-title { display:flex; align-items:center; justify-content:space-between; margin: 72px 0 18px; }
+    .section-title h2 { font-size: 18px; font-weight: 700; margin: 0; letter-spacing: .2px; position: relative; }
+    .section-title h2::after { content: ""; position: absolute; left: 0; bottom: -6px; height: 2px; width: 0; background: linear-gradient(90deg, var(--accent), transparent); transition: width .6s ease; }
+    .section-title:hover h2::after { width: 60px; }
+
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    @media (max-width: 980px) { .grid { grid-template-columns: repeat(2, 1fr);} }
+    @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+
+    .card { position: relative; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06)); border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius); padding: 18px 72px 18px 18px; box-shadow: var(--shadow); transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease; min-height: 170px; overflow: hidden; }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.5); border-color: rgba(77,163,255,.35); }
+    .card:hover { background: linear-gradient(180deg, rgba(77,163,255,0.06), rgba(0,0,0,0.06)); }
+    .card h3 { margin: 4px 0 8px; font-size: 18px; }
+    .card p { margin: 0; color: var(--muted); line-height: 1.55; font-size: 14px; }
+    .badge { position: absolute; top: 14px; right: 14px; font-size: 11px; padding: 4px 8px; border-radius: 999px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); color: var(--text); z-index: 1; }
+    .badge.live { background: rgba(77,163,255,.18); border-color: rgba(77,163,255,.35); color: var(--text); }
+    .card .cta { display:inline-flex; align-items:center; gap:8px; margin-top: 12px; font-weight: 600; font-size: 14px; color: var(--accent); }
+    .card .cta span { transform: translateY(1px); transition: transform .2s ease; }
+    .card:hover .cta span { transform: translate(2px, 1px); }
+
+    /* Footer */
+    footer { text-align: center; margin: 64px 0 20px; color: var(--muted); font-size: 14px; }
+    footer a { color: var(--accent); }
+
+    /* Motion keyframes (background + reveal) */
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+    @keyframes bg-pan { from { background-position: 0% 0%, 100% 0%, 0 0; } to { background-position: 100% 0%, 0% 0%, 0 0; } }
+
+    /* Reveal classes */
+    .reveal { opacity: 0; transform: translateY(16px) scale(0.98); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.is-visible { opacity: 1; transform: none; }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    /* --- New hero (text-first) --- */
+    .hero {
+      position: relative;
+      text-align: left;
+      padding: 96px 0 56px;
+    }
+    .hero::before {
+      content: ""; position: absolute; inset: -20% -10% auto -10%; height: 360px; z-index: -1;
+      background: radial-gradient(420px 220px at 30% 0%, rgba(77,163,255,0.18), transparent 60%),
+                  radial-gradient(360px 200px at 70% 20%, rgba(255,255,255,0.05), transparent 60%);
+      filter: blur(6px);
+    }
+    .hero .kicker { display:inline-block; padding: 6px 10px; border-radius:999px; background: var(--accent-soft); color: var(--accent); font-weight:600; font-size:12px; letter-spacing:.3px; margin-bottom: 14px; }
+    .hero .headline { font-size: clamp(28px, 6vw, 44px); line-height: 1.1; font-weight: 800; letter-spacing: .2px; margin: 0 0 12px; }
+    .hero .headline .accent { 
+      background: linear-gradient(90deg, var(--accent), #9fd0ff);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .hero .sub { color: var(--muted); max-width: 760px; font-size: 18px; line-height: 1.55; margin: 8px 0 20px; }
+    .actions { display:flex; gap:12px; align-items:center; flex-wrap: wrap; }
+    .btn { display:inline-flex; align-items:center; gap:8px; padding: 10px 14px; border-radius: 10px; border:1px solid rgba(255,255,255,.12); font-weight:600; font-size:14px; }
+    .btn:hover { border-color: rgba(77,163,255,.45); box-shadow: 0 8px 28px rgba(77,163,255,.18); transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(180deg, rgba(77,163,255,.20), rgba(77,163,255,.12)); color: var(--text); }
+    .btn-ghost { background: transparent; color: var(--accent); }
+  </style>
 </head>
 <body>
-    <main>
-        <div class="logo-container" style="text-align: center;">
-            <img src="assets/Logo - blue.png" alt="Maevin Labs Logo" class="inline-logo">
-            <p>Building thoughtful digital products</p>
-        </div>
-    </main>
-    <footer style="text-align: center; margin: 40px 0;">
-        © 2025 Maevin Labs LLC &middot; Contact us: <a href="mailto:hello@maevinlabs.com">hello@maevinlabs.com</a>
-        | <a href="/privacy.html">Privacy Policy</a>
-        | <a href="/support.html">Support</a>
-    </footer>
+  <div class="wrap">
+    <header aria-label="Site header">
+      <div class="brand">
+        <img src="/assets/Logo_blue.png" alt="Maevin Labs logo" onerror="this.onerror=null;this.src='/assets/circle_container.png';" />
+        <h1>Maevin Labs</h1>
+      </div>
+      <nav aria-label="Primary">
+        <a href="/projects.html">Projects</a>
+        <a href="/writings.html">Writing</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/support.html">Support</a>
+      </nav>
+    </header>
+
+    <section class="hero" aria-label="Intro">
+      <div class="kicker">Thoughtful digital products</div>
+      <h1 class="headline">Sleek, modern software with <span class="accent">just enough playfulness</span>.</h1>
+      <p class="sub">From concept to ship, we focus on clarity, speed, and polish—building apps, web projects, and small experiments with care.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#projects" aria-label="Jump to projects">See projects <span>→</span></a>
+        <a class="btn btn-ghost" href="mailto:hello@maevinlabs.com" aria-label="Email Maevin Labs">Contact us</a>
+      </div>
+    </section>
+
+    <div class="section-title" id="projects">
+      <h2>Projects</h2>
+    </div>
+    <section class="grid" aria-label="Projects grid">
+      <a class="card" href="https://obsoletetecharchive.com" target="_blank" rel="noopener noreferrer" aria-label="Open Obsolete Tech Archive">
+        <div class="badge live">Live</div>
+        <h3>Obsolete Tech Archive</h3>
+        <p>A playful, curated museum of forgotten gadgets and software—built like a clean, modern magazine with an amber accent.</p>
+        <div class="cta">Visit site <span>→</span></div>
+      </a>
+
+      <div class="card" role="article" aria-label="Delvr app">
+        <div class="badge">Coming soon</div>
+        <h3>Delvr</h3>
+        <p>Explain anything with progressive depth. A friendly, low‑friction way to learn—designed for clarity over hype.</p>
+        <div class="cta">Learn more <span>→</span></div>
+      </div>
+
+      <a class="card" href="mailto:hello@maevinlabs.com?subject=Partnering%20with%20Maevin%20Labs" aria-label="Contact Maevin Labs about the next app">
+        <div class="badge">WIP</div>
+        <h3>Next Up</h3>
+        <p>We’re prototyping the next idea under the Maevin umbrella. Want to collaborate or beta test? Drop us a line.</p>
+        <div class="cta">Contact us <span>→</span></div>
+      </a>
+    </section>
+
+    <div class="section-title" id="writing">
+      <h2>Writing</h2>
+      <a href="https://medium.com/@chris_74915" target="_blank" rel="noopener noreferrer" aria-label="Open Medium profile" style="font-size:14px; opacity:.8;">All posts →</a>
+    </div>
+    <section class="grid" aria-label="Latest Medium articles">
+      <!-- Fallback placeholders; replaced by JS on success -->
+      <a class="card" href="https://medium.com/@chris_74915" target="_blank" rel="noopener noreferrer" aria-label="Read on Medium">
+        <div class="badge">Medium</div>
+        <h3>Latest articles</h3>
+        <p>We’ll pull in the most recent posts automatically. Tap to view everything on Medium.</p>
+        <div class="cta">Read on Medium <span>→</span></div>
+      </a>
+      <div class="card" role="article">
+        <div class="badge">Post</div>
+        <h3>Debug Diaries</h3>
+        <p>Notes on building apps, learning in public, and the messy middle. (Auto‑updates when the feed loads.)</p>
+        <div class="cta">Coming from feed <span>→</span></div>
+      </div>
+      <div class="card" role="article">
+        <div class="badge">Post</div>
+        <h3>What I’m Learning Lately</h3>
+        <p>Short reflections on tools, systems, and experiments. (Auto‑updates when the feed loads.)</p>
+        <div class="cta">Coming from feed <span>→</span></div>
+      </div>
+    </section>
+
+    <footer>
+      © 2025 Maevin Labs LLC </a>
+  </div>
+
+  <script>
+    // Reveal-on-scroll and small parallax for hero image
+    (function() {
+      const addReveal = (selector) => {
+        document.querySelectorAll(selector).forEach((el, i) => {
+          el.classList.add('reveal');
+          el.style.transitionDelay = (i * 60) + 'ms';
+        });
+      };
+      addReveal('.hero img, .tagline, .section-title, .grid .card');
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible'); });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+      const heroImg = document.querySelector('.hero img');
+      if (heroImg) {
+        let ticking = false;
+        const onMove = (e) => {
+          if (ticking) return; ticking = true;
+          requestAnimationFrame(() => {
+            const rect = heroImg.getBoundingClientRect();
+            const cx = rect.left + rect.width/2; const cy = rect.top + rect.height/2;
+            const dx = (e.clientX - cx) / rect.width; const dy = (e.clientY - cy) / rect.height;
+            heroImg.style.transform = `translate3d(${dx*6}px, ${dy*6}px, 0)`;
+            ticking = false;
+          });
+        };
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseleave', () => { heroImg.style.transform = ''; });
+      }
+    })();
+  </script>
+
+  <script>
+    // Fetch Medium posts via server-side proxy so the handle is never exposed client-side.
+    // Expected proxy endpoint: /api/medium?limit=3 → { items: [{ title, link, description }] }
+    (function() {
+      const ENDPOINT = '/api/medium?limit=3';
+      const target = document.querySelector('section.grid[aria-label="Latest Medium articles"]');
+
+      function createCard(item) {
+        const a = document.createElement('a');
+        a.className = 'card';
+        a.href = item.link;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.setAttribute('aria-label', `Read ${item.title} on Medium`);
+
+        const badge = document.createElement('div');
+        badge.className = 'badge';
+        badge.textContent = 'Medium';
+
+        const h3 = document.createElement('h3');
+        h3.textContent = item.title || 'Untitled';
+
+        const p = document.createElement('p');
+        const summary = (item.description || '').replace(/<[^>]+>/g, '').trim();
+        p.textContent = summary.length > 140 ? summary.slice(0, 140) + '…' : (summary || 'Read the full article on Medium.');
+
+        const cta = document.createElement('div');
+        cta.className = 'cta';
+        cta.innerHTML = 'Read article <span>→</span>';
+
+        a.appendChild(badge);
+        a.appendChild(h3);
+        a.appendChild(p);
+        a.appendChild(cta);
+        return a;
+      }
+
+      function render(items) {
+        if (!target || !Array.isArray(items) || items.length === 0) return;
+        target.innerHTML = '';
+        items.slice(0, 3).forEach(post => target.appendChild(createCard(post)));
+      }
+
+      fetch(ENDPOINT)
+        .then(r => r.ok ? r.json() : Promise.reject(r))
+        .then(data => render(data.items || data.posts || []))
+        .catch(() => { /* leave placeholders */ });
+    })();
+  </script>
 </body>
 </html>

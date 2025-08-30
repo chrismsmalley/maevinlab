@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Projects — Maevin Labs</title>
+  <meta name="description" content="Selected projects by Maevin Labs: Obsolete Tech Archive, Delvr, and upcoming experiments." />
+  <link rel="icon" type="image/png" href="/assets/Logo_blue.png" />
+  <style>
+    :root { --bg:#0b0c0f; --card:#12141a; --text:#e9eef7; --muted:#a5afbf; --accent:#4da3ff; --accent-soft:rgba(77,163,255,.15); --radius:14px; --shadow:0 10px 30px rgba(0,0,0,.35); }
+    html,body{height:100%}
+    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;display:flex;flex-direction:column}
+    a{color:var(--text);text-decoration:none}
+    .wrap{max-width:1100px;margin:0 auto;padding:28px 20px 80px;flex:1;display:flex;flex-direction:column}
+
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand img{width:40px;height:40px;border-radius:10px}
+    .brand h1{font-size:22px;font-weight:700;letter-spacing:.3px;margin:0}
+    nav a{position:relative;opacity:.8;margin-left:18px;font-size:14px}
+    nav a:hover{opacity:1}
+    nav a::after{content:"";position:absolute;left:0;bottom:-6px;height:2px;width:0;background:linear-gradient(90deg,var(--accent),transparent);transition:width .25s ease}
+    nav a:hover::after{width:16px}
+
+    /* Featured project blocks */
+    .feature { position: relative; display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px; align-items: start; margin: 46px 0 64px; }
+    @media (max-width: 900px) {
+      .feature { grid-template-columns: 1fr; }
+      .feature-media { height: 220px; }
+      .feature-panel { min-height: auto; }
+    }
+
+    .feature-media { position: relative; border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.08); height: 280px; }
+    .feature-media {
+      align-self: center;
+    }
+    .feature-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .feature-panel { position: relative; right: 0; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.08)); border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 22px 22px; box-shadow: 0 14px 40px rgba(0,0,0,.45); min-height: 280px; display: flex; flex-direction: column; justify-content: center; }
+    .feature .eyebrow { color: var(--accent); font-weight: 700; font-size: 12px; letter-spacing: .3px; margin-bottom: 6px; display: inline-block; background: rgba(77,163,255,.12); padding: 4px 8px; border-radius: 999px; }
+    .feature h3 { margin: 2px 0 8px; font-size: clamp(22px, 3.6vw, 28px); }
+    .feature p { color: var(--muted); line-height: 1.6; margin: 0; }
+
+    .tags { display:flex; flex-wrap:wrap; gap:8px; margin-top: 12px; }
+    .tag { font-size: 12px; padding: 4px 8px; border-radius: 999px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); color: var(--text); }
+
+    .actions { display:flex; gap:12px; margin-top: 16px; }
+    .btn { display:inline-flex; align-items:center; gap:8px; padding: 10px 14px; border-radius: 10px; border:1px solid rgba(255,255,255,.12); font-weight:600; font-size:14px; color: var(--text); }
+    .btn:hover { border-color: rgba(77,163,255,.45); box-shadow: 0 8px 28px rgba(77,163,255,.18); transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(180deg, rgba(77,163,255,.20), rgba(77,163,255,.12)); }
+    .btn-ghost { background: transparent; color: var(--accent); }
+
+    .hero{padding:64px 0 24px}
+    .hero h1{font-size:clamp(32px,6vw,44px);line-height:1.1;margin:0 0 10px}
+    .hero p{color:var(--muted);font-size:18px;max-width:800px;margin:0}
+
+    .section-title{display:flex;align-items:center;justify-content:space-between;margin:28px 0 18px}
+    .section-title h2{font-size:18px;margin:0}
+
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    @media (max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:640px){.grid{grid-template-columns:1fr}}
+
+    .card{position:relative;background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(0,0,0,.06));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease,background .25s ease;min-height:170px;overflow:hidden}
+    .card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.5);border-color:rgba(77,163,255,.35);background:linear-gradient(180deg,rgba(77,163,255,.06),rgba(0,0,0,.06))}
+    .badge{position:absolute;top:14px;right:14px;font-size:11px;padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);z-index:1}
+    .thumb{aspect-ratio:16/9;width:100%;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:#0f1115;display:flex;align-items:center;justify-content:center;margin-bottom:12px;overflow:hidden}
+    .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+    .card h3{margin:0 0 6px;font-size:18px}
+    .card p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+    .cta{display:inline-flex;gap:8px;align-items:center;font-weight:600;color:var(--accent);margin-top:10px}
+
+    footer{text-align:center;margin:64px 0 20px;color:var(--muted);font-size:14px;margin-top:auto}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header aria-label="Site header">
+      <div class="brand">
+        <img src="/assets/Logo_blue.png" alt="Maevin Labs logo" onerror="this.onerror=null;this.src='/assets/circle_container.png';" />
+        <h1>Maevin Labs</h1>
+      </div>
+      <nav aria-label="Primary">
+        <a href="/" style="display:flex;align-items:center;gap:6px;font-size:14px"><span style="font-size:16px">←</span> Home</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <h1>Projects</h1>
+      <p>Selected work — live products and playful experiments. Click a tile for details; videos are coming soon.</p>
+    </section>
+
+    <section class="feature" aria-label="Obsolete Tech Archive">
+      <div class="feature-media">
+        <img src="/assets/OT.png" alt="Obsolete Tech Archive screenshot placeholder" onerror="this.onerror=null;this.src='/assets/circle_container.png';" />
+      </div>
+      <article class="feature-panel">
+        <span class="eyebrow">Featured Project</span>
+        <h3>Obsolete Tech Archive</h3>
+        <p>A playful, curated museum of forgotten gadgets and software—built like a clean, modern magazine with an amber accent. Subtle motion, fast loading, and accessible by design.</p>
+        <div class="tags">
+          <span class="tag">React</span>
+          <span class="tag">TypeScript</span>
+          <span class="tag">Vercel</span>
+          <span class="tag">Static Gen</span>
+        </div>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://obsoletetecharchive.com" target="_blank" rel="noopener">Visit site →</a>
+          <a class="btn btn-ghost" href="#ota-details">Case study</a>
+        </div>
+      </article>
+    </section>
+
+    <section class="feature" aria-label="Delvr">
+      <div class="feature-media">
+        <img src="/assets/OT.png" alt="Delvr concept placeholder" onerror="this.onerror=null;this.src='/assets/circle_container.png';" />
+      </div>
+      <article class="feature-panel">
+        <span class="eyebrow">Coming Soon</span>
+        <h3>Delvr</h3>
+        <p>Explain anything with progressive depth. A friendly, low‑friction way to learn—designed for clarity over hype.</p>
+        <div class="tags">
+          <span class="tag">Mobile-first</span>
+          <span class="tag">AI‑assisted</span>
+          <span class="tag">Edge</span>
+        </div>
+        <div class="actions">
+          <a class="btn btn-ghost" href="#delvr-details">Learn more →</a>
+        </div>
+      </article>
+    </section>
+
+    <section class="feature" aria-label="Next Up">
+      <div class="feature-media">
+        <img src="/assets/OT.png" alt="Next app teaser placeholder" onerror="this.onerror=null;this.src='/assets/circle_container.png';" />
+      </div>
+      <article class="feature-panel">
+        <span class="eyebrow">WIP</span>
+        <h3>Next Up</h3>
+        <p>We’re prototyping the next idea under the Maevin umbrella. Want to collaborate or beta test? Drop us a line.</p>
+        <div class="tags">
+          <span class="tag">Prototype</span>
+          <span class="tag">Design</span>
+          <span class="tag">Research</span>
+        </div>
+        <div class="actions">
+          <a class="btn btn-ghost" href="mailto:hello@maevinlabs.com">Contact us</a>
+        </div>
+      </article>
+    </section>
+
+    <footer>© 2025 Maevin Labs LLC</footer>
+  </div>
+</body>
+</html>
