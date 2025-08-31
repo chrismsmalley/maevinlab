@@ -14,11 +14,11 @@
 
   <style>
     :root {
-      --bg: #0b0c0f;
-      --card: #12141a;
-      --text: #e9eef7;
-      --muted: #a5afbf;
-      --accent: #4da3ff; /* Maevin blue */
+      --bg: #212126;            /* background */
+      --card: #323337;          /* accent/dark card */
+      --text: #ffffff;          /* primary text (accent color) */
+      --muted: rgba(255,255,255,0.72); /* softened text */
+      --accent: #4da3ff;        /* pop of color */
       --accent-soft: rgba(77, 163, 255, 0.15);
       --radius: 14px;
       --shadow: 0 10px 30px rgba(0,0,0,.35);
@@ -66,9 +66,70 @@
     .section-title h2::after { content: ""; position: absolute; left: 0; bottom: -6px; height: 2px; width: 0; background: linear-gradient(90deg, var(--accent), transparent); transition: width .6s ease; }
     .section-title:hover h2::after { width: 60px; }
 
+
     .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
     @media (max-width: 980px) { .grid { grid-template-columns: repeat(2, 1fr);} }
     @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+
+    /* Horizontal scroller for carousels */
+    .hscroll { 
+      display: flex; 
+      gap: 18px; 
+      overflow-x: auto; 
+      padding-bottom: 12px; 
+      scroll-snap-type: x mandatory; 
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin; /* Firefox */
+      scrollbar-color: rgba(255,255,255,.18) transparent;
+    }
+    .hscroll > .card { 
+      flex: 0 0 clamp(280px, 32vw, 360px); 
+      scroll-snap-align: start; 
+    }
+    @media (max-width: 640px) { 
+      .hscroll > .card { flex-basis: 86%; }
+    }
+
+    /* Socials */
+    .socials { display:flex; gap:14px; justify-content:center; align-items:center; margin-bottom: 10px; }
+    .socials a { width: 28px; height: 28px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.12); border-radius: 8px; background: rgba(255,255,255,0.02); transition: transform .15s ease, border-color .2s ease, box-shadow .2s ease; }
+    .socials a:hover { transform: translateY(-1px); border-color: rgba(77,163,255,.45); box-shadow: 0 6px 18px rgba(77,163,255,.18); }
+    .socials svg { width: 16px; height: 16px; fill: var(--text); }
+
+    /* Header socials pill */
+    .socials-pill { display:inline-flex; gap:10px; align-items:center; padding: 6px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,.14); background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.12)); box-shadow: 0 8px 24px rgba(0,0,0,.35); }
+    .socials-pill a { width: 22px; height: 22px; display:inline-flex; align-items:center; justify-content:center; border-radius: 6px; border: 1px solid transparent; transition: transform .15s ease, border-color .2s ease, box-shadow .2s ease; }
+    .socials-pill a:hover { transform: translateY(-1px); border-color: rgba(77,163,255,.45); box-shadow: 0 6px 18px rgba(77,163,255,.18); }
+    .socials-pill svg { width: 14px; height: 14px; fill: var(--text); opacity: .9; }
+
+    /* a subtle divider dot inside the pill */
+    .pill-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(77,163,255,0.18); display: inline-block; }
+
+    @media (max-width: 700px) {
+      .socials-pill { padding: 6px 8px; gap: 8px; }
+    }
+
+    /* --- Mobile refinements (no desktop changes) --- */
+    @media (max-width: 700px) {
+      nav a { margin-left: 14px; font-size: 13px; }
+      header { gap: 12px; }
+    }
+    @media (max-width: 560px) {
+      .wrap { padding: 20px 16px 64px; }
+      header { flex-direction: column; align-items: flex-start; }
+      nav { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+      .brand h1 { font-size: 22px; }
+      .hero { padding: 72px 0 40px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 18px; }
+      .hero-art { width: clamp(180px, 60vw, 320px); height: clamp(180px, 60vw, 320px); margin: 0 auto; }
+      .section-title { margin: 44px 0 12px; }
+      .hscroll > .card { flex-basis: 86%; }
+    }
+    /* Minimal scrollbar (WebKit) */
+    .hscroll::-webkit-scrollbar { height: 4px; }
+    .hscroll::-webkit-scrollbar-track { background: transparent; }
+    .hscroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,.22); border-radius: 999px; background-clip: padding-box; border: 2px solid transparent; }
+    .hscroll:hover::-webkit-scrollbar-thumb { background: rgba(77,163,255,.55); }
 
     .card { position: relative; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06)); border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius); padding: 18px 72px 18px 18px; box-shadow: var(--shadow); transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease; min-height: 170px; overflow: hidden; }
     .card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.5); border-color: rgba(77,163,255,.35); }
@@ -80,6 +141,12 @@
     .card .cta { display:inline-flex; align-items:center; gap:8px; margin-top: 12px; font-weight: 600; font-size: 14px; color: var(--accent); }
     .card .cta span { transform: translateY(1px); transition: transform .2s ease; }
     .card:hover .cta span { transform: translate(2px, 1px); }
+
+    /* Store CTAs inside cards */
+    .cta-row { display:flex; gap:10px; margin-top:12px; flex-wrap: wrap; }
+    .btn-store { display:inline-flex; align-items:center; gap:8px; padding: 8px 10px; border-radius: 8px; border:1px solid rgba(77,163,255,.45); font-weight:600; font-size:13px; color: var(--text); background: linear-gradient(180deg, rgba(77,163,255,.20), rgba(77,163,255,.12)); }
+    .btn-store:hover { border-color: rgba(77,163,255,.65); box-shadow: 0 6px 20px rgba(77,163,255,.28); transform: translateY(-1px); }
+    .btn-store small { opacity: .85; font-weight: 600; letter-spacing: .2px; }
 
     /* Footer */
     footer { text-align: center; margin: 64px 0 20px; color: var(--muted); font-size: 14px; }
@@ -103,7 +170,7 @@
     .hero {
       position: relative;
       text-align: left;
-      padding: 96px 0 56px;
+      padding: 120px 0 72px;
     }
     .hero::before {
       content: ""; position: absolute; inset: -20% -10% auto -10%; height: 360px; z-index: -1;
@@ -111,8 +178,26 @@
                   radial-gradient(360px 200px at 70% 20%, rgba(255,255,255,0.05), transparent 60%);
       filter: blur(6px);
     }
-    .hero .kicker { display:inline-block; padding: 6px 10px; border-radius:999px; background: var(--accent-soft); color: var(--accent); font-weight:600; font-size:12px; letter-spacing:.3px; margin-bottom: 14px; }
-    .hero .headline { font-size: clamp(28px, 6vw, 44px); line-height: 1.1; font-weight: 800; letter-spacing: .2px; margin: 0 0 12px; }
+    .hero .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: .3px;
+      margin-bottom: 10px;
+    }
+    .hero .kicker::before {
+      content: "";
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(77,163,255,0.15);
+      display: inline-block;
+    }
+    .hero .headline { font-size: clamp(32px, 7vw, 52px); line-height: 1.1; font-weight: 800; letter-spacing: .2px; margin: 0 0 12px; }
     .hero .headline .accent { 
       background: linear-gradient(90deg, var(--accent), #9fd0ff);
       -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -123,37 +208,81 @@
     .btn:hover { border-color: rgba(77,163,255,.45); box-shadow: 0 8px 28px rgba(77,163,255,.18); transform: translateY(-1px); }
     .btn-primary { background: linear-gradient(180deg, rgba(77,163,255,.20), rgba(77,163,255,.12)); color: var(--text); }
     .btn-ghost { background: transparent; color: var(--accent); }
+
+    /* Hero split layout */
+    .hero-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: center; }
+    @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+    .hero-copy { z-index: 1; }
+    .hero-art { position: relative; width: clamp(280px, 42vw, 560px); height: clamp(280px, 42vw, 560px); margin-left: auto; border-radius: 24px; display:flex; align-items:center; justify-content:center; }
+    .hero-art img { width: 68%; height: auto; display: block; filter: drop-shadow(0 18px 40px rgba(0,0,0,0.25)); }
+
+    /* --- Hero enter animations --- */
+    .hero-copy, .hero-art { will-change: transform, opacity; }
+    .hero-copy { opacity: 0; transform: translateY(16px); }
+    .hero-art  { opacity: 0; transform: scale(0.96) translateY(8px); }
+
+    body.is-ready .hero-copy { animation: heroFadeUp .70s ease-out 60ms forwards; }
+    body.is-ready .hero-art  { animation: heroScaleIn .80s cubic-bezier(.2,.8,.2,1) 140ms forwards; }
+
+    @keyframes heroFadeUp   { to { opacity: 1; transform: none; } }
+    @keyframes heroScaleIn  { to { opacity: 1; transform: none; } }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-copy, .hero-art { opacity: 1 !important; transform: none !important; animation: none !important; }
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
     <header aria-label="Site header">
       <div class="brand">
-        <img src="/assets/Logo_blue.png" alt="Maevin Labs logo" onerror="this.onerror=null;this.src='/assets/circle_container.png';" />
         <h1>Maevin Labs</h1>
       </div>
-      <nav aria-label="Primary">
+      <nav aria-label="Primary" style="display:flex; align-items:center; gap:14px;">
         <a href="/projects.html">Projects</a>
         <a href="/writings.html">Writing</a>
         <a href="/privacy.html">Privacy</a>
         <a href="/support.html">Support</a>
+        <span class="pill-dot" aria-hidden="true"></span>
+        <div class="socials-pill" aria-label="Follow Maevin Labs">
+          <a href="https://x.com/maevinlabs" target="_blank" rel="noopener" aria-label="X (Twitter)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.36 3H21l-6.54 7.48L22 21h-6.9l-4.3-5.6L5.7 21H3l7.1-8.12L2 3h7l3.9 5.2L18.36 3Zm-1.21 16.2h1.9L8.96 4.7H7.02l10.13 14.5Z"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/company/maevinlabs" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5 2.5 2.5 0 0 1 4.98 3.5ZM3 9h4v12H3zm7 0h3.8v1.7h.1c.5-.9 1.8-1.9 3.7-1.9 4 0 4.7 2.6 4.7 6V21h-4v-5.3c0-1.3 0-3-1.9-3s-2.2 1.4-2.2 2.9V21H10Z"/></svg>
+          </a>
+          <a href="https://github.com/maevinlabs" target="_blank" rel="noopener" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.2.8-.5v-2c-3.3.7-4-1.6-4-1.6-.6-1.5-1.5-1.9-1.5-1.9-1.2-.8.1-.8.1-.8 1.3.1 2 .  1.4 2 .  1.4 1.1 2 2.8 1.4 3.5 1 .1-.8.4-1.4.7-1.7-2.7-.3-5.6-1.3-5.6-6a4.7 4.7 0 0 1 1.2-3.3 4.4 4.4 0 0 1 .1-3.2s1-.3 3.4 1.2a11.6 11.6 0 0 1 6.2 0c2.4-1.5 3.4-1.2 3.4-1.2a4.4 4.4 0 0 1 .1 3.2 4.7 4.7 0 0 1 1.2 3.3c0 4.7-2.9 5.7-5.6 6 .4.3.8 1 .8 2v3c0 .3.2.6.8.5A12 12 0 0 0 12 .5Z"/></svg>
+          </a>
+          <a href="https://instagram.com/maevinlabs" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.5A5.5 5.5 0 1 1 6.5 13 5.5 5.5 0 0 1 12 7.5Zm0 2A3.5 3.5 0 1 0 15.5 13 3.5 3.5 0 0 0 12 9.5Zm6.25-3.5a1.25 1.25 0 1 1-1.25 1.25A1.25 1.25 0 0 1 18.25 6Z"/></svg>
+        </a>
+        </div>
       </nav>
     </header>
 
     <section class="hero" aria-label="Intro">
-      <div class="kicker">Thoughtful digital products</div>
-      <h1 class="headline">Sleek, modern software with <span class="accent">just enough playfulness</span>.</h1>
-      <p class="sub">From concept to ship, we focus on clarity, speed, and polish—building apps, web projects, and small experiments with care.</p>
-      <div class="actions">
-        <a class="btn btn-primary" href="#projects" aria-label="Jump to projects">See projects <span>→</span></a>
-        <a class="btn btn-ghost" href="mailto:hello@maevinlabs.com" aria-label="Email Maevin Labs">Contact us</a>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="kicker">Thoughtful digital products</div>
+          <h1 class="headline">Sleek, modern software with <span class="accent">just enough playfulness</span>.</h1>
+          <p class="sub">From concept to ship, we focus on clarity, speed, and polish—building apps, web projects, and small experiments with care.</p>
+          <div class="actions">
+            <!-- <a class="btn btn-primary" href="#projects" aria-label="Jump to projects">See projects <span>→</span></a> -->
+            <!-- <a class="btn btn-ghost" href="mailto:hello@maevinlabs.com" aria-label="Email Maevin Labs">Contact us</a> -->
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <img src="/assets/circle_container.png" alt="Maevin Labs logo" />
+        </div>
       </div>
     </section>
 
     <div class="section-title" id="projects">
       <h2>Projects</h2>
     </div>
-    <section class="grid" aria-label="Projects grid">
+    <section class="hscroll" aria-label="Projects carousel">
       <a class="card" href="https://obsoletetecharchive.com" target="_blank" rel="noopener noreferrer" aria-label="Open Obsolete Tech Archive">
         <div class="badge live">Live</div>
         <h3>Obsolete Tech Archive</h3>
@@ -165,7 +294,15 @@
         <div class="badge">Coming soon</div>
         <h3>Delvr</h3>
         <p>Explain anything with progressive depth. A friendly, low‑friction way to learn—designed for clarity over hype.</p>
-        <div class="cta">Learn more <span>→</span></div>
+        <div class="cta-row">
+          <!-- TODO: replace with real store URLs when live -->
+          <a class="btn-store" href="#" aria-label="Delvr on the Apple App Store" aria-disabled="true" onclick="return false;">
+            <span></span><small>App&nbsp;Store</small>
+          </a>
+          <a class="btn-store" href="#" aria-label="Delvr on Google Play" aria-disabled="true" onclick="return false;">
+            <span>▶</span><small>Google&nbsp;Play</small>
+          </a>
+        </div>
       </div>
 
       <a class="card" href="mailto:hello@maevinlabs.com?subject=Partnering%20with%20Maevin%20Labs" aria-label="Contact Maevin Labs about the next app">
@@ -180,7 +317,7 @@
       <h2>Writing</h2>
       <a href="https://medium.com/@chris_74915" target="_blank" rel="noopener noreferrer" aria-label="Open Medium profile" style="font-size:14px; opacity:.8;">All posts →</a>
     </div>
-    <section class="grid" aria-label="Latest Medium articles">
+    <section class="hscroll" aria-label="Latest Medium articles carousel">
       <!-- Fallback placeholders; replaced by JS on success -->
       <a class="card" href="https://medium.com/@chris_74915" target="_blank" rel="noopener noreferrer" aria-label="Read on Medium">
         <div class="badge">Medium</div>
@@ -203,12 +340,29 @@
     </section>
 
     <footer>
-      © 2025 Maevin Labs LLC </a>
+      <div class="socials" aria-label="Social links">
+        <a href="https://x.com/maevinlabs" target="_blank" rel="noopener" aria-label="X (Twitter)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.36 3H21l-6.54 7.48L22 21h-6.9l-4.3-5.6L5.7 21H3l7.1-8.12L2 3h7l3.9 5.2L18.36 3Zm-1.21 16.2h1.9L8.96 4.7H7.02l10.13 14.5Z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/company/maevinlabs" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5 2.5 2.5 0 0 1 4.98 3.5ZM3 9h4v12H3zm7 0h3.8v1.7h.1c.5-.9 1.8-1.9 3.7-1.9 4 0 4.7 2.6 4.7 6V21h-4v-5.3c0-1.3 0-3-1.9-3s-2.2 1.4-2.2 2.9V21H10Z"/></svg>
+        </a>
+        <a href="https://github.com/maevinlabs" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.2.8-.5v-2c-3.3.7-4-1.6-4-1.6-.6-1.5-1.5-1.9-1.5-1.9-1.2-.8.1-.8.1-.8 1.3.1 2 .  1.4 2 .  1.4 1.1 2 2.8 1.4 3.5 1 .1-.8.4-1.4.7-1.7-2.7-.3-5.6-1.3-5.6-6a4.7 4.7 0 0 1 1.2-3.3 4.4 4.4 0 0 1 .1-3.2s1-.3 3.4 1.2a11.6 11.6 0 0 1 6.2 0c2.4-1.5 3.4-1.2 3.4-1.2a4.4 4.4 0 0 1 .1 3.2 4.7 4.7 0 0 1 1.2 3.3c0 4.7-2.9 5.7-5.6 6 .4.3.8 1 .8 2v3c0 .3.2.6.8.5A12 12 0 0 0 12 .5Z"/></svg>
+        </a>
+        <a href="https://instagram.com/maevinlabs" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.5A5.5 5.5 0 1 1 6.5 13 5.5 5.5 0 0 1 12 7.5Zm0 2A3.5 3.5 0 1 0 15.5 13 3.5 3.5 0 0 0 12 9.5Zm6.25-3.5a1.25 1.25 0 1 1-1.25 1.25A1.25 1.25 0 0 1 18.25 6Z"/></svg>
+        </a>
+      </div>
+      © 2025 Maevin Labs LLC
+    </footer>
   </div>
 
   <script>
     // Reveal-on-scroll and small parallax for hero image
     (function() {
+      // Trigger hero enter animation on DOM ready
+      document.addEventListener('DOMContentLoaded', () => document.body.classList.add('is-ready'));
       const addReveal = (selector) => {
         document.querySelectorAll(selector).forEach((el, i) => {
           el.classList.add('reveal');
@@ -246,7 +400,7 @@
     // Expected proxy endpoint: /api/medium?limit=3 → { items: [{ title, link, description }] }
     (function() {
       const ENDPOINT = '/api/medium?limit=3';
-      const target = document.querySelector('section.grid[aria-label="Latest Medium articles"]');
+      const target = document.querySelector('section.hscroll[aria-label="Latest Medium articles carousel"]');
 
       function createCard(item) {
         const a = document.createElement('a');
