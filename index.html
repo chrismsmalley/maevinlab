@@ -131,6 +131,18 @@
       .section-title { margin: 44px 0 12px; }
       .hscroll > .card { flex-basis: 86%; }
     }
+    /* --- Mobile first-page tune: no animation, tighter spacing --- */
+    @media (max-width: 700px) {
+      .hero { padding: 72px 0 28px; }
+      .hero::before { display: none; }
+      .hero-grid { grid-template-columns: 1fr; gap: 16px; }
+      .hero-copy, .hero-art { opacity: 1 !important; transform: none !important; animation: none !important; }
+      .hero .headline { font-size: clamp(28px, 8vw, 36px); line-height: 1.15; }
+      .hero .sub { font-size: 16px; max-width: 60ch; }
+      .hero-art { width: clamp(160px, 58vw, 300px); height: auto; margin: 0 auto; }
+      .section-title { margin: 36px 0 10px; }
+      .card { padding: 16px; min-height: auto; }
+    }
     /* Minimal scrollbar (WebKit) */
     .hscroll::-webkit-scrollbar { height: 4px; }
     .hscroll::-webkit-scrollbar-track { background: transparent; }
@@ -391,19 +403,26 @@
 
       const heroImg = document.querySelector('.hero img');
       if (heroImg) {
-        let ticking = false;
-        const onMove = (e) => {
-          if (ticking) return; ticking = true;
-          requestAnimationFrame(() => {
-            const rect = heroImg.getBoundingClientRect();
-            const cx = rect.left + rect.width/2; const cy = rect.top + rect.height/2;
-            const dx = (e.clientX - cx) / rect.width; const dy = (e.clientY - cy) / rect.height;
-            heroImg.style.transform = `translate3d(${dx*6}px, ${dy*6}px, 0)`;
-            ticking = false;
-          });
-        };
-        window.addEventListener('mousemove', onMove);
-        window.addEventListener('mouseleave', () => { heroImg.style.transform = ''; });
+        // Only enable parallax on larger screens with a precise pointer (desktops/laptops)
+        const allowParallax = window.matchMedia('(min-width: 701px)').matches && window.matchMedia('(pointer:fine)').matches;
+        if (allowParallax) {
+          let ticking = false;
+          const onMove = (e) => {
+            if (ticking) return; ticking = true;
+            requestAnimationFrame(() => {
+              const rect = heroImg.getBoundingClientRect();
+              const cx = rect.left + rect.width/2; const cy = rect.top + rect.height/2;
+              const dx = (e.clientX - cx) / rect.width; const dy = (e.clientY - cy) / rect.height;
+              heroImg.style.transform = `translate3d(${dx*6}px, ${dy*6}px, 0)`;
+              ticking = false;
+            });
+          };
+          window.addEventListener('mousemove', onMove);
+          window.addEventListener('mouseleave', () => { heroImg.style.transform = ''; });
+        } else {
+          // Ensure no residual transform on mobile
+          heroImg.style.transform = '';
+        }
       }
     })();
   </script>
