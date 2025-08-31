@@ -41,6 +41,11 @@
     nav a:hover { opacity: 1; }
     nav a::after { content:""; position:absolute; left:0; bottom:-6px; height:2px; width:0; background: linear-gradient(90deg, var(--accent), transparent); transition: width .25s ease; }
     nav a:hover::after { width: 16px; }
+    /* Shared header pieces (from index) */
+    .socials-inline { display:inline-flex; gap:10px; align-items:center; }
+    .socials-inline a { width:22px; height:22px; display:inline-flex; align-items:center; justify-content:center; }
+    .socials-inline svg { width:14px; height:14px; fill: var(--text); opacity:.9; }
+    .nav-sep { color: var(--accent); font-weight:700; opacity:.95; display:inline-flex; align-items:center; justify-content:center; width:24px; }
 
     h1.page-title { font-size: clamp(28px, 6vw, 40px); line-height: 1.1; margin: 24px 0 10px; }
     .intro { color: var(--muted); margin: 0 0 28px; font-size: 16px; }
@@ -55,17 +60,17 @@
 </head>
 <body>
   <div class="wrap">
-    <header aria-label="Site header">
-      <div class="brand">
-        <!-- <img src="/assets/Logo_blue.png" alt="Maevin Labs logo" onerror="this.onerror=null;this.src='/assets/circle_container.png';" /> -->
-        <h1>Maevin Labs</h1>
-      </div>
-      <nav aria-label="Primary">
-        <a href="/" style="display:flex; align-items:center; gap:6px; font-size:14px;">
-          <span style="font-size:16px;">←</span> Home
-        </a>
-      </nav>
-    </header>
+    <div id="site-header"></div>
+    <script>
+      (async () => {
+        try {
+          const r = await fetch('/header.html', { cache: 'no-cache' });
+          const html = await r.text();
+          const mount = document.getElementById('site-header');
+          if (mount) mount.outerHTML = html;
+        } catch (_) {}
+      })();
+    </script>
 
     <h1 class="page-title">Support</h1>
     <p class="intro">Need help? Find answers below or reach out directly.</p>
@@ -81,9 +86,17 @@
       </ul>
     </section>
 
-    <footer>
-      © 2025 Maevin Labs LLC
-    </footer>
+    <div id="site-footer"></div>
+    <script>
+      (async () => {
+        try {
+          const r = await fetch('/footer.html', { cache: 'no-cache' });
+          const html = await r.text();
+          const mount = document.getElementById('site-footer');
+          if (mount) mount.outerHTML = html;
+        } catch (_) {}
+      })();
+    </script>
   </div>
 </body>
 </html>
