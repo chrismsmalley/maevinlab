@@ -11,14 +11,15 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/Logo_blue.png" />
   <style>
     :root {
-      --bg: #212126;
-      --card: #323337;
-      --text: #ffffff;
-      --muted: rgba(255,255,255,0.72);
-      --accent: #4da3ff;
-      --accent-soft: rgba(77, 163, 255, 0.15);
+      --bg: #FFFFFF;
+      --card: #FFFFFF;
+      --text: #0a0a0a;
+      --muted: rgba(0,0,0,0.66);
+      --accent: #d2a226;
+      --accent-soft: rgba(210,162,38,0.10);
       --radius: 14px;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --shadow: 0 10px 30px rgba(16,24,40,.08);
+      --border: rgba(0,0,0,0.10);
     }
     html, body { height: 100%; }
     body {
@@ -35,11 +36,19 @@
 
     header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
     .brand { display: flex; align-items: center; gap: 12px; }
-    .brand img { width: 40px; height: 40px; border-radius: 10px; }
     .brand h1 { font-size: 22px; font-weight: 700; letter-spacing: .3px; margin: 0; color: var(--text); }
-    nav a { position: relative; opacity: .8; margin-left: 18px; font-size: 14px; }
+    nav a { position: relative; opacity: .8; margin-left: 18px; font-size: 14px; color: var(--text); }
     nav a:hover { opacity: 1; }
-    nav a::after { content:""; position:absolute; left:0; bottom:-6px; height:2px; width:0; background: linear-gradient(90deg, var(--accent), transparent); transition: width .25s ease; }
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      height: 2px;
+      width: 0;
+      background: var(--accent);
+      transition: width .25s ease;
+    }
     nav a:hover::after { width: 16px; }
     /* Shared header pieces (from index) */
     .socials-inline { display:inline-flex; gap:10px; align-items:center; }
@@ -50,7 +59,14 @@
     h1.page-title { font-size: clamp(28px, 6vw, 40px); line-height: 1.1; margin: 24px 0 10px; }
     .intro { color: var(--muted); margin: 0 0 28px; font-size: 16px; }
 
-    section.card { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06)); border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow); margin: 18px 0; }
+    section.card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
+      margin: 18px 0;
+    }
     section.card h2 { margin-top: 6px; font-size: 18px; }
     section.card p, section.card li { color: var(--muted); line-height: 1.6; font-size: 15px; }
     ul { padding-left: 18px; }

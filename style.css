@@ -49,3 +49,12 @@ footer {
 .logo-container p {
   margin-top: 0.1rem;
 }
+
+/* Hide Medium-injected bubbles sitewide */
+[class*="medium"],
+[id*="medium"],
+[class*="Medium"],
+[id*="Medium"] {
+  display: none !important;
+  visibility: hidden !important;
+}

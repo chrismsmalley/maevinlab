@@ -13,16 +13,33 @@
   <link rel="preload" as="image" href="/assets/circle_container.png" />
 
   <style>
-    :root {
-      --bg: #212126;            /* background */
-      --card: #323337;          /* accent/dark card */
-      --text: #ffffff;          /* primary text (accent color) */
-      --muted: rgba(255,255,255,0.72); /* softened text */
-      --accent: #4da3ff;        /* pop of color */
-      --accent-soft: rgba(77, 163, 255, 0.15);
-      --radius: 14px;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    /* Nuke Medium-injected UI sitewide (header and elsewhere) */
+    [class*="medium"], [id*="medium"],
+    [class*="Medium"], [id*="Medium"],
+    iframe[src*="medium.com"] {
+      display: none !important;
+      visibility: hidden !important;
     }
+    :root {
+      --bg: #FFFFFF;            /* light background */
+      --card: #FFFFFF;          /* surface */
+      --text: #121212;          /* primary text */
+      --muted: #6A6A6A;         /* secondary text */
+      --accent: #d2a226;        /* golden accent */
+      --accent-soft: rgba(210, 162, 38, 0.14);
+      --border: #E8E8EC;        /* hairlines */
+      --radius: 14px;
+      --shadow: 0 6px 24px rgba(16,24,40,.06);
+      --rail-gap: 64px;       /* vertical distance between link baselines */
+      --rail-clear: 24px;     /* space not covered by the line */
+    }
+    /* Hero rail link highlight: use hover and .is-active only (avoid sticky :focus color) */
+    .hero-rail nav a::after { display: none !important; }
+    .hero-rail nav a { opacity: 1; transition: color .18s ease; }
+    .hero-rail nav a:hover { color: var(--accent); }
+    .hero-rail .vmenu a.is-active { color: var(--accent); }
+    /* Keep focus visible for a11y without color change */
+    .hero-rail nav a:focus { outline: 2px solid rgba(210,162,38,.35); outline-offset: 2px; }
     html, body { height: 100%; }
     body {
       margin: 0;
@@ -38,17 +55,82 @@
     nav a:hover::after { width: 16px; }
     nav a { opacity: .8; margin-left: 18px; font-size: 14px; }
     nav a:hover { opacity: 1; }
-    .wrap { max-width: 1100px; margin: 0 auto; padding: 28px 20px 80px; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 16px 20px 64px; }
+
+    /* Light header (for injected header.html) */
+    header { background: transparent; }
+    .brand h1 { color: var(--text); }
+    nav a { color: var(--text); }
+    .socials-inline svg { fill: var(--text); opacity:.8; }
+    nav a:hover::after { background: linear-gradient(90deg, var(--accent), transparent); }
 
     /* Header */
     header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
     .brand { display: flex; align-items: center; gap: 12px; }
-    .brand img { width: 40px; height: 40px; border-radius: 10px; }
+    .brand img { width: 152; height: 152px; border-radius: 12px; }
     .brand h1 { font-size: 30px; font-weight: 600; letter-spacing: .2px; margin: 0; }
     
 
     /* Hero */
-    .hero { text-align: center; padding: 80px 0 40px; }
+    .hero { text-align: center; padding: 24px 0 56px; position: relative; z-index: 0; }
+
+    /* Three-column hero layout (desktop) */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 28px;
+      align-items: center; /* center columns vertically against the dog */
+      text-align: left;
+      position: relative;
+    }
+    /* (No vertical divider lines) */
+    .hero-col { position: relative; }
+    .hero-grid .hero-copy { max-width: 640px; margin: 0; align-self: center; }
+    .hero-grid .headline { font-size: clamp(28px, 4vw, 42px); line-height: 1.15; margin: 0 0 12px; font-weight: 700; }
+    .hero-grid .sub { font-size: 18px; color: var(--muted); margin: 0; line-height: 1.55; }
+
+    /* Playful highlight for the word “playful” */
+    .playful-word{
+      font-weight: 800;
+      letter-spacing: .02em;
+      background: linear-gradient(90deg,#ff6b6b,#f7b267,#ffd166,#06d6a0,#4cc9f0,#a56cc1);
+      -webkit-background-clip: text; background-clip: text;
+      color: transparent;
+      white-space: nowrap;
+      background-size: 200% 100%;
+      animation: playfulShift 6s ease-in-out infinite;
+    }
+    @keyframes playfulShift {
+      0%,100% { background-position: 0% 50%; }
+      50%     { background-position: 100% 50%; }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .playful-word{ animation: none; }
+    }
+    .hero-grid .eyebrow { margin-bottom: 10px; }
+    /* Right side art wrapper so the orbit stays properly sized */
+    .hero-grid .hero-art { display: flex; align-items: center; justify-content: center; }
+
+    /* Vertical rail menu: remove bullets, make it fill the dog's height */
+    .hero-rail { position: relative; display:flex; align-items: center; justify-content:center; align-self: center; }
+    /* Removed .hero-rail::before (full-height line) */
+    .hero-rail .vmenu {
+      list-style:none; margin:0; padding:0;
+      display:flex; flex-direction:column; align-items:center;
+      justify-content:center;          /* keeps links centered vertically */
+      gap: var(--rail-gap);
+    }
+    .hero-rail .vmenu li { position:relative; padding:0; }
+    .hero-rail .vmenu a { position: relative; text-align:center; display:block; padding:0 12px; font-weight:600; }
+    .hero-rail .vmenu li:not(:last-child) a::before {
+      content:"";
+      position:absolute;
+      left:50%; transform:translateX(-50%);
+      top: calc(100% + (var(--rail-clear)/2));
+      width:1px;
+      height: calc(var(--rail-gap) - var(--rail-clear));
+      background: var(--border);
+    }
     .hero img { 
       width: clamp(120px, 20vw, 220px);
       height: auto;
@@ -61,7 +143,7 @@
     .eyebrow { display: inline-block; padding: 6px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 600; font-size: 12px; letter-spacing: .3px; margin-bottom: 16px; }
 
     /* Projects / Writing */
-    .section-title { display:flex; align-items:center; justify-content:space-between; margin: 72px 0 18px; }
+    .section-title { display:flex; align-items:center; justify-content:space-between; margin: 40px 0 18px; position: relative; z-index: 1; }
     .section-title h2 { font-size: 18px; font-weight: 700; margin: 0; letter-spacing: .2px; position: relative; }
     .section-title h2::after { content: ""; position: absolute; left: 0; bottom: -6px; height: 2px; width: 0; background: linear-gradient(90deg, var(--accent), transparent); transition: width .6s ease; }
     .section-title:hover h2::after { width: 60px; }
@@ -70,16 +152,29 @@
     .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
     @media (max-width: 980px) { .grid { grid-template-columns: repeat(2, 1fr);} }
     @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+    /* Projects and writing grid layouts */
+    .projects-list, .writing-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    @media (max-width: 980px) {
+      .projects-list, .writing-list { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .projects-list, .writing-list { grid-template-columns: 1fr; }
+    }
 
-    /* Horizontal scroller for carousels */
-    .hscroll { 
+    /* Horizontal scroller for carousels (no longer used for projects/writing) */
+    /* .hscroll { 
       display: flex; 
       gap: 18px; 
       overflow-x: auto; 
+      overflow-y: hidden;        
       padding-bottom: 12px; 
       scroll-snap-type: x mandatory; 
       -webkit-overflow-scrolling: touch;
-      scrollbar-width: thin; /* Firefox */
+      scrollbar-width: thin; 
       scrollbar-color: rgba(255,255,255,.18) transparent;
     }
     .hscroll > .card { 
@@ -88,12 +183,13 @@
     }
     @media (max-width: 640px) { 
       .hscroll > .card { flex-basis: 86%; }
-    }
+    } */
+    .projects-list { position: relative; z-index: 1; margin-top: 8px; padding-bottom: 6px; }
 
     /* Socials */
     .socials { display:flex; gap:14px; justify-content:center; align-items:center; margin-bottom: 10px; }
-    .socials a { width: 28px; height: 28px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.12); border-radius: 8px; background: rgba(255,255,255,0.02); transition: transform .15s ease, border-color .2s ease, box-shadow .2s ease; }
-    .socials a:hover { transform: translateY(-1px); border-color: rgba(77,163,255,.45); box-shadow: 0 6px 18px rgba(77,163,255,.18); }
+    .socials a { width: 28px; height: 28px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--border); border-radius: 8px; background: #fff; transition: transform .15s ease, border-color .2s ease, box-shadow .2s ease; }
+    .socials a:hover { transform: translateY(-1px); border-color: rgba(210,162,38,.55); box-shadow: 0 6px 18px rgba(210,162,38,.18); }
     .socials svg { width: 16px; height: 16px; fill: var(--text); }
 
     /* Header socials — inline (no pill) */
@@ -112,17 +208,23 @@
       header { flex-direction: column; align-items: flex-start; }
       nav { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
       .brand h1 { font-size: 22px; }
-      .hero { padding: 72px 0 40px; }
+      .hero { padding: 40px 0 24px; }
       .hero-grid { grid-template-columns: 1fr; gap: 18px; }
+      .hero-copy { order: 1; }
+      .hero-art  { order: 2; }
+      .hero-rail { order: 3; }
       .hero-art { width: clamp(180px, 60vw, 320px); height: clamp(180px, 60vw, 320px); margin: 0 auto; }
       .section-title { margin: 44px 0 12px; }
       .hscroll > .card { flex-basis: 86%; }
     }
     /* --- Mobile first-page tune: no animation, tighter spacing --- */
     @media (max-width: 700px) {
-      .hero { padding: 72px 0 28px; }
+      .hero { padding: 40px 0 20px; }
       .hero::before { display: none; }
       .hero-grid { grid-template-columns: 1fr; gap: 16px; }
+      .hero-copy { order: 1; }
+      .hero-art  { order: 2; }
+      .hero-rail { order: 3; }
       .hero-copy, .hero-art { opacity: 1 !important; transform: none !important; animation: none !important; }
       .hero .headline { font-size: clamp(28px, 8vw, 36px); line-height: 1.15; }
       .hero .sub { font-size: 16px; max-width: 60ch; }
@@ -136,25 +238,33 @@
     .hscroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,.22); border-radius: 999px; background-clip: padding-box; border: 2px solid transparent; }
     .hscroll:hover::-webkit-scrollbar-thumb { background: rgba(77,163,255,.55); }
 
-    .card { position: relative; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06)); border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius); padding: 18px 72px 18px 18px; box-shadow: var(--shadow); transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease; min-height: 170px; overflow: hidden; }
-    .card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.5); border-color: rgba(77,163,255,.35); }
-    .card:hover { background: linear-gradient(180deg, rgba(77,163,255,0.06), rgba(0,0,0,0.06)); }
-    .card h3 { margin: 4px 0 8px; font-size: 18px; }
+    .card { position: relative; z-index: 0; border-radius: var(--radius); overflow: hidden; }
+    .card:hover {
+      transform: translateY(-2px);          /* smaller lift to avoid overlap */
+      background: rgba(210,162,38,.06);
+      box-shadow: 0 10px 26px rgba(16,24,40,.10);
+      border-color: rgba(210,162,38,.35);
+      z-index: 1;                           /* rise above neighbors without escaping track */
+    }
+    .card h3 { margin: 4px 0 8px; font-size: 18px; color: var(--text); }
     .card p { margin: 0; color: var(--muted); line-height: 1.55; font-size: 14px; }
-    .badge { position: absolute; top: 14px; right: 14px; font-size: 11px; padding: 4px 8px; border-radius: 999px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); color: var(--text); z-index: 1; }
-    .badge.live { background: rgba(77,163,255,.18); border-color: rgba(77,163,255,.35); color: var(--text); }
+    /* Hide badges sitewide for now */
+    .badge { display: none !important; }
+    /*
+    .badge { position: absolute; top: 14px; right: 14px; font-size: 11px; padding: 4px 8px; border-radius: 999px; background: var(--accent-soft); border: 1px solid rgba(210,162,38,.35); color: var(--text); z-index: 1; }
+    .badge.live { background: var(--accent-soft); border-color: rgba(210,162,38,.55); }
+    */
     .card .cta { display:inline-flex; align-items:center; gap:8px; margin-top: 12px; font-weight: 600; font-size: 14px; color: var(--accent); }
     .card .cta span { transform: translateY(1px); transition: transform .2s ease; }
     .card:hover .cta span { transform: translate(2px, 1px); }
 
     /* Store CTAs inside cards */
     .cta-row { display:flex; gap:10px; margin-top:12px; flex-wrap: wrap; }
-    .btn-store { display:inline-flex; align-items:center; gap:8px; padding: 8px 10px; border-radius: 8px; border:1px solid rgba(77,163,255,.45); font-weight:600; font-size:13px; color: var(--text); background: linear-gradient(180deg, rgba(77,163,255,.20), rgba(77,163,255,.12)); }
-    .btn-store:hover { border-color: rgba(77,163,255,.65); box-shadow: 0 6px 20px rgba(77,163,255,.28); transform: translateY(-1px); }
-    .btn-store small { opacity: .85; font-weight: 600; letter-spacing: .2px; }
+    .btn-store { display:inline-flex; align-items:center; gap:8px; padding: 8px 10px; border-radius: 8px; border:1px solid rgba(210,162,38,.45); font-weight:600; font-size:13px; color: var(--text); background: linear-gradient(180deg, rgba(210,162,38,.16), rgba(210,162,38,.10)); }
+    .btn-store:hover { border-color: rgba(210,162,38,.65); box-shadow: 0 6px 20px rgba(210,162,38,.22); transform: translateY(-1px); }
 
     /* Footer */
-    footer { text-align: center; margin: 64px 0 20px; color: var(--muted); font-size: 14px; }
+    footer { text-align: center; margin: 64px 0 20px; color: var(--muted); font-size: 14px; background: transparent; }
     footer a { color: var(--accent); }
 
     /* Motion keyframes (background + reveal) */
@@ -171,70 +281,87 @@
       .reveal { opacity: 1; transform: none; }
     }
 
-    /* --- New hero (text-first) --- */
-    .hero {
-      position: relative;
-      text-align: left;
-      padding: 120px 0 72px;
-    }
-    .hero::before {
-      content: ""; position: absolute; inset: -20% -10% auto -10%; height: 360px; z-index: -1;
-      background: radial-gradient(420px 220px at 30% 0%, rgba(77,163,255,0.18), transparent 60%),
-                  radial-gradient(360px 200px at 70% 20%, rgba(255,255,255,0.05), transparent 60%);
-      filter: blur(6px);
-    }
-    .hero .kicker {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 0;
-      background: transparent;
-      color: var(--muted);
-      font-weight: 600;
-      font-size: 12px;
-      letter-spacing: .3px;
-      margin-bottom: 10px;
-    }
-    .hero .kicker::before {
-      content: "";
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 0 3px rgba(77,163,255,0.15);
-      display: inline-block;
-    }
-    .hero .headline { font-size: clamp(32px, 7vw, 52px); line-height: 1.1; font-weight: 800; letter-spacing: .2px; margin: 0 0 12px; }
-    .hero .headline .accent { 
-      background: linear-gradient(90deg, var(--accent), #9fd0ff);
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-    }
-    .hero .sub { color: var(--muted); max-width: 760px; font-size: 18px; line-height: 1.55; margin: 8px 0 20px; }
-    .actions { display:flex; gap:12px; align-items:center; flex-wrap: wrap; }
-    .btn { display:inline-flex; align-items:center; gap:8px; padding: 10px 14px; border-radius: 10px; border:1px solid rgba(255,255,255,.12); font-weight:600; font-size:14px; }
-    .btn:hover { border-color: rgba(77,163,255,.45); box-shadow: 0 8px 28px rgba(77,163,255,.18); transform: translateY(-1px); }
-    .btn-primary { background: linear-gradient(180deg, rgba(77,163,255,.20), rgba(77,163,255,.12)); color: var(--text); }
-    .btn-ghost { background: transparent; color: var(--accent); }
+    /* --- Sleek, low-key animations (compose with JS parallax) --- */
+    @property --dx { syntax: '<length>'; inherits: false; initial-value: 0px; }
+    @property --dy { syntax: '<length>'; inherits: false; initial-value: 0px; }
+    @property --floatY { syntax: '<length>'; inherits: false; initial-value: 0px; }
 
-    /* Hero split layout */
-    .hero-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: center; }
-    @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
-    .hero-copy { z-index: 1; }
-    .hero-art { position: relative; width: clamp(280px, 42vw, 560px); height: clamp(280px, 42vw, 560px); margin-left: auto; border-radius: 24px; display:flex; align-items:center; justify-content:center; }
-    .hero-art img { width: 68%; height: auto; display: block; filter: drop-shadow(0 18px 40px rgba(0,0,0,0.25)); }
+    @keyframes microFloat {
+      0%,100% { --floatY: 0px; }
+      50% { --floatY: -3px; }
+    }
 
-    /* --- Hero enter animations --- */
-    .hero-copy, .hero-art { will-change: transform, opacity; }
-    .hero-copy { opacity: 0; transform: translateY(16px); }
-    .hero-art  { opacity: 0; transform: scale(0.96) translateY(8px); }
+    @keyframes breath {
+      0%,100% { transform: translateX(-50%) scaleX(1); opacity: .35; }
+      50% { transform: translateX(-50%) scaleX(1.05); opacity: .42; }
+    }
 
-    body.is-ready .hero-copy { animation: heroFadeUp .70s ease-out 60ms forwards; }
-    body.is-ready .hero-art  { animation: heroScaleIn .80s cubic-bezier(.2,.8,.2,1) 140ms forwards; }
+    /* --- New hero (centered dog only) --- */
+    .hero-centered { position: relative; padding: 0px 0 18px; }
+    .orbit { position: relative; width: min(60vw, 520px); margin: 0 auto; }
 
-    @keyframes heroFadeUp   { to { opacity: 1; transform: none; } }
-    @keyframes heroScaleIn  { to { opacity: 1; transform: none; } }
+.orbit .dog {
+  position: relative;
+  display: block;
+  margin: 0 auto;
+  width: min(70vw, 420px);
+  height: auto;
+  background: transparent;
+  border: none;
+  /* Compose transforms via variables so JS can add parallax without fighting CSS */
+  --dx: 0px; --dy: 0px; --floatY: 0px;
+  transform: translate3d(var(--dx), calc(var(--dy) + var(--floatY)), 0);
+  filter: none;        /* remove drop-shadow */
+  border-radius: 0;    /* remove rounded corner effect */
+  box-shadow: none;    /* ensure no shadow */
+  animation: microFloat 7s ease-in-out infinite;
+}
 
-    /* Respect reduced motion */
-    @media (prefers-reduced-motion: reduce) {
-      .hero-copy, .hero-art { opacity: 1 !important; transform: none !important; animation: none !important; }
+/* Breathing ground shadow (very subtle) */
+.orbit::after{
+  content:""; position:absolute; left:50%; bottom:-6px; transform:translateX(-50%);
+  width: 46%; height: 10px; border-radius: 999px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,.18), rgba(0,0,0,0) 70%);
+  animation: breath 6s ease-in-out infinite;
+  opacity:.35; pointer-events:none;
+}
+
+/* Subtle gold-iris shimmer (idle). Two tiny radial glints positioned over the eyes */
+.orbit { position: relative; }
+.iris-glint {
+  position: absolute; width: 10px; height: 10px; border-radius: 50%;
+  background: radial-gradient(circle, #d2a226 0%, rgba(210,162,38,0) 70%);
+  opacity: 0; filter: blur(0.4px); pointer-events: none;
+  animation: irisGlint 12s ease-in-out infinite; /* very occasional */
+}
+/* Approximate positions — tweak left/top if needed to align with current art */
+.iris-left  { left: 46.8%; top: 43.6%; }
+.iris-right { left: 59.5%; top: 43.6%; }
+
+@keyframes irisGlint {
+  0%, 92%, 100% { opacity: 0; }
+  94% { opacity: 0.28; }
+  96% { opacity: 0.12; }
+  98% { opacity: 0.22; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .iris-glint{ display: none; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .orbit .dog { animation: none; }
+  .orbit::after { animation: none; }
+}
+
+/* Ensure the dog image never shows any outline on interaction */
+.orbit .dog:hover, .orbit .dog:focus { outline: none; box-shadow: none; filter: none; }
+
+    /* Mobile stacking for hero */
+    @media (max-width: 700px) {
+      .hero-centered { padding: 56px 0 20px; }
+      .orbit { width: min(92vw, 520px); height: auto; text-align: center; }
+      .orbit .dog { position: relative; transform: none; display:block; margin: 0 auto; width: min(68vw, 320px); }
     }
   </style>
 </head>
@@ -252,27 +379,37 @@
       })();
     </script>
 
-    <section class="hero" aria-label="Intro">
-      <div class="hero-grid">
-        <div class="hero-copy">
-          <div class="kicker">Thoughtful digital products</div>
-          <h1 class="headline">Sleek, modern software with <span class="accent">just enough playfulness</span>.</h1>
-          <p class="sub">From concept to ship, we focus on clarity, speed, and polish—building apps, web projects, and small experiments with care.</p>
-          <div class="actions">
-            <!-- <a class="btn btn-primary" href="#projects" aria-label="Jump to projects">See projects <span>→</span></a> -->
-            <!-- <a class="btn btn-ghost" href="mailto:hello@maevinlabs.com" aria-label="Email Maevin Labs">Contact us</a> -->
-          </div>
+    <section class="hero hero-grid" aria-label="Intro">
+      <div class="hero-copy">
+        <!-- <span class="eyebrow">MAEVIN LABS</span> -->
+        <h1 class="headline">Thoughtful, modern digital products</h1>
+        <p class="sub">
+          From <span class="playful-word" aria-label="playful">playful</span> ideas to production‑ready apps.
+          Clean UX, strong engineering, and a friendly, human vibe.
+        </p>
+      </div>
+      <div class="hero-col hero-art">
+        <div class="orbit">
+          <img class="dog" src="/assets/shading_turtle-removebg-preview.png" alt="Maevin Labs dog mascot" />
         </div>
-        <div class="hero-art" aria-hidden="true">
-          <img src="/assets/updated_nb.png" alt="Maevin Labs logo" />
-        </div>
+      </div>
+      <div class="hero-col hero-rail" aria-label="Primary page sections">
+        <nav>
+          <ul class="vmenu" role="list">
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#writing">Writing</a></li>
+            <li><a href="/privacy.html">Privacy</a></li>
+            <li><a href="/support.html">Support</a></li>
+          </ul>
+        </nav>
       </div>
     </section>
 
     <div class="section-title" id="projects">
       <h2>Projects</h2>
+      <a href="/projects.html" target="_self" aria-label="View all projects" style="font-size:14px; opacity:.8;">All projects →</a>
     </div>
-    <section class="hscroll" aria-label="Projects carousel">
+    <section class="grid projects-list" aria-label="Projects grid">
       <a class="card" href="https://obsoletetecharchive.com" target="_blank" rel="noopener noreferrer" aria-label="Open Obsolete Tech Archive">
         <div class="badge live">Live</div>
         <h3>Obsolete Tech Archive</h3>
@@ -302,19 +439,13 @@
         <div class="cta">Visit site <span>→</span></div>
       </a>
 
-      <a class="card" href="mailto:hello@maevinlabs.com?subject=Partnering%20with%20Maevin%20Labs" aria-label="Contact Maevin Labs about the next app">
-        <div class="badge">WIP</div>
-        <h3>Next Up</h3>
-        <p>We’re prototyping the next idea under the Maevin umbrella. Want to collaborate or beta test? Drop us a line.</p>
-        <div class="cta">Contact us <span>→</span></div>
-      </a>
     </section>
 
     <div class="section-title" id="writing">
       <h2>Writing</h2>
       <a href="https://medium.com/@chris_74915" target="_blank" rel="noopener noreferrer" aria-label="Open Medium profile" style="font-size:14px; opacity:.8;">All posts →</a>
     </div>
-    <section class="hscroll" aria-label="Latest Medium articles carousel">
+    <section class="grid writing-list" aria-label="Latest Medium articles grid">
       <!-- Fallback placeholders; replaced by JS on success -->
       <a class="card" href="https://medium.com/@chris_74915" target="_blank" rel="noopener noreferrer" aria-label="Read on Medium">
         <div class="badge">Medium</div>
@@ -356,10 +487,36 @@
   </div>
 
   <script>
-    // Reveal-on-scroll and small parallax for hero image
+    // Reveal-on-scroll and small parallax for hero image (composed via CSS variables)
     (function() {
       // Trigger hero enter animation on DOM ready
       document.addEventListener('DOMContentLoaded', () => document.body.classList.add('is-ready'));
+      // Aggressively remove Medium-injected bubbles/widgets anywhere on the page
+      const killMedium = (root = document) => {
+        root.querySelectorAll(
+          'iframe[src*="medium.com"], [class*="medium"], [id*="medium"], [class*="Medium"], [id*="Medium"]'
+        ).forEach(n => n.remove());
+      };
+      // Initial pass now and on DOM ready
+      killMedium();
+      document.addEventListener('DOMContentLoaded', killMedium);
+      // Watch for future injections
+      const mobserver = new MutationObserver(muts => {
+        for (const m of muts) {
+          m.addedNodes && m.addedNodes.forEach(node => {
+            if (!(node instanceof Element)) return;
+            if (node.matches(
+              'iframe[src*="medium.com"], [class*="medium"], [id*="medium"], [class*="Medium"], [id*="Medium"]'
+            )) {
+              node.remove();
+            } else {
+              // scan subtree of this new element
+              killMedium(node);
+            }
+          });
+        }
+      });
+      mobserver.observe(document.documentElement, { childList: true, subtree: true });
       const addReveal = (selector) => {
         document.querySelectorAll(selector).forEach((el, i) => {
           el.classList.add('reveal');
@@ -373,10 +530,16 @@
       }, { threshold: 0.12 });
       document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-      const heroImg = document.querySelector('.hero img');
+      const heroImg = document.querySelector('.orbit .dog');
+      // Add gold-iris shimmer dots once
+      const orbitEl = document.querySelector('.orbit');
+      if (orbitEl && !orbitEl.querySelector('.iris-glint')) {
+        const l = document.createElement('div'); l.className = 'iris-glint iris-left';
+        const r = document.createElement('div'); r.className = 'iris-glint iris-right';
+        orbitEl.appendChild(l); orbitEl.appendChild(r);
+      }
       if (heroImg) {
-        // Only enable parallax on larger screens with a precise pointer (desktops/laptops)
-        const allowParallax = window.matchMedia('(min-width: 701px)').matches && window.matchMedia('(pointer:fine)').matches;
+        const allowParallax = window.matchMedia('(min-width: 801px)').matches && window.matchMedia('(pointer:fine)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         if (allowParallax) {
           let ticking = false;
           const onMove = (e) => {
@@ -384,16 +547,61 @@
             requestAnimationFrame(() => {
               const rect = heroImg.getBoundingClientRect();
               const cx = rect.left + rect.width/2; const cy = rect.top + rect.height/2;
-              const dx = (e.clientX - cx) / rect.width; const dy = (e.clientY - cy) / rect.height;
-              heroImg.style.transform = `translate3d(${dx*6}px, ${dy*6}px, 0)`;
+              const dx = ((e.clientX - cx) / rect.width) * 6;  // px
+              const dy = ((e.clientY - cy) / rect.height) * 6; // px
+              heroImg.style.setProperty('--dx', dx.toFixed(2) + 'px');
+              heroImg.style.setProperty('--dy', dy.toFixed(2) + 'px');
               ticking = false;
             });
           };
           window.addEventListener('mousemove', onMove);
-          window.addEventListener('mouseleave', () => { heroImg.style.transform = ''; });
+          window.addEventListener('mouseleave', () => {
+            heroImg.style.setProperty('--dx', '0px');
+            heroImg.style.setProperty('--dy', '0px');
+          });
         } else {
-          // Ensure no residual transform on mobile
-          heroImg.style.transform = '';
+          // Ensure no residual offset on touch/smaller screens
+          heroImg.style.setProperty('--dx', '0px');
+          heroImg.style.setProperty('--dy', '0px');
+        }
+      }
+      // --- Scroll‑spy for hero rail (Projects, Writing) ---
+      const railLinks = Array.from(document.querySelectorAll('.hero-rail .vmenu a[href^="#"]'));
+      const sections = railLinks
+        .map(a => document.querySelector(a.getAttribute('href')))
+        .filter(Boolean);
+
+      if (railLinks.length && sections.length && 'IntersectionObserver' in window) {
+        const setActive = (id) => {
+          railLinks.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === '#' + id));
+        };
+        const spy = new IntersectionObserver((entries) => {
+          // Choose the most visible entry
+          const visible = entries
+            .filter(e => e.isIntersecting)
+            .sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+          if (visible && visible.target && visible.target.id) setActive(visible.target.id);
+        }, { root: null, threshold: [0.5, 0.66, 0.8] });
+        sections.forEach(sec => spy.observe(sec));
+
+        // Also set on hash click for immediate feedback, then blur to prevent sticky focus color
+        railLinks.forEach(a => {
+          a.addEventListener('click', () => {
+            const id = a.getAttribute('href').slice(1);
+            setActive(id);
+            // Defer blur so hash navigation completes first
+            setTimeout(() => a.blur(), 0);
+          });
+        });
+
+        // If focus somehow remains inside the rail, clear it on mouseleave
+        const railEl = document.querySelector('.hero-rail');
+        if (railEl) {
+          railEl.addEventListener('mouseleave', () => {
+            if (railEl.contains(document.activeElement)) {
+              document.activeElement.blur();
+            }
+          });
         }
       }
     })();
