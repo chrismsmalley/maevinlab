@@ -541,6 +541,65 @@
       }
       /* Reduce left/right padding to gain a few px on tiny screens */
       .wrap { padding-left: 12px; padding-right: 12px; }
+
+      /* --- Mobile: center the header brand and hero copy --- */
+      /* Center the brand in the header */
+      header {
+        justify-content: center !important;   /* put brand in the middle */
+        position: relative;                   /* for the socials placement */
+      }
+      header .brand {
+        justify-content: center;
+        text-align: center;
+      }
+      /* Keep socials visible but not affecting centering */
+      header .socials-inline {
+        position: absolute;
+        right: max(12px, env(safe-area-inset-right));
+        top: 10px;
+      }
+
+      /* Center the hero text block */
+      .hero-copy {
+        text-align: center;
+        margin-inline: auto;                  /* center the block itself */
+        max-width: 36rem;
+      }
+      .hero-copy .headline,
+      .hero-copy .sub {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      /* Rail is already stacked; ensure it is centered too */
+      .hero-rail { justify-content: center; }
+    }
+
+    /* --- Tablet: center header and hero copy (same as mobile logic) --- */
+    @media (max-width: 768px) {
+      header {
+        justify-content: center !important;
+        position: relative;
+      }
+      header .brand {
+        justify-content: center;
+        text-align: center;
+      }
+      header .socials-inline {
+        position: absolute;
+        right: max(12px, env(safe-area-inset-right));
+        top: 10px;
+      }
+      .hero-copy {
+        text-align: center;
+        margin-inline: auto;
+        max-width: 36rem;
+      }
+      .hero-copy .headline,
+      .hero-copy .sub {
+        margin-left: auto;
+        margin-right: auto;
+      }
     }
   </style>
 </head>

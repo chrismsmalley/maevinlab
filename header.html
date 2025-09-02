@@ -59,14 +59,17 @@ header .socials-inline {
     margin-bottom: 12px;          /* breathing room above hero */
     display: flex;
     align-items: center;
-    justify-content: center; /* changed from space-between to center */
+    justify-content: center !important; /* changed from space-between to center with !important */
     flex-direction: column; /* added to stack brand and socials vertically */
     background: #fff;            /* ensure crisp over content */
+    text-align: center;
   }
   /* Brand cluster */
   header .brand{
     margin-left: 0;
     gap: 6px;
+    justify-content: center;
+    text-align: center;
   }
   header .brand img{
     height: 36px;
@@ -91,8 +94,38 @@ header .socials-inline {
     gap: 12px !important;
     margin-left: auto;            /* push to the right */
   }
-  header .socials-inline{ margin-right: 0 !important; transform: translateY(1px); margin-top: 4px; } /* added margin-top */
+  header .socials-inline{ 
+    position: absolute;
+    left: 50%;
+    bottom: 5px;
+    transform: translateX(-50%) translateY(1px);
+    margin-right: 0 !important; 
+    margin-top: 4px; 
+  } /* changed to absolute positioning and centered horizontally */
   header .socials-inline a svg{ width: 16px; height: 16px; opacity: .85; }
+}
+
+/* Tablet header layout fixes (≤768px) */
+@media (max-width: 768px){
+  header {
+    justify-content: center !important;
+    position: relative;
+    text-align: center;
+  }
+  header .brand {
+    justify-content: center;
+    text-align: center;
+    margin-left: 0;
+  }
+  header .brand-name {
+    text-align: center;
+    margin: 0 auto;
+  }
+  header .socials-inline {
+    position: absolute;
+    right: max(12px, env(safe-area-inset-right));
+    top: 10px;
+  }
 }
 
 /* Super-small devices: hide wordmark if needed */
