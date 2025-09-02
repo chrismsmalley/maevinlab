@@ -5,11 +5,47 @@
   --aurora3:#f472b6;
   --aurora4:#22d3ee;
 }
+header {
+  padding: 6px 0;
+  height: 60px;
+  overflow: visible;
+  /* Full‑bleed: cancel parent gutters so the logo can hug the very left */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+header .brand img {
+  height: 180px;
+  width: auto;
+  display: block;
+  margin-bottom: -20px; /* tweak value until aligned with text */
+}
+header .brand-name {
+  font-size: 16px;
+  line-height: 1;
+}
+nav[aria-label="Primary"] {
+  gap: 30px;
+  margin-right: auto;
+  margin-left: auto;
+}
+header .socials-inline a svg {
+  width: 20px;
+  height: 20px;
+}
 header .socials-inline a svg path{
   fill:url(#auroraGradient);
 }
-header .socials-inline a svg{
-  width:24px; height:24px;
+header .brand {
+  margin-left: 160px; /* add spacing so logo aligns visually with text */
+  padding-left: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+header .socials-inline {
+  margin-right: -440px; /* tweak this value until aligned with text */
 }
 </style>
 <svg width="0" height="0">
@@ -22,7 +58,7 @@ header .socials-inline a svg{
     </linearGradient>
   </defs>
 </svg>
-<header aria-label="Site header" style="display:flex; align-items:center; justify-content:space-between;">
+<header aria-label="Site header" style="display:flex; align-items:center; justify-content:space-around;">
   <div class="brand">
     <a href="/" aria-label="Maevin Labs home" class="brand-logo">
       <img src="/assets/logo_new.png" alt="Maevin Labs logo" width="128" height="128" style="border-radius:12px;object-fit:cover;" />
