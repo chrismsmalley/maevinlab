@@ -18,6 +18,7 @@
   <link rel="preload" as="image" href="/assets/new12-removebg-preview.png" />
   <link rel="preload" as="image" href="/assets/dog_walk_flipped-removebg-preview.png" />
   <link rel="preload" as="image" href="/assets/new4-removebg-preview.png" />
+  <link rel="preload" as="image" href="/assets/dog_flipped2.png" />
 
   <style>
     /* Nuke Medium-injected UI sitewide (header and elsewhere) */
@@ -452,15 +453,14 @@
   will-change: opacity, transform;
   transition: opacity 340ms ease, transform 340ms ease;
 }
-
-    .hero-dog .f1{ background-image: url('/assets/12-removebg-preview.png'); }
-    .hero-dog .f2{ background-image: url('/assets/22-removebg-preview.png'); }
-    .hero-dog .f3{ background-image: url('/assets/32-removebg-preview-(1).png'); }
-    .hero-dog .f4{ background-image: url('/assets/42-removebg-preview.png'); }
-    .hero-dog .f5{ background-image: url('/assets/52-removebg-preview.png'); }
-    .hero-dog .f6{ background-image: url('/assets/new4-removebg-preview.png'); }
-    .hero-dog .f7{ background-image: url('/assets/52-removebg-preview.png'); }
-
+.hero-dog .f1{ background-image: url('/assets/new12-removebg-preview.png'); }
+.hero-dog .f2{ background-image: url('/assets/dog_walk_flipped-removebg-preview.png'); }
+.hero-dog .f3{ background-image: url('/assets/dog_flipped2.png'); }
+.hero-dog .f4{ background-image: url('/assets/22-removebg-preview.png'); }
+.hero-dog .f5{ background-image: url('/assets/32-removebg-preview-(1).png'); }
+.hero-dog .f6{ background-image: url('/assets/42-removebg-preview.png'); }
+.hero-dog .f7{ background-image: url('/assets/new4-removebg-preview.png'); }
+.hero-dog .f8{ background-image: url('/assets/52-removebg-preview.png'); }
 /* Visible state */
 .hero-dog .frame.show{ opacity: 1; }
 
@@ -472,6 +472,8 @@
     .hero-dog .f5{ transform: translateY(-1px) scale(1.020); }
     .hero-dog .f6{ transform: translateY(-2px) scale(1.022); }
     .hero-dog .f7{ transform: translateY(-2px) scale(1.022); }
+    .hero-dog .f8{ transform: translateY(-2px) scale(1.022); }
+    
 
 /* Apply non-looping, hard-cut timing; total 2000ms */
 .anim-walksit .f1{ animation: show1 2000ms steps(1,end) 1 forwards; }
@@ -502,8 +504,8 @@
 /* Motion safety: show final seated frame only */
 @media (prefers-reduced-motion: reduce){
   .anim-walksit .frame{ animation: none !important; }
-  .hero-dog .f1, .hero-dog .f2, .hero-dog .f3, .hero-dog .f4{ display:none; }
-  .hero-dog .f5{ opacity:1; }
+  .hero-dog .f1, .hero-dog .f2, .hero-dog .f3, .hero-dog .f4, .hero-dog .f5, .hero-dog .f6, .hero-dog .f7{ display:none; }
+  .hero-dog .f8{ opacity:1; }
 }
 
 /* Breathing ground shadow (very subtle) */
@@ -705,6 +707,7 @@
             <span class="frame f5"></span>
             <span class="frame f6"></span>
             <span class="frame f7"></span>
+            <span class="frame f8"></span>
           </div>
         </div>
       </div>
@@ -728,15 +731,16 @@
   el.classList.add('js-hero');
   const frames = Array.from(el.querySelectorAll('.frame'));
   // Candidate URL sets (frame 3 uses exact filename)
-  const urlSets = [
-    ['/assets/new12-removebg-preview.png'],               // new first
-    ['/assets/dog_walk_flipped-removebg-preview.png'],    // new second
-    ['/assets/22-removebg-preview.png'],
-    ['/assets/32-removebg-preview-(1).png'],
-    ['/assets/42-removebg-preview.png'],
-    ['/assets/new4-removebg-preview.png'],                // second-to-last
-    ['/assets/52-removebg-preview.png']
-  ];
+ const urlSets = [
+  ['/assets/new12-removebg-preview.png'],               // f1
+  ['/assets/dog_walk_flipped-removebg-preview.png'],    // f2
+  ['/assets/dog_flipped2.png'],                         // f3 (new)
+  ['/assets/22-removebg-preview.png'],                  // f4
+  ['/assets/32-removebg-preview-(1).png'],              // f5
+  ['/assets/42-removebg-preview.png'],                  // f6
+  ['/assets/new4-removebg-preview.png'],                // f7
+  ['/assets/52-removebg-preview.png']                   // f8 (final)
+];
 
   let loaded = 0; const ok = new Array(urlSets.length).fill(false);
 
