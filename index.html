@@ -210,36 +210,60 @@
 
     /* --- Mobile refinements (no desktop changes) --- */
     @media (max-width: 700px) {
-      nav a { margin-left: 14px; font-size: 13px; }
+      nav a { margin-left: 10px; font-size: 13px; }
       header { gap: 12px; }
     }
     @media (max-width: 560px) {
       .wrap { padding: 0 16px 56px; }
       header {
+        display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
         gap: 6px;
         width: 100%;
+        flex-wrap: nowrap;            /* keep to a single line */
+        white-space: nowrap;          /* prevent brand text wrapping */
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;                 /* allow text to shrink */
+        flex: 0 1 auto;
       }
       .brand h1 {
-        font-size: 18px;
+        font-size: 16px;              /* smaller to fit */
+        letter-spacing: .2px;
+        margin: 0;
+        white-space: nowrap;          /* never wrap brand */
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      /* shrink the mark/logo if it's an inline svg */
+      .brand svg {
+        width: 22px;
+        height: 22px;
+        flex: 0 0 auto;
       }
       nav {
         margin-top: 0;
         flex-wrap: nowrap;
+        flex: 0 0 auto;
       }
       .socials-inline {
         gap: 6px;
+        flex: 0 0 auto;               /* don't allow socials to wrap */
       }
       .socials-inline a {
         width: 18px;
         height: 18px;
       }
       .socials-inline svg {
-        width: 12px;
-        height: 12px;
+        width: 11px;
+        height: 11px;
       }
+      /* keep hero compact on mobile */
       .hero { padding: 8px 0 12px; }
       .hero-grid { grid-template-columns: 1fr; gap: 18px; }
       .hero-copy { order: 1; }
@@ -251,7 +275,7 @@
     }
     /* --- Mobile first-page tune: no animation, tighter spacing --- */
     @media (max-width: 700px) {
-      .hero { padding: 6px 0 12px; }
+      .hero { padding: 8px 0 12px; }
       .hero::before { display: none; }
       .hero-grid { grid-template-columns: 1fr; gap: 16px; }
       .hero-copy { order: 1; }
