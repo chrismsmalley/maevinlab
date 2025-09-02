@@ -1,3 +1,27 @@
+<style>
+:root{
+  --aurora1:#6ee7ff;
+  --aurora2:#a78bfa;
+  --aurora3:#f472b6;
+  --aurora4:#22d3ee;
+}
+header .socials-inline a svg path{
+  fill:url(#auroraGradient);
+}
+header .socials-inline a svg{
+  width:24px; height:24px;
+}
+</style>
+<svg width="0" height="0">
+  <defs>
+    <linearGradient id="auroraGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="var(--aurora1)" />
+      <stop offset="33%" stop-color="var(--aurora2)" />
+      <stop offset="66%" stop-color="var(--aurora3)" />
+      <stop offset="100%" stop-color="var(--aurora4)" />
+    </linearGradient>
+  </defs>
+</svg>
 <header aria-label="Site header" style="display:flex; align-items:center; justify-content:space-between;">
   <div class="brand">
     <a href="/" aria-label="Maevin Labs home" class="brand-logo">

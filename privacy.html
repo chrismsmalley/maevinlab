@@ -15,8 +15,8 @@
       --card: #FFFFFF;
       --text: #0a0a0a;
       --muted: rgba(0,0,0,0.66);
-      --accent: #d2a226;              /* gold */
-      --accent-soft: rgba(210,162,38,0.10);
+      --accent: #3b82f6;              /* blue */
+      --accent-soft: rgba(59,130,246,0.10);
       --border: rgba(0,0,0,0.10);
       --radius: 14px;
       --shadow: 0 10px 30px rgba(16,24,40,.08);
@@ -31,9 +31,9 @@
       -moz-osx-font-smoothing: grayscale;
     }
     a { color: var(--text); text-decoration: none; }
-    a:focus { outline: 2px solid rgba(210,162,38,.35); outline-offset: 2px; }
+    a:focus { outline: 2px solid rgba(59,130,246,.35); outline-offset: 2px; }
 
-    .wrap { max-width: 900px; margin: 0 auto; padding: 28px 20px 80px; }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 28px 20px 80px; position: relative; }
 
     /* Header */
     header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
@@ -42,7 +42,6 @@
     nav a { position: relative; opacity: .86; margin-left: 18px; font-size: 14px; color: var(--text); }
     nav a:hover { opacity: 1; }
     nav a::after { content:""; position:absolute; left:0; bottom:-6px; height:2px; width:0; background: var(--accent); transition: width .25s ease; opacity:.7; }
-    nav a:hover::after { width: 16px; }
 
     /* Shared header pieces (from index) */
     .socials-inline { display:inline-flex; gap:10px; align-items:center; }
@@ -51,15 +50,104 @@
     .nav-sep { color: var(--accent); font-weight:700; opacity:.95; display:inline-flex; align-items:center; justify-content:center; width:24px; }
 
     /* Page title */
-    .kicker { display:inline-block; padding: 6px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight:600; font-size:12px; letter-spacing:.3px; margin: 24px 0 10px; }
+    .kicker { display:inline-block; padding: 6px 10px; border-radius: 999px; background: linear-gradient(90deg, var(--accent-soft), rgba(167,139,250,0.12), var(--accent-soft)); color: var(--accent); font-weight:600; font-size:12px; letter-spacing:.3px; margin: 24px 0 10px; background-size: 200% 100%; animation: kickerSheen 10s ease-in-out infinite; }
+    @keyframes kickerSheen{ 0%,100%{ background-position:0% 50%; } 50%{ background-position:100% 50%; } }
     h1.page-title { font-size: clamp(28px, 6vw, 40px); line-height: 1.1; margin: 24px 0 10px; }
     .last-updated { color: var(--muted); margin: 0 0 28px; }
 
     /* Content cards */
-    section.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow); margin: 18px 0; }
+    section.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow); margin: 18px 0; position:relative; }
     section.card h2 { margin-top: 6px; font-size: 18px; }
     section.card p { color: var(--muted); line-height: 1.6; }
     ul { color: var(--muted); }
+    section.card::before{
+      content:""; position:absolute; left:-1px; right:-1px; top:-1px; height:3px; border-top-left-radius:inherit; border-top-right-radius:inherit;
+      background: linear-gradient(90deg, var(--aurora1), var(--aurora2), var(--aurora3), var(--aurora4));
+      background-size: 200% 100%;
+      animation: barSweep 7s ease-in-out infinite;
+    }
+    @keyframes barSweep{
+      0%{ background-position: 0% 50%; opacity:.8; }
+      50%{ background-position: 100% 50%; opacity:1; }
+      100%{ background-position: 0% 50%; opacity:.8; }
+    }
+
+    /* Refined reveals (aux pages) */
+    .reveal { opacity: 0; transform: translateY(10px); }
+    .reveal.in { opacity: 1; transform: none; transition: opacity .36s ease, transform .36s ease; }
+    /* Slightly staggered variants */
+    .reveal.s1.in { transition-delay: .04s; }
+    .reveal.s2.in { transition-delay: .08s; }
+    .reveal.s3.in { transition-delay: .12s; }
+
+    /* Gentle underline slide for local nav only (no hover glow) */
+    nav a::after { transform-origin: left; transform: scaleX(0); width: 100%; height: 2px; }
+    nav a:hover::after { transform: scaleX(1); width: 100%; }
+
+    /* Reduced motion: disable transforms */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .reveal.in { opacity: 1 !important; transform: none !important; transition: none !important; }
+      nav a::after, nav a:hover::after { transition: none !important; }
+      .wrap::before, .wrap::after { animation: none !important; filter: blur(48px) !important; }
+      section.card::before { animation: none !important; }
+      .kicker { animation: none !important; }
+    }
+
+    /* --- Aurora Ribbon theme (bold color, white background) --- */
+    :root{ --aurora1:#6ee7ff; --aurora2:#a78bfa; --aurora3:#f472b6; --aurora4:#22d3ee; }
+
+    /* animated aurora ribbons that sit behind content, not full-bleed */
+    .wrap::before,
+    .wrap::after{
+      content:""; position:absolute; inset:auto; z-index:-1; pointer-events:none; filter: blur(48px);
+      opacity:.65; transform: translateZ(0);
+      background: radial-gradient(60% 50% at 50% 50%, var(--aurora1), transparent 60%),
+                  radial-gradient(60% 50% at 30% 70%, var(--aurora2), transparent 62%),
+                  radial-gradient(60% 50% at 70% 30%, var(--aurora3), transparent 62%);
+    }
+    /* top-right ribbon */
+    .wrap::before{ width: 70%; height: 42%; right:-6%; top: -2%; animation: auroraDriftA 16s ease-in-out infinite alternate, auroraHue 24s linear infinite; }
+    /* bottom-left ribbon */
+    .wrap::after{ width: 65%; height: 46%; left:-8%; bottom: -4%; animation: auroraDriftB 18s ease-in-out infinite alternate, auroraHue 28s linear infinite reverse; }
+
+    @keyframes auroraDriftA{
+      0%{ transform: translate(0,0) rotate(0deg) scale(1); }
+      25%{ transform: translate(-2%,2%) rotate(3deg) scale(1.05); }
+      50%{ transform: translate(-4%,4%) rotate(-2deg) scale(1.08); }
+      75%{ transform: translate(-1%,3%) rotate(2deg) scale(1.03); }
+      100%{ transform: translate(-3%,5%) rotate(-3deg) scale(1.07); }
+    }
+    @keyframes auroraDriftB{
+      0%{ transform: translate(0,0) rotate(0deg) scale(1); }
+      25%{ transform: translate(3%,-2%) rotate(-3deg) scale(1.04); }
+      50%{ transform: translate(5%,-4%) rotate(2deg) scale(1.07); }
+      75%{ transform: translate(2%,-3%) rotate(-1deg) scale(1.02); }
+      100%{ transform: translate(6%,-5%) rotate(3deg) scale(1.06); }
+    }
+    @keyframes auroraHue{
+      0%{ filter: blur(48px) hue-rotate(0deg) saturate(1); }
+      25%{ filter: blur(50px) hue-rotate(12deg) saturate(1.1); }
+      50%{ filter: blur(52px) hue-rotate(24deg) saturate(1.15);}
+      75%{ filter: blur(50px) hue-rotate(12deg) saturate(1.1); }
+      100%{ filter: blur(48px) hue-rotate(0deg) saturate(1); }
+    }
+
+    /* Title gets a professional gradient sweep */
+    h1.page-title{
+      background: linear-gradient(90deg, var(--aurora1), var(--aurora2), var(--aurora3), var(--aurora4));
+      -webkit-background-clip:text; background-clip:text; color: transparent;
+      background-size: 200% 100%;
+      animation: titleSweep 8s ease-in-out infinite;
+    }
+    @keyframes titleSweep{ 0%,100%{ background-position:0% 50%; } 50%{ background-position:100% 50%; } }
+
+    /* Cards: crisp white but with a slim aurora accent at top */
+    section.card:hover{ border-color: rgba(59,130,246,.25); box-shadow: 0 14px 36px rgba(16,24,40,.12); }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .wrap::before, .wrap::after, h1.page-title{ animation: none !important; }
+    }
 
     /* Footer */
     footer { text-align: center; margin: 64px 0 20px; color: var(--muted); font-size: 14px; }
@@ -110,6 +198,29 @@
         } catch (_) {}
       })();
     </script>
+  <script>
+    (function(){
+      const els = [];
+      const add = (sel, extra="") => document.querySelectorAll(sel).forEach((n,i)=>{
+        n.classList.add('reveal'); if(extra) n.classList.add(extra);
+        els.push(n);
+      });
+      // Mark key elements without changing HTML
+      add('h1.page-title','s1');
+      add('section.card','s2');
+      add('section.card h2','s3');
+
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries)=>{
+          entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+        },{threshold:.14});
+        els.forEach(el=>io.observe(el));
+      } else {
+        // Fallback: reveal immediately
+        els.forEach(el=>el.classList.add('in'));
+      }
+    })();
+  </script>
   </div>
 </body>
 </html>

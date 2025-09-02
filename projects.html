@@ -7,11 +7,88 @@
   <meta name="description" content="Selected projects by Maevin Labs: Obsolete Tech Archive, Delvr, and upcoming experiments." />
   <link rel="icon" type="image/png" href="/assets/Logo_blue.png" />
   <style>
-    :root { --bg:#FFFFFF; --card:#FFFFFF; --text:#0a0a0a; --muted:rgba(0,0,0,.66); --accent:#d2a226; --accent-soft:rgba(210,162,38,.10); --radius:14px; --shadow:0 10px 30px rgba(16,24,40,.08); --border:rgba(0,0,0,.10); }
+    :root { --bg:#FFFFFF; --card:#FFFFFF; --text:#0a0a0a; --muted:rgba(0,0,0,.66); --accent:#3b82f6; --accent-soft:rgba(59,130,246,.10); --radius:14px; --shadow:0 10px 30px rgba(16,24,40,.08); --border:rgba(0,0,0,.10); }
+    :root{ --aurora1:#6ee7ff; --aurora2:#a78bfa; --aurora3:#f472b6; --aurora4:#22d3ee; }
     html,body{height:100%}
     body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;display:flex;flex-direction:column;overflow-x:hidden}
     a{color:var(--text);text-decoration:none}
     .wrap{max-width:1100px;margin:0 auto;padding:28px 20px 80px;flex:1;display:flex;flex-direction:column}
+
+    /* --- Projects page: Data Waves theme --- */
+    .projects-theme .wrap { position: relative; }
+    .projects-theme .wrap::before,
+    .projects-theme .wrap::after {
+      content:""; position:absolute; left:0; right:0; z-index:-1; pointer-events:none;
+      height:220px; opacity:.55; filter: blur(14px) saturate(1.15);
+      background: linear-gradient(90deg, var(--accent), var(--accent-soft), var(--accent));
+      mask-image: radial-gradient(100% 80% at 50% 50%, #000, transparent 80%);
+    }
+    .projects-theme .wrap::before{ top:120px; animation: waveDriftA 14s ease-in-out infinite alternate; }
+    .projects-theme .wrap::after{ top:480px; animation: waveDriftB 18s ease-in-out infinite alternate; }
+
+    /* Switch from page-wide waves to per-card waves */
+    .projects-theme .wrap::before,
+    .projects-theme .wrap::after{ display:none; }
+
+    /* Per-card Data Waves: each .feature gets its own subtle gradient wave */
+    .projects-theme .feature{ position:relative; z-index:0; }
+    .projects-theme .feature::before{
+      content:""; position:absolute; z-index:-1; pointer-events:none; left:-12px; right:-12px; top:6px; bottom:6px; border-radius:16px;
+      filter: blur(14px) saturate(1.12); opacity:.58;
+      background: linear-gradient(90deg, var(--accent), var(--accent-soft), var(--accent));
+      mask-image: radial-gradient(120% 90% at 50% 50%, #000, transparent 78%);
+      animation: featureWaveA 12s ease-in-out infinite alternate;
+    }
+    /* Alternate direction/timing so rows feel unique */
+    .projects-theme .feature:nth-of-type(2n)::before{
+      animation: featureWaveB 14s ease-in-out infinite alternate;
+      transform: skewY(-1.5deg);
+    }
+    .projects-theme .feature:nth-of-type(2n+1)::before{ transform: skewY(1.5deg); }
+
+    @keyframes featureWaveA{
+      0%{ transform: translateX(-6%) skewY(1.5deg); }
+      100%{ transform: translateX(6%) skewY(-1.5deg); }
+    }
+    @keyframes featureWaveB{
+      0%{ transform: translateX(8%) skewY(-1.5deg); }
+      100%{ transform: translateX(-8%) skewY(1.5deg); }
+    }
+
+    /* Keep it tidy on small screens */
+    @media (max-width: 900px){
+      .projects-theme .feature::before{ left:-8px; right:-8px; filter: blur(12px); opacity:.5; }
+    }
+
+    @keyframes waveDriftA {
+      0%{ transform: translateX(-10%) skewY(2deg); }
+      100%{ transform: translateX(10%) skewY(-2deg); }
+    }
+    @keyframes waveDriftB {
+      0%{ transform: translateX(8%) skewY(-1deg); }
+      100%{ transform: translateX(-8%) skewY(1deg); }
+    }
+
+    /* Gradient sweep on section titles */
+    .section-title h2 {
+      background: linear-gradient(90deg, var(--accent), var(--accent-soft), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      background-size: 200% 100%;
+      animation: titleSweep 10s ease-in-out infinite;
+    }
+    @keyframes titleSweep {
+      0%,100%{ background-position:0% 50%; }
+      50%{ background-position:100% 50%; }
+    }
+
+    /* Card hover gloss line */
+    .card:hover::before {
+      content:""; position:absolute; top:0; left:0; right:0; height:2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-soft), var(--accent));
+      opacity:.85;
+    }
 
     header{display:flex;align-items:center;justify-content:space-between;gap:16px}
     .brand{display:flex;align-items:center;gap:12px}
@@ -70,12 +147,18 @@
 
     .actions { display:flex; gap:12px; margin-top: 16px; }
     .btn { display:inline-flex; align-items:center; gap:8px; padding: 10px 14px; border-radius: 10px; border:1px solid rgba(255,255,255,.12); font-weight:600; font-size:14px; color: var(--text); }
-    .btn:hover { border-color: rgba(210,162,38,.45); box-shadow: 0 8px 28px rgba(210,162,38,.18); transform: translateY(-1px); }
-    .btn-primary { background: linear-gradient(180deg, rgba(210,162,38,.18), rgba(210,162,38,.10)); }
+    .btn:hover { border-color: rgba(59,130,246,.45); box-shadow: 0 8px 28px rgba(59,130,246,.18); transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(180deg, rgba(59,130,246,.18), rgba(59,130,246,.10)); }
     .btn-ghost { background: transparent; color: var(--accent); }
 
     .hero{padding:64px 0 24px}
-    .hero h1{font-size:clamp(32px,6vw,44px);line-height:1.1;margin:0 0 10px}
+    .hero h1{
+      font-size:clamp(32px,6vw,44px);line-height:1.1;margin:0 0 10px;
+      background: linear-gradient(90deg, var(--aurora1), var(--aurora2), var(--aurora3), var(--aurora4));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      background-size: 200% 100%;
+      animation: titleSweep 10s ease-in-out infinite;
+    }
     .hero p{color:var(--muted);font-size:18px;max-width:800px;margin:0}
 
     .section-title{display:flex;align-items:center;justify-content:space-between;margin:28px 0 18px}
@@ -96,8 +179,8 @@
       min-height: 170px;
       overflow: hidden;
     }
-    .card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(16,24,40,.15);border-color:rgba(210,162,38,.35);background:linear-gradient(180deg,rgba(210,162,38,.06),rgba(0,0,0,.03))}
-    .badge{position:absolute;top:14px;right:14px;font-size:11px;padding:4px 8px;border-radius:999px;background:var(--accent-soft);border:1px solid rgba(210,162,38,.35);color:var(--accent);z-index:1}
+    .card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(16,24,40,.15);border-color:rgba(59,130,246,.35);background:linear-gradient(180deg,rgba(59,130,246,.06),rgba(0,0,0,.03))}
+    .badge{position:absolute;top:14px;right:14px;font-size:11px;padding:4px 8px;border-radius:999px;background:var(--accent-soft);border:1px solid rgba(59,130,246,.35);color:var(--accent);z-index:1}
     .thumb{aspect-ratio:16/9;width:100%;border-radius:10px;border:1px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;margin-bottom:12px;overflow:hidden}
     .thumb img{width:100%;height:100%;object-fit:cover;display:block}
     .card h3{margin:0 0 6px;font-size:18px}
@@ -105,6 +188,16 @@
     .cta{display:inline-flex;gap:8px;align-items:center;font-weight:600;color:var(--accent);margin-top:10px}
 
     footer{text-align:center;margin:64px 0 20px;color:var(--muted);font-size:14px;margin-top:auto}
+
+    /* Refined reveals (aux page) */
+    .reveal { opacity: 0; transform: translateY(10px); }
+    .reveal.in { opacity: 1; transform: none; transition: opacity .36s ease, transform .36s ease; }
+    .reveal.s1.in { transition-delay: .04s; }
+    .reveal.s2.in { transition-delay: .08s; }
+    .reveal.s3.in { transition-delay: .12s; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .reveal.in { opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
 
     /* ----- Mobile-first hero layout fix (stack + center) ----- */
     @media (max-width: 768px) {
@@ -119,7 +212,7 @@
     }
   </style>
 </head>
-<body>
+<body class="projects-theme">
   <div class="wrap">
     <div id="site-header"></div>
     <script>
@@ -228,8 +321,8 @@
 
           <!-- soft accent rings -->
           <g opacity="0.35" filter="url(#glow)">
-            <circle cx="980" cy="120" r="90" fill="#4da3ff"/>
-            <circle cx="220" cy="555" r="70" fill="#4da3ff"/>
+            <circle cx="980" cy="120" r="90" fill="#3b82f6"/>
+            <circle cx="220" cy="555" r="70" fill="#3b82f6"/>
           </g>
 
           <!-- headline -->
@@ -239,7 +332,7 @@
           </g>
 
           <!-- accent underline -->
-          <rect x="80" y="440" width="260" height="6" rx="3" fill="#4da3ff"/>
+          <rect x="80" y="440" width="260" height="6" rx="3" fill="#3b82f6"/>
         </svg>
       </div>
       <article class="feature-panel">
@@ -268,6 +361,20 @@
         } catch (_) {}
       })();
     </script>
+<script>
+(function(){
+  const els = [];
+  const add = (sel, extra="") => document.querySelectorAll(sel).forEach(n=>{ n.classList.add('reveal'); if(extra) n.classList.add(extra); els.push(n); });
+  add('.feature','s1');
+  add('.card','s2');
+  if('IntersectionObserver' in window){
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    },{threshold:.12});
+    els.forEach(el=>io.observe(el));
+  } else { els.forEach(el=>el.classList.add('in')); }
+})();
+</script>
   </div>
 </body>
 </html>
