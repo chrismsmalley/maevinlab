@@ -79,6 +79,11 @@
     /* Hero */
     .hero { text-align: center; padding: 0 0 28px; position: relative; z-index: 0; }
 
+    /* Add extra white space under the hero on desktop so the next section starts below the fold */
+    @media (min-width: 980px) {
+      .hero { padding-bottom: 140px; }  /* adjust as needed (120–180px) */
+    }
+
     /* Three-column hero layout (desktop) */
     .hero-grid {
       display: grid;
