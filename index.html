@@ -5,16 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Maevin Labs LLC</title>
   <meta name="description" content="Maevin Labs builds thoughtful, modern digital products — from playful ideas to production‑ready apps." />
-  <link rel="icon" type="image/png" href="/assets/logo-blue.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/logo-blue.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/logo-blue.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/logo-blue.png" />
+  <link rel="icon" type="image/png" href="/assets/Logo_blue.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/Logo_blue.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/Logo_blue.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/Logo_blue.png" />
   <link rel="stylesheet" href="style.css" />
   <link rel="preload" as="image" href="/assets/12-removebg-preview.png" />
   <link rel="preload" as="image" href="/assets/22-removebg-preview.png" />
   <link rel="preload" as="image" href="/assets/32-removebg-preview-(1).png" />
   <link rel="preload" as="image" href="/assets/42-removebg-preview.png" />
   <link rel="preload" as="image" href="/assets/52-removebg-preview.png" />
+  <link rel="preload" as="image" href="/assets/new12-removebg-preview.png" />
+  <link rel="preload" as="image" href="/assets/dog_walk_flipped-removebg-preview.png" />
+  <link rel="preload" as="image" href="/assets/new4-removebg-preview.png" />
 
   <style>
     /* Nuke Medium-injected UI sitewide (header and elsewhere) */
@@ -80,7 +83,20 @@
 
     /* Add extra white space under the hero on desktop so the next section starts below the fold */
     @media (min-width: 980px) {
-      .hero { padding-bottom: 140px; }  /* adjust as needed (120–180px) */
+      /* Keep the projects below the fold on big screens */
+      .hero {
+        /* small top breathing room below the header */
+        padding-top: clamp(16px, 5vh, 72px);
+        /* bottom space scales with viewport height; grows on ultrawide monitors */
+        padding-bottom: clamp(160px, 22vh, 360px);
+        /* make the hero area occupy most of the screen height */
+        min-height: 88vh;
+        box-sizing: border-box;
+      }
+    }
+    @media (min-width: 1440px) {
+      /* Slightly more generous on huge displays */
+      .hero { min-height: 90vh; }
     }
 
     /* Three-column hero layout (desktop) */
@@ -115,6 +131,26 @@
     }
     @media (prefers-reduced-motion: reduce){
       .playful-word{ animation: none; }
+    }
+
+    /* Rainbow titles for section headers (Projects / Writing) */
+    .section-title#projects h2,
+    .section-title#writing h2{
+      font-weight: 800;
+      letter-spacing: .02em;
+      background: linear-gradient(90deg,#ff6b6b,#f7b267,#ffd166,#06d6a0,#4cc9f0,#a56cc1);
+      -webkit-background-clip: text; background-clip: text;
+      color: transparent;
+      background-size: 200% 100%;
+      animation: rainbowShift 8s ease-in-out infinite;
+    }
+    @keyframes rainbowShift{
+      0%,100% { background-position: 0% 50%; }
+      50%     { background-position: 100% 50%; }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .section-title#projects h2,
+      .section-title#writing h2{ animation: none; }
     }
     .hero-grid .eyebrow { margin-bottom: 10px; }
     /* Right side art wrapper so the orbit stays properly sized */
@@ -292,8 +328,14 @@
 
     /* Store CTAs inside cards */
     .cta-row { display:flex; gap:10px; margin-top:12px; flex-wrap: wrap; }
-    .btn-store { display:inline-flex; align-items:center; gap:8px; padding: 8px 10px; border-radius: 8px; border:1px solid rgba(59,130,246,.45); font-weight:600; font-size:13px; color: var(--text); background: linear-gradient(180deg, rgba(59,130,246,.16), rgba(59,130,246,.10)); }
-    .btn-store:hover { border-color: rgba(59,130,246,.65); box-shadow: 0 6px 20px rgba(59,130,246,.22); transform: translateY(-1px); }
+    .btn-store {
+      display:inline-flex; align-items:center; gap:6px;
+      padding: 0; border: none; border-radius: 0; background: transparent;
+      font-weight: 600; font-size: 14px; color: var(--accent);
+      text-decoration: none; transition: transform .15s ease, opacity .2s ease;
+    }
+    .btn-store:hover { transform: translateY(-1px); opacity: .9; }
+    .btn-store small { font-size: inherit; line-height: inherit; }
 
     /* Footer */
     footer { text-align: center; margin: 64px 0 20px; color: var(--muted); font-size: 14px; background: transparent; }
@@ -329,6 +371,52 @@
     }
 
     /* --- New hero (centered dog only) --- */
+
+    /* Continuation cue under the last rail item (looks like the same line) */
+    .hero-rail .vmenu li:last-child{
+      position: relative;
+      /* length of the "keep going" line: 5× the normal connector */
+      --tail: calc((var(--rail-gap) - var(--rail-clear)) * 9);
+    }
+    /* Static continuation line (same style as the link connectors), anchored to <a> */
+    .hero-rail .vmenu li:last-child > a::after{
+      content:"";
+      position:absolute;
+      left:50%; transform:translateX(-50%);
+      top: calc(100% + (var(--rail-clear)/2));
+      width:1px;
+      height: var(--tail);               /* 2.5× longer line */
+      background: var(--border);
+      display: block !important;         /* override generic hide */
+    }
+    /* Register animatable custom property for vertical glide */
+    @property --glide {
+      syntax: '<length>';
+      inherits: false;
+      initial-value: 0px;
+    }
+    /* A small animated highlight riding down the continuation line, anchored to <a> */
+    .hero-rail .vmenu li:last-child > a::before{
+      content:"";
+      position:absolute;
+      left:50%;
+      top: calc(100% + (var(--rail-clear)/2));
+      width:1px;
+      height: 22px;                      /* size of the glowing thumb */
+      transform: translate(-50%, var(--glide));
+      background: linear-gradient(180deg, var(--accent), rgba(59,130,246,0));
+      filter: drop-shadow(0 4px 8px rgba(59,130,246,.25));
+      border-radius: 1px;
+      animation: railHint 5s ease-in-out infinite;
+    }
+    @keyframes railHint{
+      0%,100% { --glide: 0px; }
+      60%     { --glide: calc(var(--tail) - 22px); } /* travel nearly full length */
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .hero-rail .vmenu li:last-child::before{ animation: none; }
+    }
     .orbit { position: relative; width: min(60vw, 520px); margin: 0 auto; }
 
 .orbit .dog {
@@ -365,21 +453,25 @@
   transition: opacity 340ms ease, transform 340ms ease;
 }
 
-.hero-dog .f1{ background-image: url('/assets/12-removebg-preview.png'); }
-.hero-dog .f2{ background-image: url('/assets/22-removebg-preview.png'); }
-.hero-dog .f3{ background-image: url('/assets/32-removebg-preview-(1).png'); }
-.hero-dog .f4{ background-image: url('/assets/42-removebg-preview.png'); }
-.hero-dog .f5{ background-image: url('/assets/52-removebg-preview.png'); }
+    .hero-dog .f1{ background-image: url('/assets/12-removebg-preview.png'); }
+    .hero-dog .f2{ background-image: url('/assets/22-removebg-preview.png'); }
+    .hero-dog .f3{ background-image: url('/assets/32-removebg-preview-(1).png'); }
+    .hero-dog .f4{ background-image: url('/assets/42-removebg-preview.png'); }
+    .hero-dog .f5{ background-image: url('/assets/52-removebg-preview.png'); }
+    .hero-dog .f6{ background-image: url('/assets/new4-removebg-preview.png'); }
+    .hero-dog .f7{ background-image: url('/assets/52-removebg-preview.png'); }
 
 /* Visible state */
 .hero-dog .frame.show{ opacity: 1; }
 
 /* Subtle per-frame pose to feel like a real step */
-.hero-dog .f1{ transform: translateY(6px) scale(.965); }
-.hero-dog .f2{ transform: translateY(3px) scale(.985); }
-.hero-dog .f3{ transform: translateY(1px) scale(1.000); }
-.hero-dog .f4{ transform: translateY(0px) scale(1.015); }
-.hero-dog .f5{ transform: translateY(-1px) scale(1.020); }
+    .hero-dog .f1{ transform: translateY(6px) scale(.965); }
+    .hero-dog .f2{ transform: translateY(3px) scale(.985); }
+    .hero-dog .f3{ transform: translateY(1px) scale(1.000); }
+    .hero-dog .f4{ transform: translateY(0px) scale(1.015); }
+    .hero-dog .f5{ transform: translateY(-1px) scale(1.020); }
+    .hero-dog .f6{ transform: translateY(-2px) scale(1.022); }
+    .hero-dog .f7{ transform: translateY(-2px) scale(1.022); }
 
 /* Apply non-looping, hard-cut timing; total 2000ms */
 .anim-walksit .f1{ animation: show1 2000ms steps(1,end) 1 forwards; }
@@ -611,6 +703,8 @@
             <span class="frame f3"></span>
             <span class="frame f4"></span>
             <span class="frame f5"></span>
+            <span class="frame f6"></span>
+            <span class="frame f7"></span>
           </div>
         </div>
       </div>
@@ -635,10 +729,12 @@
   const frames = Array.from(el.querySelectorAll('.frame'));
   // Candidate URL sets (frame 3 uses exact filename)
   const urlSets = [
-    ['/assets/12-removebg-preview.png'],
+    ['/assets/new12-removebg-preview.png'],               // new first
+    ['/assets/dog_walk_flipped-removebg-preview.png'],    // new second
     ['/assets/22-removebg-preview.png'],
     ['/assets/32-removebg-preview-(1).png'],
     ['/assets/42-removebg-preview.png'],
+    ['/assets/new4-removebg-preview.png'],                // second-to-last
     ['/assets/52-removebg-preview.png']
   ];
 
@@ -670,7 +766,7 @@
 
   function play(){
     // Build sequence only from successfully loaded images
-    const sequence = [0,1,2,3,4].filter(i => ok[i]);
+    const sequence = ok.map((good, i) => good ? i : null).filter(i => i !== null);
     if(sequence.length === 0){ return; }
 
     // Reset visibility
@@ -884,6 +980,52 @@
           });
         }
       }
+    // --- Normalize Writing CTAs based on destination host ---
+    (function normalizeWritingCTAs(){
+      var titleRow = document.querySelector('.section-title#writing');
+      if (!titleRow) return;
+      var allLink = titleRow.querySelector('a[href]');
+      var allHref = allLink ? allLink.getAttribute('href') : '';
+      function prettyHost(h){
+        if (!h) return 'site';
+        try {
+          if (h.indexOf('medium') !== -1) return 'Medium';
+          h = h.replace(/^www\./,'');
+          var parts = h.split('.');
+          var core = parts.length > 1 ? parts[parts.length-2] : parts[0];
+          core = core || 'site';
+          return core.charAt(0).toUpperCase() + core.slice(1);
+        } catch(_){ return 'site'; }
+      }
+      function hostFrom(href){
+        try { return new URL(href, location.origin).hostname; } catch(_){ return ''; }
+      }
+      var cards = document.querySelectorAll('.writing-list .card');
+      for (var i=0; i<cards.length; i++){
+        var card = cards[i];
+        var cta = card.querySelector('.cta');
+        if (!cta) continue;
+        // Determine destination + host
+        var linkEl = (card.tagName === 'A') ? card : card.querySelector('a[href]');
+        var href = linkEl ? linkEl.getAttribute('href') : (allHref || '#');
+        var host = prettyHost(hostFrom(href));
+        var label = 'Read on ' + host + ' <span>→</span>';
+
+        if (card.tagName === 'A') {
+          // Card already clickable; just change the CTA text
+          cta.innerHTML = label;
+        } else {
+          // Not clickable: convert CTA into a link to the section "All posts" target
+          var a = document.createElement('a');
+          a.className = 'cta';
+          a.setAttribute('href', href);
+          a.setAttribute('target', (href.indexOf('http') === 0 ? '_blank' : '_self'));
+          a.setAttribute('rel', 'noopener noreferrer');
+          a.innerHTML = label;
+          cta.replaceWith(a);
+        }
+      }
+    })();
     })();
   </script>
 
