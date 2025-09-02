@@ -59,7 +59,8 @@ header .socials-inline {
     margin-bottom: 12px;          /* breathing room above hero */
     display: flex;
     align-items: center;
-    justify-content: space-between; /* brand left, socials right */
+    justify-content: center; /* changed from space-between to center */
+    flex-direction: column; /* added to stack brand and socials vertically */
     background: #fff;            /* ensure crisp over content */
   }
   /* Brand cluster */
@@ -80,6 +81,7 @@ header .socials-inline {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 48vw; /* do not collide with socials */
+    text-align: center; /* added to center align text */
   }
   /* Socials inline on the right, in flow (no absolute positioning) */
   header nav[aria-label="Primary"]{
@@ -89,7 +91,7 @@ header .socials-inline {
     gap: 12px !important;
     margin-left: auto;            /* push to the right */
   }
-  header .socials-inline{ margin-right: 0 !important; transform: translateY(1px); }
+  header .socials-inline{ margin-right: 0 !important; transform: translateY(1px); margin-top: 4px; } /* added margin-top */
   header .socials-inline a svg{ width: 16px; height: 16px; opacity: .85; }
 }
 
