@@ -486,6 +486,62 @@
       .orbit { width: min(92vw, 520px); height: auto; text-align: center; }
       .orbit .dog { position: relative; transform: none; display:block; margin: 0 auto; width: min(68vw, 320px); }
     }
+
+    /* --- HARD mobile single-line header enforcement --- */
+    @media (max-width: 560px){
+      /* Make sure the injected header stays a single flex row */
+      #site-header header,
+      header.site-header,
+      header {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        flex-wrap: nowrap !important;
+        gap: 8px !important;
+        width: 100%;
+      }
+      /* Brand cluster must not wrap and must be allowed to shrink */
+      header .brand {
+        display: inline-flex !important;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;
+        flex: 0 1 auto;
+        white-space: nowrap;
+      }
+      header .brand svg,
+      header .brand img {
+        width: 22px !important;
+        height: 22px !important;
+        flex: 0 0 auto;
+      }
+      header .brand h1 {
+        font-size: clamp(13px, 4.2vw, 16px) !important;
+        margin: 0;
+        letter-spacing: .2px;
+        max-width: 60vw;               /* allow room for socials */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      /* Socials cluster stays inline and small */
+      header .socials-inline {
+        display: inline-flex !important;
+        gap: 8px;
+        flex: 0 0 auto;
+        white-space: nowrap;
+      }
+      header .socials-inline a {
+        width: 18px !important;
+        height: 18px !important;
+      }
+      header .socials-inline svg {
+        width: 11px !important;
+        height: 11px !important;
+      }
+      /* Reduce left/right padding to gain a few px on tiny screens */
+      .wrap { padding-left: 12px; padding-right: 12px; }
+    }
   </style>
 </head>
 <body>
