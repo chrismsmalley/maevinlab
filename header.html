@@ -50,40 +50,48 @@ header .socials-inline {
 
 /* --- Mobile header layout fixes (≤560px) --- */
 @media (max-width: 560px){
-  header{ 
-    position: sticky; /* keep it in its lane at the top */
-    top: 0; 
-    height: 52px; 
-    padding: 4px 0; 
-    z-index: 50; 
+  header{
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: 56px;
+    padding: 6px 12px; /* compact horizontal padding */
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* brand left, socials right */
   }
+  /* Brand cluster */
   header .brand{
-    margin-left: 12px; 
-    gap: 8px; 
+    margin-left: 0;
+    gap: 6px;
   }
-  header .brand img{ 
-    height: 40px; 
-    margin-bottom: 0; 
+  header .brand img{
+    height: 36px;
+    margin-bottom: 0;
   }
-  /* Reduce/optionally hide the brand wordmark to avoid wrapping under icons */
-  header .brand-name{ 
-    font-size: 14px; 
-    line-height: 1; 
-    white-space: nowrap; 
-    max-width: 40vw; 
-    overflow: hidden; 
-    text-overflow: ellipsis; 
+  header .brand-name{
+    font-size: 14px;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 48vw; /* do not collide with socials */
   }
-  /* Anchor the socials to the top-right inside the header so they don't collide with hero copy */
-  header[aria-label="Site header"]{ position: sticky; top:0; }
-  header nav[aria-label="Primary"]{ 
-    position: absolute; 
-    right: 12px; 
-    top: 8px; 
-    gap: 10px !important; 
+  /* Socials inline on the right, in flow (no absolute positioning) */
+  header nav[aria-label="Primary"]{
+    position: static; /* reset from desktop */
+    display: flex;
+    align-items: center;
+    gap: 10px !important;
+    margin-left: auto; /* push to the right */
   }
-  header .socials-inline a svg{ width: 18px; height: 18px; }
   header .socials-inline{ margin-right: 0 !important; }
+  header .socials-inline a svg{ width: 18px; height: 18px; }
+}
+
+/* Super-small devices: hide wordmark if needed */
+@media (max-width: 360px){
+  header .brand-name{ display: none; }
 }
 </style>
 <svg width="0" height="0">
