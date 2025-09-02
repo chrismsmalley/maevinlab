@@ -55,10 +55,12 @@ header .socials-inline {
     top: 0;
     z-index: 50;
     height: 56px;
-    padding: 6px 12px; /* compact horizontal padding */
+    padding: 6px 12px;           /* compact horizontal padding */
+    margin-bottom: 8px;          /* breathing room above hero */
     display: flex;
     align-items: center;
     justify-content: space-between; /* brand left, socials right */
+    background: #fff;            /* ensure crisp over content */
   }
   /* Brand cluster */
   header .brand{
@@ -70,7 +72,9 @@ header .socials-inline {
     margin-bottom: 0;
   }
   header .brand-name{
-    font-size: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .02em;
     line-height: 1;
     white-space: nowrap;
     overflow: hidden;
@@ -79,14 +83,14 @@ header .socials-inline {
   }
   /* Socials inline on the right, in flow (no absolute positioning) */
   header nav[aria-label="Primary"]{
-    position: static; /* reset from desktop */
+    position: static;             /* reset from desktop */
     display: flex;
     align-items: center;
-    gap: 10px !important;
-    margin-left: auto; /* push to the right */
+    gap: 12px !important;
+    margin-left: auto;            /* push to the right */
   }
-  header .socials-inline{ margin-right: 0 !important; }
-  header .socials-inline a svg{ width: 18px; height: 18px; }
+  header .socials-inline{ margin-right: 0 !important; transform: translateY(1px); }
+  header .socials-inline a svg{ width: 16px; height: 16px; opacity: .85; }
 }
 
 /* Super-small devices: hide wordmark if needed */
