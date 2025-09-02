@@ -1035,3 +1035,9 @@
 
 </body>
 </html>
+
+    /* Hide the hero rail continuation cue on mobile */
+    @media (max-width: 700px){
+      .hero-rail .vmenu li:last-child > a::before,
+      .hero-rail .vmenu li:last-child > a::after{ display: none !important; }
+    }
