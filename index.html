@@ -10,7 +10,6 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/logo-blue.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/logo-blue.png" />
   <link rel="stylesheet" href="style.css" />
-  <link rel="preload" as="image" href="/assets/circle_container.png" />
   <link rel="preload" as="image" href="/assets/12-removebg-preview.png" />
   <link rel="preload" as="image" href="/assets/22-removebg-preview.png" />
   <link rel="preload" as="image" href="/assets/32-removebg-preview-(1).png" />
@@ -176,24 +175,6 @@
     }
 
     /* Horizontal scroller for carousels (no longer used for projects/writing) */
-    /* .hscroll { 
-      display: flex; 
-      gap: 18px; 
-      overflow-x: auto; 
-      overflow-y: hidden;        
-      padding-bottom: 12px; 
-      scroll-snap-type: x mandatory; 
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: thin; 
-      scrollbar-color: rgba(255,255,255,.18) transparent;
-    }
-    .hscroll > .card { 
-      flex: 0 0 clamp(280px, 32vw, 360px); 
-      scroll-snap-align: start; 
-    }
-    @media (max-width: 640px) { 
-      .hscroll > .card { flex-basis: 86%; }
-    } */
     .projects-list { position: relative; z-index: 1; margin-top: 8px; padding-bottom: 6px; }
 
     /* Socials */
@@ -288,11 +269,6 @@
       .section-title { margin: 36px 0 10px; }
       .card { padding: 16px; min-height: auto; }
     }
-    /* Minimal scrollbar (WebKit) */
-    .hscroll::-webkit-scrollbar { height: 4px; }
-    .hscroll::-webkit-scrollbar-track { background: transparent; }
-    .hscroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,.22); border-radius: 999px; background-clip: padding-box; border: 2px solid transparent; }
-    .hscroll:hover::-webkit-scrollbar-thumb { background: rgba(77,163,255,.55); }
 
     .card { position: relative; z-index: 0; border-radius: var(--radius); overflow: hidden; }
     .card:hover {
@@ -353,7 +329,6 @@
     }
 
     /* --- New hero (centered dog only) --- */
-    .hero-centered { position: relative; padding: 0px 0 18px; }
     .orbit { position: relative; width: min(60vw, 520px); margin: 0 auto; }
 
 .orbit .dog {
@@ -912,54 +887,5 @@
     })();
   </script>
 
-  <script>
-    // Fetch Medium posts via server-side proxy so the handle is never exposed client-side.
-    // Expected proxy endpoint: /api/medium?limit=3 → { items: [{ title, link, description }] }
-    (function() {
-      const ENDPOINT = '/api/medium?limit=3';
-      const target = document.querySelector('section.hscroll[aria-label="Latest Medium articles carousel"]');
-
-      function createCard(item) {
-        const a = document.createElement('a');
-        a.className = 'card';
-        a.href = item.link;
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
-        a.setAttribute('aria-label', `Read ${item.title} on Medium`);
-
-        const badge = document.createElement('div');
-        badge.className = 'badge';
-        badge.textContent = 'Medium';
-
-        const h3 = document.createElement('h3');
-        h3.textContent = item.title || 'Untitled';
-
-        const p = document.createElement('p');
-        const summary = (item.description || '').replace(/<[^>]+>/g, '').trim();
-        p.textContent = summary.length > 140 ? summary.slice(0, 140) + '…' : (summary || 'Read the full article on Medium.');
-
-        const cta = document.createElement('div');
-        cta.className = 'cta';
-        cta.innerHTML = 'Read article <span>→</span>';
-
-        a.appendChild(badge);
-        a.appendChild(h3);
-        a.appendChild(p);
-        a.appendChild(cta);
-        return a;
-      }
-
-      function render(items) {
-        if (!target || !Array.isArray(items) || items.length === 0) return;
-        target.innerHTML = '';
-        items.slice(0, 3).forEach(post => target.appendChild(createCard(post)));
-      }
-
-      fetch(ENDPOINT)
-        .then(r => r.ok ? r.json() : Promise.reject(r))
-        .then(data => render(data.items || data.posts || []))
-        .catch(() => { /* leave placeholders */ });
-    })();
-  </script>
 </body>
 </html>

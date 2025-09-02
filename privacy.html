@@ -35,20 +35,6 @@
 
     .wrap { max-width: 900px; margin: 0 auto; padding: 28px 20px 80px; position: relative; }
 
-    /* Header */
-    header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-    .brand { display: flex; align-items: center; gap: 12px; }
-    .brand h1 { font-size: 22px; font-weight: 700; letter-spacing: .3px; margin: 0; color: var(--text); }
-    nav a { position: relative; opacity: .86; margin-left: 18px; font-size: 14px; color: var(--text); }
-    nav a:hover { opacity: 1; }
-    nav a::after { content:""; position:absolute; left:0; bottom:-6px; height:2px; width:0; background: var(--accent); transition: width .25s ease; opacity:.7; }
-
-    /* Shared header pieces (from index) */
-    .socials-inline { display:inline-flex; gap:10px; align-items:center; }
-    .socials-inline a { width:22px; height:22px; display:inline-flex; align-items:center; justify-content:center; }
-    .socials-inline svg { width:14px; height:14px; fill: var(--text); opacity:.9; }
-    .nav-sep { color: var(--accent); font-weight:700; opacity:.95; display:inline-flex; align-items:center; justify-content:center; width:24px; }
-
     /* Page title */
     .kicker { display:inline-block; padding: 6px 10px; border-radius: 999px; background: linear-gradient(90deg, var(--accent-soft), rgba(167,139,250,0.12), var(--accent-soft)); color: var(--accent); font-weight:600; font-size:12px; letter-spacing:.3px; margin: 24px 0 10px; background-size: 200% 100%; animation: kickerSheen 10s ease-in-out infinite; }
     @keyframes kickerSheen{ 0%,100%{ background-position:0% 50%; } 50%{ background-position:100% 50%; } }
@@ -81,13 +67,13 @@
     .reveal.s3.in { transition-delay: .12s; }
 
     /* Gentle underline slide for local nav only (no hover glow) */
-    nav a::after { transform-origin: left; transform: scaleX(0); width: 100%; height: 2px; }
-    nav a:hover::after { transform: scaleX(1); width: 100%; }
+    .local-nav a::after { transform-origin: left; transform: scaleX(0); width: 100%; height: 2px; }
+    .local-nav a:hover::after { transform: scaleX(1); width: 100%; }
 
     /* Reduced motion: disable transforms */
     @media (prefers-reduced-motion: reduce) {
       .reveal, .reveal.in { opacity: 1 !important; transform: none !important; transition: none !important; }
-      nav a::after, nav a:hover::after { transition: none !important; }
+      .local-nav a::after, .local-nav a:hover::after { transition: none !important; }
       .wrap::before, .wrap::after { animation: none !important; filter: blur(48px) !important; }
       section.card::before { animation: none !important; }
       .kicker { animation: none !important; }
