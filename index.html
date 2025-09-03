@@ -21,6 +21,13 @@
   <link rel="preload" as="image" href="/assets/dog_flipped2.png" />
 
   <style>
+    /* Hide the hero rail continuation cue on mobile */
+    @media (max-width: 700px){
+      .hero-rail .vmenu li:last-child > a::before,
+      .hero-rail .vmenu li:last-child > a::after{
+        display: none !important;
+      }
+    }
     /* Nuke Medium-injected UI sitewide (header and elsewhere) */
     [class*="medium"], [id*="medium"],
     [class*="Medium"], [id*="Medium"],
@@ -1035,9 +1042,3 @@
 
 </body>
 </html>
-
-    /* Hide the hero rail continuation cue on mobile */
-    @media (max-width: 700px){
-      .hero-rail .vmenu li:last-child > a::before,
-      .hero-rail .vmenu li:last-child > a::after{ display: none !important; }
-    }
