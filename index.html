@@ -382,51 +382,55 @@
 
     /* --- New hero (centered dog only) --- */
 
-    /* Continuation cue under the last rail item (looks like the same line) */
-    .hero-rail .vmenu li:last-child{
-      position: relative;
-      /* length of the "keep going" line: 5× the normal connector */
-      --tail: calc((var(--rail-gap) - var(--rail-clear)) * 9);
-    }
-    /* Static continuation line (same style as the link connectors), anchored to <a> */
-    .hero-rail .vmenu li:last-child > a::after{
-      content:"";
-      position:absolute;
-      left:50%; transform:translateX(-50%);
-      top: calc(100% + (var(--rail-clear)/2));
-      width:1px;
-      height: var(--tail);               /* 2.5× longer line */
-      background: var(--border);
-      display: block !important;         /* override generic hide */
-    }
-    /* Register animatable custom property for vertical glide */
-    @property --glide {
-      syntax: '<length>';
-      inherits: false;
-      initial-value: 0px;
-    }
-    /* A small animated highlight riding down the continuation line, anchored to <a> */
-    .hero-rail .vmenu li:last-child > a::before{
-      content:"";
-      position:absolute;
-      left:50%;
-      top: calc(100% + (var(--rail-clear)/2));
-      width:1px;
-      height: 22px;                      /* size of the glowing thumb */
-      transform: translate(-50%, var(--glide));
-      background: linear-gradient(180deg, var(--accent), rgba(59,130,246,0));
-      filter: drop-shadow(0 4px 8px rgba(59,130,246,.25));
-      border-radius: 1px;
-      animation: railHint 5s ease-in-out infinite;
-    }
-    @keyframes railHint{
-      0%,100% { --glide: 0px; }
-      60%     { --glide: calc(var(--tail) - 22px); } /* travel nearly full length */
+    /* Continuation cue under the last rail item (anchor‑based for exact centering) */
+    .hero-rail .vmenu li:last-child{ position: relative; --tail: calc((var(--rail-gap) - var(--rail-clear)) * 5); }
+
+    /* Default: nothing visible (let generic rules apply) */
+    .hero-rail .vmenu li:last-child > a::before,
+    .hero-rail .vmenu li:last-child > a::after{ content: none; }
+
+    /* Desktop/tablet: show cue and animation */
+    @media (min-width: 701px){
+      /* Static continuation line (same style as the link connectors) */
+      .hero-rail .vmenu li:last-child > a::after{
+        content: "";
+        position: absolute;
+        left: 50%; transform: translateX(-50%);
+        top: calc(100% + (var(--rail-clear)/2));
+        width: 1px; height: var(--tail);
+        background: var(--border);
+        display: block !important;           /* override generic nav a::after hide */
+        pointer-events: none;
+        z-index: 0;
+      }
+      /* Animated glow rider */
+      @property --glide { syntax: '<length>'; inherits: false; initial-value: 0px; }
+      .hero-rail .vmenu li:last-child > a::before{
+        content: "";
+        position: absolute;
+        left: 50%; transform: translate(-50%, var(--glide));
+        top: calc(100% + (var(--rail-clear)/2));
+        width: 1px; height: 22px;
+        background: linear-gradient(180deg, var(--accent), rgba(59,130,246,0));
+        filter: drop-shadow(0 4px 8px rgba(59,130,246,.25));
+        border-radius: 1px;
+        display: block !important;           /* ensure visible on desktop */
+        animation: railHint 5s ease-in-out infinite;
+        pointer-events: none;
+        z-index: 1;
+      }
+      @keyframes railHint{
+        0%,100% { --glide: 0px; }
+        60%     { --glide: calc(var(--tail) - 22px); }
+      }
     }
 
-    @media (prefers-reduced-motion: reduce){
-      .hero-rail .vmenu li:last-child::before{ animation: none; }
+    /* Mobile: force-hide cue (placed after to win cascade) */
+    @media (max-width: 700px){
+      .hero-rail .vmenu li:last-child > a::before,
+      .hero-rail .vmenu li:last-child > a::after{ display: none !important; content: none !important; }
     }
+
     .orbit { position: relative; width: min(60vw, 520px); margin: 0 auto; }
 
 .orbit .dog {
