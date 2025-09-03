@@ -21,11 +21,13 @@
   <link rel="preload" as="image" href="/assets/dog_flipped2.png" />
 
   <style>
-    /* Hide the hero rail continuation cue on mobile */
+    /* Hide ALL hero-rail connector/continuation lines on mobile and clip overflow */
     @media (max-width: 700px){
-      .hero-rail .vmenu li:last-child > a::before,
-      .hero-rail .vmenu li:last-child > a::after{
+      .hero { overflow: hidden; } /* prevents any long pseudo-element from spilling into next section */
+      .hero-rail .vmenu li > a::before,
+      .hero-rail .vmenu li > a::after{
         display: none !important;
+        content: none !important;
       }
     }
     /* Nuke Medium-injected UI sitewide (header and elsewhere) */
