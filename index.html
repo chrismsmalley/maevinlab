@@ -38,13 +38,13 @@
       visibility: hidden !important;
     }
     :root {
-      --bg: #FFFFFF;            /* light background */
-      --card: #FFFFFF;          /* surface */
+      --bg: #f9fbff;            /* light background */
+      --card: #f9fbff;          /* surface */
       --text: #121212;          /* primary text */
       --muted: #6A6A6A;         /* secondary text */
       --accent: #3b82f6;              /* refined blue */
       --accent-soft: rgba(59,130,246,0.14);
-      --border: #E8E8EC;        /* hairlines */
+      --border: #e6eefc;        /* hairlines */
       --radius: 14px;
       --shadow: 0 6px 24px rgba(16,24,40,.06);
       --rail-gap: 64px;       /* vertical distance between link baselines */
@@ -84,7 +84,7 @@
     /* Header */
     header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 0; padding: 0; }
     .brand { display: flex; align-items: center; gap: 12px; }
-    .brand img { width: 152; height: 152px; border-radius: 12px; }
+    .brand img { width: 152px; height: 152px; border-radius: 12px; }
     .brand h1 { font-size: 30px; font-weight: 600; letter-spacing: .2px; margin: 0; }
     
 
@@ -225,7 +225,7 @@
 
     /* Socials */
     .socials { display:flex; gap:14px; justify-content:center; align-items:center; margin-bottom: 10px; }
-    .socials a { width: 28px; height: 28px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--border); border-radius: 8px; background: #fff; transition: transform .15s ease, border-color .2s ease, box-shadow .2s ease; }
+    .socials a { width: 28px; height: 28px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--border); border-radius: 8px; background: var(--card); transition: transform .15s ease, border-color .2s ease, box-shadow .2s ease; }
     .socials a:hover { transform: translateY(-1px); border-color: rgba(59,130,246,.55); box-shadow: 0 6px 18px rgba(59,130,246,.18); }
     .socials svg { width: 16px; height: 16px; fill: var(--text); }
 
