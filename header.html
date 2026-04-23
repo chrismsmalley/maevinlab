@@ -120,42 +120,56 @@ header nav a:hover::after {
 
 @media (max-width: 560px) {
   header {
-    padding: 14px 0 8px;
-    gap: 14px;
+    padding: 12px 0 8px;
+    gap: 10px;
   }
 
   header .brand-pill {
-    gap: 10px;
+    gap: 8px;
   }
 
   header .brand-mark {
-    width: 62px;
-    height: 62px;
-    margin-right: -6px;
+    width: 58px;
+    height: 58px;
+    margin-right: -5px;
   }
 
   header .brand-mark img {
-    width: 62px;
-    height: 62px;
+    width: 58px;
+    height: 58px;
   }
 
   header .brand-divider {
-    height: 28px;
+    height: 24px;
   }
 
   header .brand-name {
-    gap: 10px;
-    font-size: 16px;
-    letter-spacing: .18em;
+    gap: 8px;
+    font-size: 15px;
+    letter-spacing: .16em;
   }
 
   header nav {
-    gap: 14px;
+    gap: 4px;
+    padding: 4px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.08);
+    background: rgba(255,255,255,.03);
   }
 
   header nav a {
-    font-size: 11px;
-    letter-spacing: .16em;
+    padding: 7px 10px;
+    font-size: 10px;
+    letter-spacing: .14em;
+    border-radius: 999px;
+  }
+
+  header nav a::after {
+    display: none;
+  }
+
+  header nav a:hover {
+    background: rgba(96,165,250,.10);
   }
 }
 </style>
