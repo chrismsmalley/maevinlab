@@ -4,202 +4,273 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Projects — Maevin Labs</title>
-  <meta name="description" content="Selected projects by Maevin Labs: Obsolete Tech Archive, Delvr, and upcoming experiments." />
+  <meta name="description" content="Selected projects by Maevin Labs: Obsolete Tech Archive, Delvr, Kettlebell Calculator, and upcoming experiments." />
   <link rel="icon" type="image/png" href="/assets/Logo_blue.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/Logo_blue.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/Logo_blue.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/Logo_blue.png" />
   <style>
-    :root { --bg:#f9fbff; --card:#f9fbff; --text:#0a0a0a; --muted:rgba(0,0,0,.66); --accent:#3b82f6; --accent-soft:rgba(59,130,246,.10); --radius:14px; --shadow:0 10px 30px rgba(16,24,40,.08); --border:#e6eefc; }
-    :root{ --aurora1:#6ee7ff; --aurora2:#a78bfa; --aurora3:#f472b6; --aurora4:#22d3ee; }
-    html,body{height:100%}
-    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;display:flex;flex-direction:column;overflow-x:hidden}
-    a{color:var(--text);text-decoration:none}
-    .wrap{max-width:1100px;margin:0 auto;padding:28px 20px 80px;flex:1;display:flex;flex-direction:column}
-
-    /* --- Projects page: Data Waves theme --- */
-    .projects-theme .wrap { position: relative; }
-    .projects-theme .wrap::before,
-    .projects-theme .wrap::after {
-      content:""; position:absolute; left:0; right:0; z-index:-1; pointer-events:none;
-      height:220px; opacity:.55; filter: blur(14px) saturate(1.15);
-      background: linear-gradient(90deg, var(--accent), var(--accent-soft), var(--accent));
-      mask-image: radial-gradient(100% 80% at 50% 50%, #000, transparent 80%);
+    :root {
+      --bg: #0d1017;
+      --text: #f5f7fb;
+      --muted: rgba(227,232,242,0.74);
+      --accent: #60a5fa;
+      --accent-soft: rgba(96,165,250,0.16);
+      --border: rgba(255,255,255,0.10);
+      --panel: rgba(255,255,255,0.03);
+      --panel-strong: rgba(255,255,255,0.05);
     }
-    .projects-theme .wrap::before{ top:120px; animation: waveDriftA 14s ease-in-out infinite alternate; }
-    .projects-theme .wrap::after{ top:480px; animation: waveDriftB 18s ease-in-out infinite alternate; }
-
-    /* Switch from page-wide waves to per-card waves */
-    .projects-theme .wrap::before,
-    .projects-theme .wrap::after{ display:none; }
-
-    /* Per-card Data Waves: each .feature gets its own subtle gradient wave */
-    .projects-theme .feature{ position:relative; z-index:0; }
-    .projects-theme .feature::before{
-      content:""; position:absolute; z-index:-1; pointer-events:none; left:-12px; right:-12px; top:6px; bottom:6px; border-radius:16px;
-      filter: blur(14px) saturate(1.12); opacity:.58;
-      background: linear-gradient(90deg, var(--accent), var(--accent-soft), var(--accent));
-      mask-image: radial-gradient(120% 90% at 50% 50%, #000, transparent 78%);
-      animation: featureWaveA 12s ease-in-out infinite alternate;
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      position: relative;
     }
-    /* Alternate direction/timing so rows feel unique */
-    .projects-theme .feature:nth-of-type(2n)::before{
-      animation: featureWaveB 14s ease-in-out infinite alternate;
-      transform: skewY(-1.5deg);
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0 0 auto 0;
+      height: min(54vh, 460px);
+      background:
+        radial-gradient(circle at top left, rgba(244,114,182,.14), transparent 28%),
+        radial-gradient(circle at 84% 12%, rgba(96,165,250,.16), transparent 24%),
+        linear-gradient(180deg, #171b25 0%, rgba(13,16,23,.78) 48%, rgba(13,16,23,0) 100%);
+      pointer-events: none;
+      z-index: 0;
     }
-    .projects-theme .feature:nth-of-type(2n+1)::before{ transform: skewY(1.5deg); }
-
-    @keyframes featureWaveA{
-      0%{ transform: translateX(-6%) skewY(1.5deg); }
-      100%{ transform: translateX(6%) skewY(-1.5deg); }
-    }
-    @keyframes featureWaveB{
-      0%{ transform: translateX(8%) skewY(-1.5deg); }
-      100%{ transform: translateX(-8%) skewY(1.5deg); }
-    }
-
-    /* Keep it tidy on small screens */
-    @media (max-width: 900px){
-      .projects-theme .feature::before{ left:-8px; right:-8px; filter: blur(12px); opacity:.5; }
-    }
-
-    @keyframes waveDriftA {
-      0%{ transform: translateX(-10%) skewY(2deg); }
-      100%{ transform: translateX(10%) skewY(-2deg); }
-    }
-    @keyframes waveDriftB {
-      0%{ transform: translateX(8%) skewY(-1deg); }
-      100%{ transform: translateX(-8%) skewY(1deg); }
-    }
-
-    /* Gradient sweep on section titles */
-    .section-title h2 {
-      background: linear-gradient(90deg, var(--accent), var(--accent-soft), var(--accent));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      background-size: 200% 100%;
-      animation: titleSweep 10s ease-in-out infinite;
-    }
-    @keyframes titleSweep {
-      0%,100%{ background-position:0% 50%; }
-      50%{ background-position:100% 50%; }
-    }
-
-    /* Card hover gloss line */
-    .card:hover::before {
-      content:""; position:absolute; top:0; left:0; right:0; height:2px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-soft), var(--accent));
-      opacity:.85;
-    }
-
-
-    /* Featured project blocks */
-    .feature { position: relative; display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px; align-items: start; margin: 46px 0 64px; }
-    @media (max-width: 900px) {
-      .feature { grid-template-columns: 1fr; }
-      .feature-media { height: 220px; }
-      .feature-panel { min-height: auto; }
-      .feature-panel { margin-left: 0; }
-    }
-
-    .feature-media { position: relative; border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); height: 280px; }
-    .feature-media {
-      align-self: center;
+    a { color: var(--text); text-decoration: none; }
+    a:focus-visible { outline: 2px solid rgba(96,165,250,.45); outline-offset: 2px; }
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 20px 80px;
+      position: relative;
       z-index: 1;
     }
-    .feature-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    .feature-panel {
+    .hero {
+      padding: 48px 0 28px;
+      max-width: 44rem;
+    }
+    .kicker {
+      display: inline-block;
+      margin-bottom: 12px;
+      font-size: 12px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: rgba(227,232,242,.58);
+    }
+    .hero h1 {
+      margin: 0 0 14px;
+      font-size: clamp(40px, 8vw, 76px);
+      line-height: .94;
+      letter-spacing: -.05em;
+      max-width: 9ch;
+    }
+    .hero p {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 40rem;
+    }
+    .project-list {
+      display: grid;
+      gap: 28px;
+      margin-top: 18px;
+    }
+    .project {
+      display: grid;
+      grid-template-columns: minmax(320px, 1.05fr) minmax(0, .95fr);
+      gap: clamp(24px, 4vw, 42px);
+      align-items: center;
+      padding: 28px 0;
+      border-top: 1px solid rgba(255,255,255,.07);
+    }
+    .project:first-child { border-top: 0; }
+    .project.reverse .project-media { order: 2; }
+    .project.reverse .project-copy { order: 1; }
+    .project-media {
       position: relative;
-      right: 0;
-      background: linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.06));
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 22px 22px;
-      box-shadow: var(--shadow);
-      min-height: 280px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      z-index: 2;           /* sit above the media */
-    }
-    /* Overlap only the first feature's right panel over its image */
-    .feature:first-of-type .feature-panel { 
-      margin-left: -56px;   /* stronger overlap */
-    }
-    .feature .eyebrow { color: var(--accent); font-weight: 700; font-size: 12px; letter-spacing: .3px; margin-bottom: 6px; display: inline-block; background: var(--accent-soft); padding: 4px 8px; border-radius: 999px; }
-    .feature h3 { margin: 2px 0 8px; font-size: clamp(22px, 3.6vw, 28px); }
-    .feature p { color: var(--muted); line-height: 1.6; margin: 0; }
-
-    .tags { display:flex; flex-wrap:wrap; gap:8px; margin-top: 12px; }
-    .tag { font-size: 12px; padding: 4px 8px; border-radius: 999px; background: rgba(0,0,0,.04); border: 1px solid var(--border); color: var(--text); }
-
-    .actions { display:flex; gap:12px; margin-top: 16px; }
-    .btn { display:inline-flex; align-items:center; gap:8px; padding: 10px 14px; border-radius: 10px; border:1px solid rgba(255,255,255,.12); font-weight:600; font-size:14px; color: var(--text); }
-    .btn:hover { border-color: rgba(59,130,246,.45); box-shadow: 0 8px 28px rgba(59,130,246,.18); transform: translateY(-1px); }
-    .btn-primary { background: linear-gradient(180deg, rgba(59,130,246,.18), rgba(59,130,246,.10)); }
-    .btn-ghost { background: transparent; color: var(--accent); }
-
-    .hero{padding:64px 0 24px}
-    .hero h1{
-      font-size:clamp(32px,6vw,44px);line-height:1.1;margin:0 0 10px;
-      background: linear-gradient(90deg, var(--aurora1), var(--aurora2), var(--aurora3), var(--aurora4));
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-      background-size: 200% 100%;
-      animation: titleSweep 10s ease-in-out infinite;
-    }
-    .hero p{color:var(--muted);font-size:18px;max-width:800px;margin:0}
-
-    .section-title{display:flex;align-items:center;justify-content:space-between;margin:28px 0 18px}
-    .section-title h2{font-size:18px;margin:0}
-
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    @media (max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}}
-    @media (max-width:640px){.grid{grid-template-columns:1fr}}
-
-    .card {
-      position: relative;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px;
-      box-shadow: var(--shadow);
-      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease;
-      min-height: 170px;
+      min-height: 260px;
+      border-radius: 24px;
       overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015)),
+        radial-gradient(circle at 20% 18%, rgba(96,165,250,.12), transparent 28%);
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: 0 20px 50px rgba(0,0,0,.22);
     }
-    .card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(16,24,40,.15);border-color:rgba(59,130,246,.35);background:linear-gradient(180deg,rgba(59,130,246,.06),rgba(0,0,0,.03))}
-    .badge{position:absolute;top:14px;right:14px;font-size:11px;padding:4px 8px;border-radius:999px;background:var(--accent-soft);border:1px solid rgba(59,130,246,.35);color:var(--accent);z-index:1}
-    .thumb{aspect-ratio:16/9;width:100%;border-radius:10px;border:1px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;margin-bottom:12px;overflow:hidden}
-    .thumb img{width:100%;height:100%;object-fit:cover;display:block}
-    .card h3{margin:0 0 6px;font-size:18px}
-    .card p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
-    .cta{display:inline-flex;gap:8px;align-items:center;font-weight:600;color:var(--accent);margin-top:10px}
-
-    footer{text-align:center;margin:64px 0 20px;color:var(--muted);font-size:14px;margin-top:auto}
-
-    /* Refined reveals (aux page) */
-    .reveal { opacity: 0; transform: translateY(10px); }
-    .reveal.in { opacity: 1; transform: none; transition: opacity .36s ease, transform .36s ease; }
+    .project-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.06), transparent 18%, transparent 82%, rgba(255,255,255,.02)),
+        linear-gradient(90deg, rgba(255,255,255,.03), transparent 24%, transparent 76%, rgba(96,165,250,.05));
+      pointer-events: none;
+    }
+    .project-media img,
+    .project-media svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+    .project-media img.contain-shot {
+      object-fit: cover;
+      object-position: center;
+      padding: 0;
+      box-sizing: border-box;
+      background: transparent;
+    }
+    .project-copy {
+      max-width: 31rem;
+    }
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .project-copy h2 {
+      margin: 0 0 10px;
+      font-size: clamp(26px, 4vw, 34px);
+      line-height: 1.05;
+      letter-spacing: -.03em;
+    }
+    .project-copy p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.72;
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .tag {
+      font-size: 12px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      color: rgba(245,247,251,.86);
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: var(--panel);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 14px;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(96,165,250,.34);
+      background: rgba(96,165,250,.08);
+    }
+    .btn-primary {
+      color: var(--accent);
+      background: rgba(96,165,250,.08);
+    }
+    .reveal { opacity: 0; transform: translateY(12px); }
+    .reveal.in { opacity: 1; transform: none; transition: opacity .4s ease, transform .4s ease; }
     .reveal.s1.in { transition-delay: .04s; }
-    .reveal.s2.in { transition-delay: .08s; }
-    .reveal.s3.in { transition-delay: .12s; }
+    .reveal.s2.in { transition-delay: .1s; }
+    .reveal.s3.in { transition-delay: .16s; }
+    @media (max-width: 900px) {
+      .project,
+      .project.reverse {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .project.reverse .project-media,
+      .project.reverse .project-copy {
+        order: initial;
+      }
+      .project-media {
+        min-height: 220px;
+      }
+      .project-copy {
+        max-width: none;
+      }
+    }
+    @media (max-width: 700px) {
+      body::before {
+        height: min(34vh, 240px);
+      }
+      .wrap {
+        padding: 18px 16px 56px;
+      }
+      .hero {
+        padding: 28px 0 18px;
+      }
+      .kicker {
+        margin-bottom: 10px;
+        font-size: 11px;
+        letter-spacing: .18em;
+      }
+      .hero h1 {
+        font-size: clamp(34px, 13vw, 54px);
+        max-width: none;
+      }
+      .hero p {
+        font-size: 16px;
+        line-height: 1.65;
+      }
+      .project-list {
+        gap: 18px;
+      }
+      .project {
+        padding: 20px 0;
+      }
+      .project-media {
+        min-height: 200px;
+        border-radius: 18px;
+      }
+      .project-copy h2 {
+        font-size: 24px;
+      }
+      .project-copy p {
+        font-size: 15px;
+      }
+      .actions {
+        gap: 10px;
+      }
+      .btn {
+        padding: 10px 12px;
+        font-size: 13px;
+      }
+    }
     @media (prefers-reduced-motion: reduce) {
       .reveal, .reveal.in { opacity: 1 !important; transform: none !important; transition: none !important; }
     }
-
-    /* ----- Mobile-first hero layout fix (stack + center) ----- */
-    @media (max-width: 768px) {
-      .hero { padding: 56px 0 28px; }
-      .hero::before { display: none; }
-      .hero-grid { grid-template-columns: 1fr; gap: 20px; align-items: center; justify-items: center; }
-      .hero-copy { text-align: center; max-width: 90vw; }
-      .hero .headline { font-size: clamp(28px, 7.5vw, 34px); line-height: 1.12; }
-      .hero .sub { font-size: 16px; }
-      .hero-art { width: auto; }
-      .hero-art img { width: 60vw; max-width: 360px; height: auto; display: block; }
-    }
   </style>
 </head>
-<body class="projects-theme">
+<body>
   <div class="wrap">
     <div id="site-header"></div>
     <script>
@@ -213,125 +284,111 @@
       })();
     </script>
 
-    <section class="hero">
-      <h1>Projects</h1>
-      <p>Selected work — live products and playful experiments. Click a tile for details; videos are coming soon.</p>
+    <section class="hero reveal s1">
+      <span class="kicker">Projects</span>
+      <h1>Selected work, built to ship.</h1>
+      <p>Live products, experiments, and utilities under the Maevin Labs umbrella. Clean interfaces, practical engineering, and just enough personality to keep things from feeling clinical.</p>
     </section>
 
-    <section class="feature" aria-label="Obsolete Tech Archive">
-      <div class="feature-media">
-        <img src="/assets/OT.png" alt="Obsolete Tech Archive screenshot placeholder" onerror="this.onerror=null;this.src='/assets/circle_container.png';" />
-      </div>
-      <article class="feature-panel">
-        <span class="eyebrow">Featured Project</span>
-        <h3>Obsolete Tech Archive</h3>
-        <p>A playful, curated museum of forgotten gadgets and software—built like a clean, modern magazine with an amber accent. Subtle motion, fast loading, and accessible by design.</p>
-        <div class="tags">
-          <span class="tag">React</span>
-          <span class="tag">TypeScript</span>
-          <span class="tag">Vercel</span>
-          <span class="tag">Static Gen</span>
+    <section class="project-list" aria-label="Projects">
+      <article class="project reveal s2" aria-label="Obsolete Tech Archive">
+        <div class="project-media">
+          <img src="/assets/OT.png" alt="Obsolete Tech Archive screenshot" onerror="this.onerror=null;this.src='/assets/circle_container.png';" />
         </div>
-        <div class="actions">
-          <a class="btn btn-primary" href="https://obsoletetecharchive.com" target="_blank" rel="noopener">Visit site →</a>
-          <!-- <a class="btn btn-ghost" href="#ota-details">Case study</a> -->
+        <div class="project-copy">
+          <span class="eyebrow">Featured Project</span>
+          <h2>Obsolete Tech Archive</h2>
+          <p>A museum of forgotten gadgets and software built with a cleaner editorial feel. It is part design exercise, part internet attic, and part argument for treating old technology with better taste.</p>
+          <div class="tags">
+            <span class="tag">React</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">Editorial UI</span>
+            <span class="tag">Vercel</span>
+          </div>
+          <div class="actions">
+            <a class="btn btn-primary" href="https://obsoletetecharchive.com" target="_blank" rel="noopener noreferrer">Visit site →</a>
+          </div>
         </div>
       </article>
-    </section>
 
-    <section class="feature" aria-label="Delvr">
-      <div class="feature-media">
-        <img src="/assets/zoom.png" alt="Delvr app screenshot" onerror="this.onerror=null;this.src='/assets/circle_container.png';" />
-      </div>
-      <article class="feature-panel">
-        <span class="eyebrow">Featured App</span>
-        <h3>Delvr</h3>
-        <p>Explain anything with progressive depth. A friendly, low‑friction way to learn—designed for clarity over hype.</p>
-        <div class="tags">
-          <span class="tag">Mobile-first</span>
-          <span class="tag">AI‑assisted</span>
-          <span class="tag">Edge</span>
+      <article class="project reverse reveal s2" aria-label="Delvr">
+        <div class="project-media">
+          <img class="contain-shot" src="/assets/zoom.png" alt="Delvr app screenshot" onerror="this.onerror=null;this.src='/assets/circle_container.png';" />
         </div>
-        <div class="actions">
-          <a class="btn btn-primary" href="https://apps.apple.com/us/app/delvr/id6751447997" target="_blank" rel="noopener noreferrer" aria-label="Delvr on the Apple App Store">
-             App&nbsp;Store
-          </a>
-          <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.chrissmalley.delvr" target="_blank" rel="noopener noreferrer" aria-label="Delvr on Google Play">
-            ▶ Google&nbsp;Play
-          </a>
+        <div class="project-copy">
+          <span class="eyebrow">Featured App</span>
+          <h2>Delvr</h2>
+          <p>A learning product built for progressive explanation and clarity. The goal is simple: help people understand more without making the experience feel bloated, patronizing, or unnecessarily clever.</p>
+          <div class="tags">
+            <span class="tag">Mobile-first</span>
+            <span class="tag">AI-assisted</span>
+            <span class="tag">Product Design</span>
+          </div>
+          <div class="actions">
+            <a class="btn btn-primary" href="https://apps.apple.com/us/app/delvr/id6751447997" target="_blank" rel="noopener noreferrer" aria-label="Delvr on the Apple App Store"> App Store</a>
+            <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.chrissmalley.delvr" target="_blank" rel="noopener noreferrer" aria-label="Delvr on Google Play">▶ Google Play</a>
+          </div>
         </div>
       </article>
-    </section>
 
-    <section class="feature" aria-label="Kettlebell Calculator">
-      <div class="feature-media">
-        <img src="/assets/kbcalc.png" alt="Kettlebell Calculator screenshot" onerror="this.onerror=null;this.src='/assets/circle_container.png';" />
-      </div>
-      <article class="feature-panel">
-        <span class="eyebrow">Utility Project</span>
-        <h3>Kettlebell Calculator (kbcalc.com)</h3>
-        <p>A simple web tool to track kettlebell workouts, calculate total volume, and monitor progress over time.</p>
-        <div class="tags">
-          <span class="tag">Fitness</span>
-          <span class="tag">Calculator</span>
-          <span class="tag">Web</span>
+      <article class="project reveal s3" aria-label="Kettlebell Calculator">
+        <div class="project-media">
+          <img src="/assets/kbcalc.png" alt="Kettlebell Calculator screenshot" onerror="this.onerror=null;this.src='/assets/circle_container.png';" />
         </div>
-        <div class="actions">
-          <a class="btn btn-primary" href="https://kbcalc.com" target="_blank" rel="noopener">Visit site →</a>
+        <div class="project-copy">
+          <span class="eyebrow">Utility Project</span>
+          <h2>Kettlebell Calculator</h2>
+          <p>A focused utility for tracking kettlebell volume and progress. No noise, no extra ceremony, just a tool that gets out of the way and does the job it showed up to do.</p>
+          <div class="tags">
+            <span class="tag">Fitness</span>
+            <span class="tag">Calculator</span>
+            <span class="tag">Web Utility</span>
+          </div>
+          <div class="actions">
+            <a class="btn btn-primary" href="https://kbcalc.com" target="_blank" rel="noopener noreferrer">Visit site →</a>
+          </div>
         </div>
       </article>
-    </section>
-    <section class="feature" aria-label="Next Up">
-      <div class="feature-media">
-        <svg viewBox="0 0 1200 675" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Coming soon">
-          <defs>
-            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#e0e0e0"/>
-              <stop offset="1" stop-color="#cfcfcf"/>
-            </linearGradient>
-            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="18" result="blur"/>
-              <feMerge>
-                <feMergeNode in="blur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-            <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse" patternTransform="translate(0,0)">
-              <circle cx="1" cy="1" r="1" fill="rgba(255,255,255,0.06)"/>
-            </pattern>
-          </defs>
 
-          <!-- background -->
-          <rect x="0" y="0" width="1200" height="675" fill="url(#g1)"/>
-          <rect x="0" y="0" width="1200" height="675" fill="url(#dots)"/>
-
-          <!-- soft accent rings -->
-          <g opacity="0.35" filter="url(#glow)">
-            <circle cx="980" cy="120" r="90" fill="#3b82f6"/>
-            <circle cx="220" cy="555" r="70" fill="#3b82f6"/>
-          </g>
-
-          <!-- headline -->
-          <g fill="#000000">
-            <!-- <text x="80" y="360" font-size="80" font-weight="800">Coming Soon</text> -->
-            <text x="80" y="420" font-size="28" fill="rgba(0,0,0,0.72)">We’re polishing the next release.</text>
-          </g>
-
-          <!-- accent underline -->
-          <rect x="80" y="440" width="260" height="6" rx="3" fill="#3b82f6"/>
-        </svg>
-      </div>
-      <article class="feature-panel">
-        <span class="eyebrow">WIP</span>
-        <h3>Next Up</h3>
-        <p>We’re prototyping the next idea under the Maevin umbrella. Want to collaborate or beta test? Drop us a line.</p>
-        <div class="tags">
-          <span class="tag">Prototype</span>
-          <span class="tag">Design</span>
-          <span class="tag">Research</span>
+      <article class="project reverse reveal s3" aria-label="Next Up">
+        <div class="project-media">
+          <svg viewBox="0 0 1200 675" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Upcoming project placeholder">
+            <defs>
+              <linearGradient id="bgSoon" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#0c1018"/>
+                <stop offset="1" stop-color="#151c28"/>
+              </linearGradient>
+              <radialGradient id="haloSoon" cx="50%" cy="40%" r="60%">
+                <stop offset="0" stop-color="#60a5fa" stop-opacity=".34"/>
+                <stop offset=".55" stop-color="#60a5fa" stop-opacity=".08"/>
+                <stop offset="1" stop-color="#60a5fa" stop-opacity="0"/>
+              </radialGradient>
+              <pattern id="gridSoon" width="24" height="24" patternUnits="userSpaceOnUse">
+                <circle cx="1.5" cy="1.5" r="1.2" fill="rgba(255,255,255,0.08)"/>
+              </pattern>
+            </defs>
+            <rect width="1200" height="675" fill="url(#bgSoon)"/>
+            <rect width="1200" height="675" fill="url(#gridSoon)"/>
+            <rect width="1200" height="675" fill="url(#haloSoon)"/>
+            <g fill="none" stroke="#60a5fa" stroke-opacity=".32">
+              <path d="M110 480 C250 380, 340 520, 520 430 S850 280, 1090 360" stroke-width="2.5"/>
+              <path d="M140 540 C310 460, 430 580, 620 500 S910 360, 1060 420" stroke-width="1.6"/>
+            </g>
+            <g fill="#f5f7fb" font-family="system-ui, sans-serif">
+              <text x="110" y="332" font-size="64" font-weight="700">Next Up</text>
+              <text x="110" y="388" font-size="26" fill="rgba(245,247,251,0.66)">Still in the lab. Better to hold it back than ship it half-baked.</text>
+            </g>
+          </svg>
         </div>
-        <div class="actions">
-          <!-- <a class="btn btn-ghost" href="mailto:hello@maevinlabs.com">Contact us</a> -->
+        <div class="project-copy">
+          <span class="eyebrow">In Progress</span>
+          <h2>Next Up</h2>
+          <p>New ideas are in motion. Some will become products, some will become experiments, and some will die quietly like they should. The only guarantee is that the useful ones will make it out.</p>
+          <div class="tags">
+            <span class="tag">Prototype</span>
+            <span class="tag">Research</span>
+            <span class="tag">Design System</span>
+          </div>
         </div>
       </article>
     </section>
@@ -347,20 +404,22 @@
         } catch (_) {}
       })();
     </script>
-<script>
-(function(){
-  const els = [];
-  const add = (sel, extra="") => document.querySelectorAll(sel).forEach(n=>{ n.classList.add('reveal'); if(extra) n.classList.add(extra); els.push(n); });
-  add('.feature','s1');
-  add('.card','s2');
-  if('IntersectionObserver' in window){
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-    },{threshold:.12});
-    els.forEach(el=>io.observe(el));
-  } else { els.forEach(el=>el.classList.add('in')); }
-})();
-</script>
   </div>
+  <script>
+  (function(){
+    const els = [];
+    const add = (sel, extra="") => document.querySelectorAll(sel).forEach((n)=>{ n.classList.add('reveal'); if(extra) n.classList.add(extra); els.push(n); });
+    add('.hero','s1');
+    add('.project','s2');
+    if('IntersectionObserver' in window){
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach((e)=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { threshold: .14 });
+      els.forEach((el)=>io.observe(el));
+    } else {
+      els.forEach((el)=>el.classList.add('in'));
+    }
+  })();
+  </script>
 </body>
 </html>
