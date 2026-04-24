@@ -4,59 +4,242 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Writing — Maevin Labs</title>
-  <meta name="description" content="Articles and notes from Maevin Labs." />
+  <meta name="description" content="Notes, posts, and build-in-public writing from Maevin Labs." />
+  <meta property="og:title" content="Writing — Maevin Labs" />
+  <meta property="og:description" content="Notes, posts, and build-in-public writing from Maevin Labs." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://maevinlabs.com/writings.html" />
+  <meta property="og:image" content="https://maevinlabs.com/assets/Logo_blue.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Writing — Maevin Labs" />
+  <meta name="twitter:description" content="Notes, posts, and build-in-public writing from Maevin Labs." />
+  <meta name="twitter:image" content="https://maevinlabs.com/assets/Logo_blue.png" />
+  <link rel="canonical" href="https://maevinlabs.com/writings.html" />
   <link rel="icon" type="image/png" href="/assets/Logo_blue.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/Logo_blue.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/Logo_blue.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/Logo_blue.png" />
   <style>
-    :root { --bg:#212126; --card:#323337; --text:#ffffff; --muted:rgba(255,255,255,0.72); --accent:#4da3ff; --radius:14px; --shadow:0 10px 30px rgba(0,0,0,.35); }
-    html,body{height:100%}
-    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;display:flex;flex-direction:column}
-    .wrap{max-width:1100px;margin:0 auto;padding:28px 20px 80px;flex:1;display:flex;flex-direction:column}
-    a{color:var(--text);text-decoration:none}
-
-    header{display:flex;align-items:center;justify-content:space-between;gap:16px}
-    .brand{display:flex;align-items:center;gap:12px}
-    .brand img{width:40px;height:40px;border-radius:10px}
-    .brand h1{font-size:22px;font-weight:700;letter-spacing:.3px;margin:0;color:var(--text)}
-    nav a{position:relative;opacity:.8;margin-left:18px;font-size:14px}
-    nav a:hover{opacity:1}
-    nav a::after{content:"";position:absolute;left:0;bottom:-6px;height:2px;width:0;background:linear-gradient(90deg,var(--accent),transparent);transition:width .25s ease}
-    nav a:hover::after{width:16px}
-
-    /* Shared header pieces (from index) */
-    .socials-inline { display:inline-flex; gap:10px; align-items:center; }
-    .socials-inline a { width:22px; height:22px; display:inline-flex; align-items:center; justify-content:center; }
-    .socials-inline svg { width:14px; height:14px; fill: var(--text); opacity:.9; }
-    .nav-sep { color: var(--accent); font-weight:700; opacity:.95; display:inline-flex; align-items:center; justify-content:center; width:24px; }
-
-    .hero{padding:64px 0 24px}
-    .hero h1{font-size:clamp(32px,6vw,44px);line-height:1.1;margin:0 0 10px}
-    .hero p{color:var(--muted);font-size:18px;max-width:800px;margin:0}
-
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    @media (max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}}
-    @media (max-width:640px){.grid{grid-template-columns:1fr}}
-
-    .card{position:relative;background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(0,0,0,.06));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:18px 72px 18px 18px;box-shadow:var(--shadow);transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease,background .25s ease;min-height:170px;overflow:hidden}
-    .card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.5);border-color:rgba(77,163,255,.35);background:linear-gradient(180deg,rgba(77,163,255,.06),rgba(0,0,0,.06))}
-    .badge{position:absolute;top:14px;right:14px;font-size:11px;padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);z-index:1}
-    .title{font-size:20px;font-weight:800;margin:0 0 6px}
-    .meta{font-size:12px;color:var(--muted);margin:0 0 10px}
-    .desc{font-size:14px;color:var(--muted);margin:0}
-    .cta{display:inline-flex;gap:8px;align-items:center;font-weight:600;color:var(--accent);margin-top:12px}
-
-    footer {
-      text-align: center;
-      margin: 120px 0 30px;
+    :root {
+      --bg: #0d1017;
+      --field: #07090d;
+      --text: #f5f7fb;
+      --muted: rgba(227,232,242,0.74);
+      --soft: rgba(227,232,242,0.52);
+      --accent: #60a5fa;
+      --accent-soft: rgba(96,165,250,0.16);
+      --border: rgba(255,255,255,0.1);
+      --line: rgba(255,255,255,0.08);
+      --radius: 18px;
+      --shadow: 0 24px 60px rgba(0,0,0,.42);
+    }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background:
+        radial-gradient(circle at 16% 8%, rgba(96,165,250,.08), transparent 24%),
+        radial-gradient(circle at 82% 14%, rgba(244,114,182,.05), transparent 20%),
+        linear-gradient(180deg, #040507 0%, #07090d 22%, var(--bg) 52%, var(--bg) 100%);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a { color: inherit; text-decoration: none; }
+    .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 20px 56px;
+    }
+    .page {
+      padding-top: 12px;
+    }
+    .hero {
+      padding: clamp(44px, 8vw, 96px) 0 30px;
+      display: grid;
+      gap: 26px;
+      border-bottom: 1px solid var(--line);
+    }
+    .eyebrow {
+      margin: 0;
+      font-size: 12px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .hero h1 {
+      margin: 0;
+      max-width: 10ch;
+      font-size: clamp(42px, 8vw, 84px);
+      line-height: .94;
+      letter-spacing: -.05em;
+      font-weight: 700;
+    }
+    .hero-copy {
+      max-width: 660px;
+      display: grid;
+      gap: 16px;
+    }
+    .hero-copy p {
+      margin: 0;
       color: var(--muted);
+      font-size: clamp(16px, 1.8vw, 19px);
+      line-height: 1.75;
+    }
+    .archive {
+      padding-top: clamp(30px, 6vw, 60px);
+      display: grid;
+      gap: 42px;
+    }
+    .archive-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .archive-label h2 {
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+    .archive-label p {
+      margin: 0;
+      color: var(--soft);
       font-size: 14px;
+    }
+    .featured {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(260px, .8fr);
+      gap: 30px;
+      padding: 28px 0 34px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      align-items: end;
+    }
+    .featured-body {
+      display: grid;
+      gap: 16px;
+    }
+    .featured-body h3 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1;
+      letter-spacing: -.04em;
+    }
+    .featured-body p {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.75;
+      color: var(--muted);
+      max-width: 48rem;
+    }
+    .featured-meta {
+      display: grid;
+      gap: 16px;
+      align-content: end;
+      justify-items: start;
+    }
+    .meta-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--soft);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .featured-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--accent);
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .archive-list {
+      display: grid;
+      gap: 0;
+    }
+    .entry {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 20px;
+      padding: 22px 0 24px;
+      border-bottom: 1px solid var(--line);
+      transition: transform .2s ease, border-color .2s ease;
+    }
+    .entry:hover {
+      transform: translateX(2px);
+      border-color: rgba(96,165,250,.22);
+    }
+    .entry-main {
+      display: grid;
+      gap: 8px;
+    }
+    .entry-main h3 {
+      margin: 0;
+      font-size: clamp(24px, 3vw, 34px);
+      line-height: 1.06;
+      letter-spacing: -.035em;
+    }
+    .entry-main p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.72;
+      max-width: 44rem;
+    }
+    .entry-side {
+      display: grid;
+      gap: 10px;
+      align-content: start;
+      justify-items: end;
+      text-align: right;
+      color: var(--soft);
+      font-size: 13px;
+    }
+    .entry-side .read-link {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 14px;
+    }
+    footer {
+      margin: 90px 0 20px;
+      text-align: center;
+      color: var(--soft);
+      font-size: 14px;
+    }
+    @media (max-width: 840px) {
+      .featured {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+      .entry {
+        grid-template-columns: 1fr;
+      }
+      .entry-side {
+        justify-items: start;
+        text-align: left;
+      }
+    }
+    @media (max-width: 560px) {
+      .wrap {
+        padding: 0 16px 46px;
+      }
+      .hero {
+        padding: 34px 0 24px;
+      }
+      .archive {
+        gap: 30px;
+      }
+      .featured {
+        padding: 24px 0 28px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <div class="wrap page">
     <div id="site-header"></div>
     <script>
       (async () => {
@@ -69,13 +252,37 @@
       })();
     </script>
 
-    <section class="hero">
-      <h1>Writing</h1>
-      <p>Notes, guides, and build-in-public entries. Latest posts from Medium are below.</p>
+    <section class="hero" aria-label="Writing introduction">
+      <p class="eyebrow">Writing</p>
+      <div class="hero-copy">
+        <h1>A few things I’ve put down on paper.</h1>
+        <p>Thoughts from the work, things I have been learning, and a few ideas I wanted to pin down before they slipped away. Read if you like.</p>
+      </div>
     </section>
 
-    <section class="grid" aria-label="Articles" id="articles">
-      <!-- Cards will be injected here by JS; leaving empty keeps layout clean if fetch fails. -->
+    <section class="archive" aria-label="Writing archive">
+      <div class="archive-label">
+        <h2>Featured</h2>
+        <p id="archive-count"></p>
+      </div>
+
+      <a class="featured" id="featured-post" href="/writing/debug-diaries.html" aria-label="Featured writing">
+        <div class="featured-body">
+          <div class="meta-line" id="featured-meta"></div>
+          <h3 id="featured-title">Debug Diaries</h3>
+          <p id="featured-deck">Shipping teaches faster than theorizing, but only if you stay honest about what broke.</p>
+        </div>
+        <div class="featured-meta">
+          <span class="featured-link">Read post <span>→</span></span>
+        </div>
+      </a>
+
+      <div class="archive-label">
+        <h2>Archive</h2>
+        <p>Newest first.</p>
+      </div>
+
+      <div class="archive-list" id="archive-list"></div>
     </section>
 
     <div id="site-footer"></div>
@@ -91,37 +298,78 @@
     </script>
   </div>
 
+  <script src="/writing-data.js"></script>
   <script>
-    // Fetch Medium posts via server-side proxy and render as cards with dates
-    (function() {
-      const ENDPOINT = '/api/medium?limit=9';
-      const el = document.getElementById('articles');
+    (function renderWritingArchive() {
+      const posts = Array.isArray(window.MAEVIN_WRITING) ? [...window.MAEVIN_WRITING] : [];
+      if (!posts.length) return;
 
-      const fmtDate = (iso) => {
-        try { return new Date(iso).toLocaleDateString(undefined, { year:'numeric', month:'long', day:'numeric' }); } catch { return ''; }
+      posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+      const featured = posts.find((post) => post.featured) || posts[0];
+      const rest = posts.filter((post) => post.slug !== featured.slug);
+
+      const formatDate = (value) => {
+        try {
+          return new Date(value + 'T12:00:00').toLocaleDateString(undefined, {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+        } catch (_) {
+          return value;
+        }
       };
 
-      function createCard(item){
-        const a=document.createElement('a');
-        a.className='card'; a.href=item.link; a.target='_blank'; a.rel='noopener noreferrer';
-        const b=document.createElement('div'); b.className='badge'; b.textContent='Medium';
-        const t=document.createElement('h3'); t.className='title'; t.textContent=item.title||'Untitled';
-        const m=document.createElement('div'); m.className='meta'; m.textContent=fmtDate(item.pubDate);
-        const d=document.createElement('p'); d.className='desc';
-        const summary=(item.description||'').trim();
-        d.textContent = summary.length>160 ? summary.slice(0,160)+'…' : (summary || 'Read the full article on Medium.');
-        const c=document.createElement('div'); c.className='cta'; c.innerHTML='Read article <span>→</span>';
-        a.append(b,t,m,d,c); return a;
+      const countEl = document.getElementById('archive-count');
+      if (countEl) {
+        countEl.textContent = posts.length === 1 ? '1 post so far.' : posts.length + ' posts so far.';
       }
 
-      fetch(ENDPOINT).then(r=>r.ok?r.json():Promise.reject(r)).then(data=>{
-        const items=(data.items||[]); if(!items.length) return;
-        const frag=document.createDocumentFragment();
-        items.forEach(it=>frag.appendChild(createCard(it)));
-        el.appendChild(frag);
-      }).catch(()=>{
-        // No-op; if the feed fails, we simply keep the section empty.
+      const featuredLink = document.getElementById('featured-post');
+      const featuredMeta = document.getElementById('featured-meta');
+      const featuredTitle = document.getElementById('featured-title');
+      const featuredDeck = document.getElementById('featured-deck');
+      if (featuredLink) featuredLink.href = featured.href;
+      if (featuredMeta) featuredMeta.textContent = formatDate(featured.date) + ' • ' + featured.readTime;
+      if (featuredTitle) featuredTitle.textContent = featured.title;
+      if (featuredDeck) featuredDeck.textContent = featured.deck;
+
+      const list = document.getElementById('archive-list');
+      if (!list) return;
+      const fragment = document.createDocumentFragment();
+
+      rest.forEach((post) => {
+        const article = document.createElement('a');
+        article.className = 'entry';
+        article.href = post.href;
+        article.setAttribute('aria-label', post.title);
+
+        const main = document.createElement('div');
+        main.className = 'entry-main';
+
+        const title = document.createElement('h3');
+        title.textContent = post.title;
+
+        const deck = document.createElement('p');
+        deck.textContent = post.excerpt;
+        main.append(title, deck);
+
+        const side = document.createElement('div');
+        side.className = 'entry-side';
+
+        const meta = document.createElement('span');
+        meta.textContent = formatDate(post.date) + ' • ' + post.readTime;
+
+        const cta = document.createElement('span');
+        cta.className = 'read-link';
+        cta.innerHTML = 'Read post <span>→</span>';
+
+        side.append(meta, cta);
+        article.append(main, side);
+        fragment.appendChild(article);
       });
+
+      list.appendChild(fragment);
     })();
   </script>
 </body>

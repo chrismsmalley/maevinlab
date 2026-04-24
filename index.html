@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Maevin Labs LLC</title>
   <meta name="description" content="Maevin Labs builds thoughtful, modern digital products — from playful ideas to production‑ready apps." />
+  <meta property="og:title" content="Maevin Labs" />
+  <meta property="og:description" content="Maevin Labs builds thoughtful, modern digital products — from playful ideas to production-ready apps." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://maevinlabs.com/" />
+  <meta property="og:image" content="https://maevinlabs.com/assets/Logo_blue.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Maevin Labs" />
+  <meta name="twitter:description" content="Maevin Labs builds thoughtful, modern digital products — from playful ideas to production-ready apps." />
+  <meta name="twitter:image" content="https://maevinlabs.com/assets/Logo_blue.png" />
+  <link rel="canonical" href="https://maevinlabs.com/" />
   <link rel="icon" type="image/png" href="/assets/Logo_blue.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/Logo_blue.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/Logo_blue.png" />
@@ -12,13 +22,7 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="preload" as="image" href="/assets/updated_nb.png" />
   <link rel="preload" as="video" href="/assets/openart-28e9043876138e842a7f3a525581da3b-bee8796c-e776-4583-93da-19780adb9201_1776966436468_e9bb1be8.mp4" type="video/mp4" />
-  <link rel="preload" as="image" href="/assets/new12-removebg-preview.png" />
-  <link rel="preload" as="image" href="/assets/dog_walk_flipped-removebg-preview.png" />
-  <link rel="preload" as="image" href="/assets/dog_flipped2.png" />
-  <link rel="preload" as="image" href="/assets/22-removebg-preview.png" />
-  <link rel="preload" as="image" href="/assets/42-removebg-preview.png" />
-  <link rel="preload" as="image" href="/assets/2ndtolast-removebg-preview.png" />
-  <link rel="preload" as="image" href="/assets/52-removebg-preview.png" />
+  <link rel="preload" as="script" href="/writing-data.js" />
 
   <style>
     /* Hide ALL hero-rail connector/continuation lines on mobile and clip overflow */
@@ -29,13 +33,6 @@
         display: none !important;
         content: none !important;
       }
-    }
-    /* Nuke Medium-injected UI sitewide (header and elsewhere) */
-    [class*="medium"], [id*="medium"],
-    [class*="Medium"], [id*="Medium"],
-    iframe[src*="medium.com"] {
-      display: none !important;
-      visibility: hidden !important;
     }
     :root {
       --bg: #0d1017;
@@ -318,9 +315,11 @@
       backdrop-filter: none;
       -webkit-backdrop-filter: none;
       padding: 0;
+      transform: translate3d(0, 0, 0);
+      transition: transform .35s cubic-bezier(.22,1,.36,1);
     }
     .card:hover {
-      transform: translateY(-2px);
+      transform: translate3d(0, -4px, 0);
       background: transparent;
       box-shadow: none;
       border-color: transparent;
@@ -328,6 +327,13 @@
     }
     .card h3 { margin: 4px 0 8px; font-size: 18px; color: var(--text); }
     .card p { margin: 0; color: var(--muted); line-height: 1.55; font-size: 14px; }
+    .writing-meta {
+      margin: 0 0 10px;
+      color: rgba(227,232,242,0.52);
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
     /* Hide badges sitewide for now */
     .badge { display: none !important; }
     /*
@@ -1080,28 +1086,9 @@
 
     <div class="section-title video-gated video-gated-5" id="writing">
       <h2>Writing</h2>
-      <a href="https://medium.com/@chris_74915" target="_blank" rel="noopener noreferrer" aria-label="Open Medium profile" style="font-size:14px; opacity:.8;">All posts →</a>
+      <a href="/writings.html" target="_self" aria-label="Open writing archive" style="font-size:14px; opacity:.8;">Writings →</a>
     </div>
-    <section class="grid writing-list" aria-label="Latest Medium articles grid">
-      <!-- Fallback placeholders; replaced by JS on success -->
-      <a class="card video-gated video-gated-6" href="https://medium.com/@chris_74915" target="_blank" rel="noopener noreferrer" aria-label="Read on Medium">
-        <div class="badge">Medium</div>
-        <h3>Latest articles</h3>
-        <p>Recent notes and essays.</p>
-        <div class="cta">Read on Medium <span>→</span></div>
-      </a>
-      <div class="card video-gated video-gated-7" role="article">
-        <div class="badge">Post</div>
-        <h3>Debug Diaries</h3>
-        <p>Build notes from the work.</p>
-        <div class="cta">Coming from feed <span>→</span></div>
-      </div>
-      <div class="card video-gated video-gated-8" role="article">
-        <div class="badge">Post</div>
-        <h3>What I’m Learning Lately</h3>
-        <p>Short reflections on tools and systems.</p>
-        <div class="cta">Coming from feed <span>→</span></div>
-      </div>
+    <section class="grid writing-list" id="writing-preview" aria-label="Latest writing">
     </section>
 
     <footer>
@@ -1110,37 +1097,57 @@
     </div>
   </div>
 
+  <script src="/writing-data.js"></script>
   <script>
     // Reveal-on-scroll and small parallax for hero image (composed via CSS variables)
     (function() {
-      // Trigger hero enter animation on DOM ready
-      document.addEventListener('DOMContentLoaded', () => document.body.classList.add('is-ready'));
-      // Aggressively remove Medium-injected bubbles/widgets anywhere on the page
-      const killMedium = (root = document) => {
-        root.querySelectorAll(
-          'iframe[src*="medium.com"], [class*="medium"], [id*="medium"], [class*="Medium"], [id*="Medium"]'
-        ).forEach(n => n.remove());
+      const renderWritingPreview = () => {
+        const container = document.getElementById('writing-preview');
+        const posts = Array.isArray(window.MAEVIN_WRITING) ? [...window.MAEVIN_WRITING] : [];
+        if (!container || !posts.length) return;
+
+        posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+        const visiblePosts = posts.slice(0, 3);
+        const formatDate = (value) => {
+          try {
+            return new Date(value + 'T12:00:00').toLocaleDateString(undefined, {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric'
+            });
+          } catch (_) {
+            return value;
+          }
+        };
+
+        container.innerHTML = '';
+        visiblePosts.forEach((post, index) => {
+          const card = document.createElement('a');
+          card.className = `card video-gated video-gated-${index + 6}`;
+          card.href = post.href;
+          card.setAttribute('aria-label', post.title);
+
+          const title = document.createElement('h3');
+          title.textContent = post.title;
+
+          const desc = document.createElement('p');
+          desc.textContent = post.excerpt;
+
+          const meta = document.createElement('div');
+          meta.className = 'writing-meta';
+          meta.textContent = formatDate(post.date) + ' • ' + post.readTime;
+
+          const cta = document.createElement('div');
+          cta.className = 'cta';
+          cta.innerHTML = 'Read post <span>→</span>';
+
+          card.append(meta, title, desc, cta);
+          container.appendChild(card);
+        });
       };
-      // Initial pass now and on DOM ready
-      killMedium();
-      document.addEventListener('DOMContentLoaded', killMedium);
-      // Watch for future injections
-      const mobserver = new MutationObserver(muts => {
-        for (const m of muts) {
-          m.addedNodes && m.addedNodes.forEach(node => {
-            if (!(node instanceof Element)) return;
-            if (node.matches(
-              'iframe[src*="medium.com"], [class*="medium"], [id*="medium"], [class*="Medium"], [id*="Medium"]'
-            )) {
-              node.remove();
-            } else {
-              // scan subtree of this new element
-              killMedium(node);
-            }
-          });
-        }
-      });
-      mobserver.observe(document.documentElement, { childList: true, subtree: true });
+
+      renderWritingPreview();
+      document.addEventListener('DOMContentLoaded', () => document.body.classList.add('is-ready'));
       const addReveal = (selector) => {
         document.querySelectorAll(selector).forEach((el, i) => {
           el.classList.add('reveal');
@@ -1182,497 +1189,6 @@
       } else {
         releaseLowerSections();
       }
-
-      function startHeroConstellation(canvas, onComplete) {
-        const clamp01 = (value) => Math.max(0, Math.min(1, value));
-        const smoothRange = (value, startPoint, endPoint) => {
-          const normalized = clamp01((value - startPoint) / Math.max(0.0001, endPoint - startPoint));
-          return normalized * normalized * (3 - 2 * normalized);
-        };
-        const posePaths = [
-          '/assets/new12-removebg-preview.png',
-          '/assets/dog_walk_flipped-removebg-preview.png',
-          '/assets/dog_flipped2.png',
-          '/assets/22-removebg-preview.png',
-          '/assets/42-removebg-preview.png',
-          '/assets/42-removebg-preview.png',
-          '/assets/42-removebg-preview.png'
-        ];
-        const ctx = canvas.getContext('2d');
-        if (!ctx) {
-          onComplete();
-          return;
-        }
-        const loadImage = (src) => new Promise((resolve, reject) => {
-          const img = new Image();
-          img.onload = () => resolve(img);
-          img.onerror = reject;
-          img.src = src;
-        });
-        Promise.all(posePaths.map(loadImage)).then((images) => {
-          const POINT_COUNT = 340;
-          const poses = images.map((img) => extractPosePoints(img, POINT_COUNT));
-          const tintedPoses = images.map((img) => createTintedPoseCanvas(img));
-          const state = {
-            width: 0,
-            height: 0,
-            dpr: 1,
-            pointerX: 0,
-            pointerY: 0,
-            currentX: 0,
-            currentY: 0,
-            completed: false,
-            restFrame: null,
-            renderPoints: null
-          };
-          const stars = Array.from({ length: 44 }, (_, i) => ({
-            x: ((i * 73) % 1000) / 1000,
-            y: ((i * 47) % 1000) / 1000,
-            r: 0.6 + ((i * 19) % 10) / 10,
-            a: 0.16 + ((i * 13) % 8) / 30
-          }));
-          const resize = () => {
-            const rect = canvas.getBoundingClientRect();
-            const dpr = Math.min(window.devicePixelRatio || 1, 2);
-            canvas.width = Math.max(1, Math.round(rect.width * dpr));
-            canvas.height = Math.max(1, Math.round(rect.height * dpr));
-            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-            state.width = rect.width;
-            state.height = rect.height;
-            state.dpr = dpr;
-          };
-          const onPointerMove = (event) => {
-            const rect = canvas.getBoundingClientRect();
-            const px = (event.clientX - rect.left) / rect.width - 0.5;
-            const py = (event.clientY - rect.top) / rect.height - 0.5;
-            state.pointerX = Math.max(-1, Math.min(1, px));
-            state.pointerY = Math.max(-1, Math.min(1, py));
-          };
-          const onPointerLeave = () => {
-            state.pointerX = 0;
-            state.pointerY = 0;
-          };
-          resize();
-          window.addEventListener('resize', resize);
-          canvas.addEventListener('pointermove', onPointerMove);
-          canvas.addEventListener('pointerleave', onPointerLeave);
-
-          const start = performance.now();
-          const duration = 5000;
-          const segments = [0, 0.16, 0.32, 0.48, 0.64, 0.78, 0.9, 1];
-          const draw = (now) => {
-            const elapsed = now - start;
-            const raw = Math.min(elapsed / duration, 1);
-            const ease = raw >= 1 ? 1 : (1 - Math.pow(1 - raw, 3));
-            const blend = getBlendState(ease, segments, poses);
-            const travel = 1 - Math.min(ease / 0.62, 1);
-            const entryX = -state.width * 0.19 * Math.pow(travel, 1.2);
-            const settleY = raw > 0.88 ? -state.height * 0.008 * Math.sin((raw - 0.88) / 0.12 * Math.PI) : 0;
-            state.currentX += ((state.pointerX * 10) - state.currentX) * 0.08;
-            state.currentY += ((state.pointerY * 8) - state.currentY) * 0.08;
-
-            ctx.clearRect(0, 0, state.width, state.height);
-            ctx.globalCompositeOperation = 'source-over';
-
-            drawBackgroundField(ctx, state.width, state.height, stars, now, raw);
-
-            const centerX = state.width * 0.47 + entryX + state.currentX;
-            const centerY = state.height * 0.585 + settleY + state.currentY;
-            const baseScale = Math.min(state.width, state.height);
-            const scaleX = baseScale * 0.53;
-            const scaleY = baseScale * 0.96;
-            const targetPoints = blend.points.map((point, index) => {
-              const drift = Math.sin(now * 0.0011 + index * 0.52) * 0.28;
-              const pulse = Math.cos(now * 0.0009 + index * 0.36) * 0.2;
-              const finalX = centerX + (point.x - 0.5) * scaleX + drift;
-              const finalY = centerY + (point.y - 0.55) * scaleY + pulse;
-              return {
-                x: finalX,
-                y: finalY,
-                a: point.a,
-                edge: point.edge,
-                rank: point.rank,
-                angle: point.angle
-              };
-            });
-            if (!state.renderPoints || state.renderPoints.length !== targetPoints.length) {
-              state.renderPoints = targetPoints.map((point) => ({ ...point }));
-            } else {
-              const smoothing = raw < 0.2 ? 0.2 : 0.14;
-              state.renderPoints = state.renderPoints.map((point, index) => {
-                const target = targetPoints[index];
-                return {
-                  x: point.x + (target.x - point.x) * smoothing,
-                  y: point.y + (target.y - point.y) * smoothing,
-                  a: point.a + (target.a - point.a) * 0.2,
-                  edge: target.edge,
-                  rank: target.rank,
-                  angle: point.angle + (target.angle - point.angle) * 0.16
-                };
-              });
-            }
-            const points = state.renderPoints;
-
-            drawPoseUnderlay(
-              ctx,
-              tintedPoses[blend.fromIndex],
-              tintedPoses[blend.toIndex],
-              blend.mix,
-              centerX,
-              centerY,
-              scaleX,
-              scaleY,
-              blend.alpha,
-              1
-            );
-            drawConstellationDog(
-              ctx,
-              points,
-              0.88 * blend.alpha,
-              now,
-              1,
-              1
-            );
-            state.restFrame = {
-              centerX,
-              centerY,
-              scaleX,
-              scaleY,
-              alpha: blend.alpha,
-              outlineProgress: 1
-            };
-
-            if (!state.completed && raw >= 0.965) {
-              state.completed = true;
-              onComplete();
-            }
-            if (raw < 1) {
-              requestAnimationFrame(draw);
-            } else {
-              requestAnimationFrame(function idleLoop(idleNow) {
-                ctx.clearRect(0, 0, state.width, state.height);
-                drawBackgroundField(ctx, state.width, state.height, stars, idleNow, 1);
-                if (state.restFrame) {
-                  drawPoseUnderlay(
-                    ctx,
-                    tintedPoses[tintedPoses.length - 1],
-                    null,
-                    0,
-                    state.restFrame.centerX,
-                    state.restFrame.centerY,
-                    state.restFrame.scaleX,
-                    state.restFrame.scaleY,
-                    state.restFrame.alpha,
-                    state.restFrame.outlineProgress
-                  );
-                }
-                const idlePoints = points.map((point, index) => ({
-                  x: point.x + Math.sin(idleNow * 0.001 + index * 0.24) * 0.12,
-                  y: point.y + Math.cos(idleNow * 0.00084 + index * 0.22) * 0.12,
-                  a: point.a,
-                  edge: point.edge,
-                  rank: point.rank,
-                  angle: point.angle
-                }));
-                drawConstellationDog(ctx, idlePoints, 0.82, idleNow, 1, 1);
-                requestAnimationFrame(idleLoop);
-              });
-            }
-          };
-          requestAnimationFrame(draw);
-        }).catch(() => {
-          onComplete();
-        });
-
-        function extractPosePoints(img, targetCount) {
-          const offscreen = document.createElement('canvas');
-          offscreen.width = img.naturalWidth;
-          offscreen.height = img.naturalHeight;
-          const offCtx = offscreen.getContext('2d', { willReadFrequently: true });
-          offCtx.drawImage(img, 0, 0);
-          offCtx.clearRect(0, Math.floor(offscreen.height * 0.91), offscreen.width, Math.ceil(offscreen.height * 0.09));
-          const { data, width, height } = offCtx.getImageData(0, 0, offscreen.width, offscreen.height);
-          const edgePoints = [];
-          const innerPoints = [];
-          for (let y = 2; y < height - 2; y += 4) {
-            for (let x = 2; x < width - 2; x += 4) {
-              const index = (y * width + x) * 4 + 3;
-              const alpha = data[index];
-              if (alpha < 28) continue;
-              const neighbors = [
-                data[((y - 2) * width + x) * 4 + 3],
-                data[((y + 2) * width + x) * 4 + 3],
-                data[(y * width + (x - 2)) * 4 + 3],
-                data[(y * width + (x + 2)) * 4 + 3]
-              ];
-              const edge = neighbors.some((value) => value < 24);
-              if (!edge && ((x + y) % 16 !== 0)) continue;
-              const point = {
-                x: x / width,
-                y: y / height,
-                a: alpha / 255,
-                edge
-              };
-              if (edge) {
-                edgePoints.push(point);
-              } else {
-                innerPoints.push(point);
-              }
-            }
-          }
-          const points = edgePoints.concat(innerPoints);
-          if (!points.length) {
-            return Array.from({ length: targetCount }, (_, i) => ({
-              x: 0.5,
-              y: 0.5,
-              a: 1,
-              edge: i % 2 === 0,
-              rank: i / targetCount,
-              angle: ((i / Math.max(1, targetCount - 1)) * Math.PI * 2) - Math.PI
-            }));
-          }
-          const edgeTarget = Math.min(edgePoints.length, Math.round(targetCount * 0.76));
-          const innerTarget = Math.max(0, targetCount - edgeTarget);
-          const centroidSource = edgePoints.length ? edgePoints : points;
-          const centroid = centroidSource.reduce((acc, point) => {
-            acc.x += point.x;
-            acc.y += point.y;
-            return acc;
-          }, { x: 0, y: 0 });
-          centroid.x /= centroidSource.length;
-          centroid.y /= centroidSource.length;
-          const orderedEdgePoints = edgePoints.map((point) => ({
-            ...point,
-            angle: Math.atan2(point.y - centroid.y, point.x - centroid.x),
-            distance: Math.hypot(point.x - centroid.x, point.y - centroid.y)
-          })).sort((a, b) => a.angle - b.angle || b.distance - a.distance);
-          const orderedInnerPoints = innerPoints.map((point) => ({
-            ...point,
-            angle: Math.atan2(point.y - centroid.y, point.x - centroid.x)
-          })).sort((a, b) => a.y - b.y || a.x - b.x);
-          const sampled = [];
-          const angleStep = (Math.PI * 2) / Math.max(1, edgeTarget);
-          for (let i = 0; i < edgeTarget; i++) {
-            const minAngle = -Math.PI + angleStep * i;
-            const maxAngle = minAngle + angleStep;
-            const slice = orderedEdgePoints.filter((point) => point.angle >= minAngle && point.angle < maxAngle);
-            const point = slice.reduce((best, candidate) => (
-              !best || candidate.distance > best.distance ? candidate : best
-            ), null) || orderedEdgePoints[Math.floor(i * orderedEdgePoints.length / Math.max(1, edgeTarget))];
-            sampled.push({
-              x: point.x,
-              y: point.y,
-              a: point.a,
-              edge: true,
-              rank: i / Math.max(1, targetCount - 1),
-              angle: point.angle
-            });
-          }
-          for (let i = 0; i < innerTarget; i++) {
-            const point = orderedInnerPoints[Math.floor(i * orderedInnerPoints.length / Math.max(1, innerTarget))];
-            sampled.push({
-              x: point.x,
-              y: point.y,
-              a: point.a,
-              edge: false,
-              rank: (edgeTarget + i) / Math.max(1, targetCount - 1),
-              angle: point.angle
-            });
-          }
-          return sampled;
-        }
-
-        function createTintedPoseCanvas(img) {
-          const offscreen = document.createElement('canvas');
-          offscreen.width = img.naturalWidth;
-          offscreen.height = img.naturalHeight;
-          const offCtx = offscreen.getContext('2d');
-          if (!offCtx) return offscreen;
-          offCtx.clearRect(0, 0, offscreen.width, offscreen.height);
-          offCtx.drawImage(img, 0, 0);
-          offCtx.clearRect(0, Math.floor(offscreen.height * 0.91), offscreen.width, Math.ceil(offscreen.height * 0.09));
-          offCtx.globalCompositeOperation = 'source-in';
-          const gradient = offCtx.createLinearGradient(0, 0, 0, offscreen.height);
-          gradient.addColorStop(0, 'rgba(239,246,255,0.96)');
-          gradient.addColorStop(0.45, 'rgba(171,213,255,0.88)');
-          gradient.addColorStop(1, 'rgba(114,176,255,0.82)');
-          offCtx.fillStyle = gradient;
-          offCtx.fillRect(0, 0, offscreen.width, offscreen.height);
-          offCtx.globalCompositeOperation = 'source-over';
-          return offscreen;
-        }
-
-        function getBlendState(progress, segments, poses) {
-          let poseIndex = poses.length - 1;
-          let local = 1;
-          for (let i = 0; i < segments.length - 1; i++) {
-            if (progress <= segments[i + 1]) {
-              poseIndex = Math.min(i, poses.length - 2);
-              const range = segments[i + 1] - segments[i] || 1;
-              local = (progress - segments[i]) / range;
-              break;
-            }
-          }
-          const eased = local < 1 ? 0.5 - Math.cos(local * Math.PI) / 2 : 1;
-          const from = poses[poseIndex];
-          const to = poses[Math.min(poseIndex + 1, poses.length - 1)];
-          const interpolateAngle = (startAngle, endAngle, t) => {
-            const delta = Math.atan2(Math.sin(endAngle - startAngle), Math.cos(endAngle - startAngle));
-            return startAngle + delta * t;
-          };
-          return {
-            alpha: Math.min(1, 0.18 + progress * 1.2),
-            fromIndex: poseIndex,
-            toIndex: Math.min(poseIndex + 1, poses.length - 1),
-            mix: eased,
-            points: from.map((point, index) => ({
-              x: point.x + (to[index].x - point.x) * eased,
-              y: point.y + (to[index].y - point.y) * eased,
-              a: point.a + (to[index].a - point.a) * eased,
-              edge: point.edge || to[index].edge,
-              rank: point.rank,
-              angle: interpolateAngle(point.angle, to[index].angle ?? point.angle, eased)
-            }))
-          };
-        }
-
-        function drawBackgroundField(context, width, height, stars, now, progress) {
-          context.save();
-          context.globalAlpha = 0.7;
-          for (const star of stars) {
-            const x = star.x * width + Math.sin(now * 0.0002 + star.y * 5) * 8;
-            const y = star.y * height * 0.8 + Math.cos(now * 0.00024 + star.x * 7) * 6;
-            const radius = star.r + Math.sin(now * 0.0014 + star.x * 14) * 0.2;
-            context.fillStyle = `rgba(184,225,255,${star.a * (0.5 + progress * 0.5)})`;
-            context.beginPath();
-            context.arc(x, y, radius, 0, Math.PI * 2);
-            context.fill();
-          }
-          context.restore();
-        }
-
-        function drawConstellationDog(context, points, alpha, now, sketchProgress, resolveProgress) {
-          context.save();
-          const edgePoints = points.filter((point) => point.edge).sort((a, b) => a.angle - b.angle);
-          const innerPoints = points.filter((point) => !point.edge);
-          context.lineCap = 'round';
-          context.lineJoin = 'round';
-          if (edgePoints.length) {
-            context.lineWidth = 2.1;
-            context.strokeStyle = `rgba(236,244,255,${0.46 * alpha})`;
-            context.shadowBlur = 12;
-            context.shadowColor = `rgba(110,176,255,${0.14 * alpha})`;
-            context.beginPath();
-            context.moveTo(edgePoints[0].x, edgePoints[0].y);
-            for (let i = 1; i < edgePoints.length; i++) {
-              const prev = edgePoints[i - 1];
-              const point = edgePoints[i];
-              const midX = (prev.x + point.x) / 2;
-              const midY = (prev.y + point.y) / 2;
-              context.quadraticCurveTo(prev.x, prev.y, midX, midY);
-            }
-            const last = edgePoints[edgePoints.length - 1];
-            const first = edgePoints[0];
-            context.quadraticCurveTo(last.x, last.y, (last.x + first.x) / 2, (last.y + first.y) / 2);
-            context.stroke();
-          }
-          context.globalAlpha = 1;
-          if (innerPoints.length) {
-            for (let i = 0; i < innerPoints.length; i += 10) {
-              const point = innerPoints[i];
-              context.fillStyle = `rgba(198,224,248,${0.05 * alpha})`;
-              context.beginPath();
-              context.arc(point.x, point.y, 0.42, 0, Math.PI * 2);
-              context.fill();
-            }
-          }
-          context.restore();
-        }
-
-        function drawPoseUnderlay(context, fromPose, toPose, mix, centerX, centerY, scaleX, scaleY, alpha, revealProgress) {
-          if (!fromPose || alpha <= 0.01) return;
-          const width = scaleX * 1.08;
-          const height = scaleY * 1.06;
-          const drawX = centerX - width / 2;
-          const drawY = centerY - height * 0.56;
-          const drawLayer = (pose, layerAlpha) => {
-            if (!pose || layerAlpha <= 0) return;
-            context.globalAlpha = layerAlpha;
-            context.drawImage(pose, drawX, drawY, width, height);
-          };
-          context.save();
-          context.globalCompositeOperation = 'screen';
-          context.beginPath();
-          context.rect(drawX, drawY + height * (1 - revealProgress), width, height * revealProgress);
-          context.clip();
-          context.filter = 'none';
-          drawLayer(fromPose, 0.16 * alpha);
-          if (toPose && toPose !== fromPose && mix > 0) {
-            drawLayer(toPose, 0.16 * alpha * mix);
-          }
-          context.save();
-          context.beginPath();
-          context.rect(drawX, drawY, width, height * 0.48);
-          context.clip();
-          drawLayer(fromPose, 0.11 * alpha);
-          if (toPose && toPose !== fromPose && mix > 0) {
-            drawLayer(toPose, 0.11 * alpha * mix);
-          }
-          context.restore();
-          context.filter = 'blur(2.4px)';
-          drawLayer(fromPose, 0.06 * alpha);
-          if (toPose && toPose !== fromPose && mix > 0) {
-            drawLayer(toPose, 0.06 * alpha * mix);
-          }
-          context.restore();
-        }
-      }
-    // --- Normalize Writing CTAs based on destination host ---
-    (function normalizeWritingCTAs(){
-      var titleRow = document.querySelector('.section-title#writing');
-      if (!titleRow) return;
-      var allLink = titleRow.querySelector('a[href]');
-      var allHref = allLink ? allLink.getAttribute('href') : '';
-      function prettyHost(h){
-        if (!h) return 'site';
-        try {
-          if (h.indexOf('medium') !== -1) return 'Medium';
-          h = h.replace(/^www\./,'');
-          var parts = h.split('.');
-          var core = parts.length > 1 ? parts[parts.length-2] : parts[0];
-          core = core || 'site';
-          return core.charAt(0).toUpperCase() + core.slice(1);
-        } catch(_){ return 'site'; }
-      }
-      function hostFrom(href){
-        try { return new URL(href, location.origin).hostname; } catch(_){ return ''; }
-      }
-      var cards = document.querySelectorAll('.writing-list .card');
-      for (var i=0; i<cards.length; i++){
-        var card = cards[i];
-        var cta = card.querySelector('.cta');
-        if (!cta) continue;
-        // Determine destination + host
-        var linkEl = (card.tagName === 'A') ? card : card.querySelector('a[href]');
-        var href = linkEl ? linkEl.getAttribute('href') : (allHref || '#');
-        var host = prettyHost(hostFrom(href));
-        var label = 'Read on ' + host + ' <span>→</span>';
-
-        if (card.tagName === 'A') {
-          // Card already clickable; just change the CTA text
-          cta.innerHTML = label;
-        } else {
-          // Not clickable: convert CTA into a link to the section "All posts" target
-          var a = document.createElement('a');
-          a.className = 'cta';
-          a.setAttribute('href', href);
-          a.setAttribute('target', (href.indexOf('http') === 0 ? '_blank' : '_self'));
-          a.setAttribute('rel', 'noopener noreferrer');
-          a.innerHTML = label;
-          cta.replaceWith(a);
-        }
-      }
-    })();
     })();
   </script>
 

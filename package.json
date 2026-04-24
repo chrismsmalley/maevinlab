@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "new:post": "node scripts/new-writing.js"
+  },
   "dependencies": {
     "fast-xml-parser": "^5.2.5"
   }
