@@ -1036,7 +1036,10 @@
             autoplay
             muted
             playsinline
-            preload="metadata"
+            webkit-playsinline
+            disableremoteplayback
+            disablepictureinpicture
+            preload="auto"
           >
             <source src="/assets/openart-28e9043876138e842a7f3a525581da3b-bee8796c-e776-4583-93da-19780adb9201_1776966436468_e9bb1be8.mp4" type="video/mp4" />
           </video>
@@ -1163,6 +1166,25 @@
 
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const heroVideo = document.querySelector('.hero-video');
+      const attemptHeroAutoplay = () => {
+        if (!heroVideo) return;
+        heroVideo.autoplay = true;
+        heroVideo.loop = false;
+        heroVideo.muted = true;
+        heroVideo.defaultMuted = true;
+        heroVideo.playsInline = true;
+        heroVideo.controls = false;
+        heroVideo.removeAttribute('loop');
+        heroVideo.setAttribute('autoplay', '');
+        heroVideo.setAttribute('muted', '');
+        heroVideo.setAttribute('playsinline', '');
+        heroVideo.setAttribute('webkit-playsinline', '');
+
+        const playAttempt = heroVideo.play();
+        if (playAttempt && typeof playAttempt.catch === 'function') {
+          playAttempt.catch(() => {});
+        }
+      };
       const releaseLowerSections = (() => {
         let done = false;
         return () => {
@@ -1178,13 +1200,12 @@
       if (heroVideo && !prefersReducedMotion) {
         document.body.classList.add('awaiting-video-finish');
         heroVideo.currentTime = 0;
-        const playAttempt = heroVideo.play();
-        if (playAttempt && typeof playAttempt.catch === 'function') {
-          playAttempt.catch(() => {
-            releaseLowerSections();
-          });
-        }
+        attemptHeroAutoplay();
+        heroVideo.addEventListener('loadedmetadata', attemptHeroAutoplay, { once: true });
+        heroVideo.addEventListener('canplay', attemptHeroAutoplay, { once: true });
+        window.addEventListener('pageshow', attemptHeroAutoplay, { once: true });
         heroVideo.addEventListener('ended', releaseLowerSections, { once: true });
+        heroVideo.addEventListener('error', releaseLowerSections, { once: true });
         window.setTimeout(releaseLowerSections, 6200);
       } else {
         releaseLowerSections();
