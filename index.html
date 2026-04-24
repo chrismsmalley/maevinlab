@@ -12,6 +12,13 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="preload" as="image" href="/assets/updated_nb.png" />
   <link rel="preload" as="video" href="/assets/openart-28e9043876138e842a7f3a525581da3b-bee8796c-e776-4583-93da-19780adb9201_1776966436468_e9bb1be8.mp4" type="video/mp4" />
+  <link rel="preload" as="image" href="/assets/new12-removebg-preview.png" />
+  <link rel="preload" as="image" href="/assets/dog_walk_flipped-removebg-preview.png" />
+  <link rel="preload" as="image" href="/assets/dog_flipped2.png" />
+  <link rel="preload" as="image" href="/assets/22-removebg-preview.png" />
+  <link rel="preload" as="image" href="/assets/42-removebg-preview.png" />
+  <link rel="preload" as="image" href="/assets/2ndtolast-removebg-preview.png" />
+  <link rel="preload" as="image" href="/assets/52-removebg-preview.png" />
 
   <style>
     /* Hide ALL hero-rail connector/continuation lines on mobile and clip overflow */
@@ -178,10 +185,10 @@
     .hero-media::before {
       content: "";
       position: absolute;
-      inset: 26% -10% -8%;
-      background: none;
-      filter: none;
-      opacity: 0;
+      inset: 58% 8% 2%;
+      background: radial-gradient(ellipse at center, rgba(45,110,216,.34), rgba(45,110,216,.08) 46%, transparent 74%);
+      filter: blur(22px);
+      opacity: .72;
       z-index: 0;
       pointer-events: none;
     }
@@ -200,13 +207,12 @@
       display: block;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       object-position: center;
-      transform: scale(1.035);
-      filter: saturate(1.04) contrast(1.04);
-      background: #07090d;
-      -webkit-mask-image: radial-gradient(ellipse at center, #000 56%, rgba(0,0,0,.94) 68%, rgba(0,0,0,.42) 84%, transparent 100%);
-      mask-image: radial-gradient(ellipse at center, #000 56%, rgba(0,0,0,.94) 68%, rgba(0,0,0,.42) 84%, transparent 100%);
+      background: transparent;
+      mix-blend-mode: screen;
+      -webkit-mask-image: radial-gradient(ellipse at center, #000 58%, rgba(0,0,0,.96) 72%, rgba(0,0,0,.42) 88%, transparent 100%);
+      mask-image: radial-gradient(ellipse at center, #000 58%, rgba(0,0,0,.96) 72%, rgba(0,0,0,.42) 88%, transparent 100%);
     }
     .content-field {
       position: relative;
@@ -296,7 +302,6 @@
       .hero .sub { font-size: 16px; max-width: 60ch; }
       .hero-art { width: auto; height: auto; margin: 0 auto; }
       .hero-media { width: min(94vw, 560px); }
-      .hero-video { transform: scale(1.02); }
       .content-field { margin-top: 0; padding-top: 24px; }
       .section-title { margin: 36px 0 10px; }
       .card { padding: 16px; min-height: auto; }
@@ -1021,11 +1026,12 @@
         <div class="hero-media">
           <video
             class="hero-video"
+            aria-label="Animated dog hero"
             autoplay
             muted
             playsinline
             preload="metadata"
-            aria-label="Maevin Labs dog hero animation">
+          >
             <source src="/assets/openart-28e9043876138e842a7f3a525581da3b-bee8796c-e776-4583-93da-19780adb9201_1776966436468_e9bb1be8.mp4" type="video/mp4" />
           </video>
         </div>
@@ -1148,35 +1154,478 @@
       }, { threshold: 0.12 });
       document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-      const heroVideo = document.querySelector('.hero-video');
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (heroVideo && !prefersReducedMotion) {
-        const releaseLowerSections = () => {
+      const heroVideo = document.querySelector('.hero-video');
+      const releaseLowerSections = (() => {
+        let done = false;
+        return () => {
+          if (done) return;
+          done = true;
           document.body.classList.remove('awaiting-video-finish');
           document.body.classList.add('video-complete');
           document.querySelectorAll('.video-gated').forEach((el) => {
             el.classList.add('is-visible');
           });
         };
+      })();
+      if (heroVideo && !prefersReducedMotion) {
         document.body.classList.add('awaiting-video-finish');
-        heroVideo.addEventListener('ended', () => {
-          releaseLowerSections();
-        }, { once: true });
-        window.setTimeout(releaseLowerSections, 6500);
+        heroVideo.currentTime = 0;
+        const playAttempt = heroVideo.play();
+        if (playAttempt && typeof playAttempt.catch === 'function') {
+          playAttempt.catch(() => {
+            releaseLowerSections();
+          });
+        }
+        heroVideo.addEventListener('ended', releaseLowerSections, { once: true });
+        window.setTimeout(releaseLowerSections, 6200);
+      } else {
+        releaseLowerSections();
       }
-      if (heroVideo && prefersReducedMotion) {
-        document.body.classList.add('video-complete');
-        document.querySelectorAll('.video-gated').forEach((el) => {
-          el.classList.add('is-visible');
+
+      function startHeroConstellation(canvas, onComplete) {
+        const clamp01 = (value) => Math.max(0, Math.min(1, value));
+        const smoothRange = (value, startPoint, endPoint) => {
+          const normalized = clamp01((value - startPoint) / Math.max(0.0001, endPoint - startPoint));
+          return normalized * normalized * (3 - 2 * normalized);
+        };
+        const posePaths = [
+          '/assets/new12-removebg-preview.png',
+          '/assets/dog_walk_flipped-removebg-preview.png',
+          '/assets/dog_flipped2.png',
+          '/assets/22-removebg-preview.png',
+          '/assets/42-removebg-preview.png',
+          '/assets/42-removebg-preview.png',
+          '/assets/42-removebg-preview.png'
+        ];
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          onComplete();
+          return;
+        }
+        const loadImage = (src) => new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.onerror = reject;
+          img.src = src;
         });
-        heroVideo.removeAttribute('autoplay');
-        heroVideo.pause();
-      }
-      if (!heroVideo) {
-        document.body.classList.add('video-complete');
-        document.querySelectorAll('.video-gated').forEach((el) => {
-          el.classList.add('is-visible');
+        Promise.all(posePaths.map(loadImage)).then((images) => {
+          const POINT_COUNT = 340;
+          const poses = images.map((img) => extractPosePoints(img, POINT_COUNT));
+          const tintedPoses = images.map((img) => createTintedPoseCanvas(img));
+          const state = {
+            width: 0,
+            height: 0,
+            dpr: 1,
+            pointerX: 0,
+            pointerY: 0,
+            currentX: 0,
+            currentY: 0,
+            completed: false,
+            restFrame: null,
+            renderPoints: null
+          };
+          const stars = Array.from({ length: 44 }, (_, i) => ({
+            x: ((i * 73) % 1000) / 1000,
+            y: ((i * 47) % 1000) / 1000,
+            r: 0.6 + ((i * 19) % 10) / 10,
+            a: 0.16 + ((i * 13) % 8) / 30
+          }));
+          const resize = () => {
+            const rect = canvas.getBoundingClientRect();
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = Math.max(1, Math.round(rect.width * dpr));
+            canvas.height = Math.max(1, Math.round(rect.height * dpr));
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            state.width = rect.width;
+            state.height = rect.height;
+            state.dpr = dpr;
+          };
+          const onPointerMove = (event) => {
+            const rect = canvas.getBoundingClientRect();
+            const px = (event.clientX - rect.left) / rect.width - 0.5;
+            const py = (event.clientY - rect.top) / rect.height - 0.5;
+            state.pointerX = Math.max(-1, Math.min(1, px));
+            state.pointerY = Math.max(-1, Math.min(1, py));
+          };
+          const onPointerLeave = () => {
+            state.pointerX = 0;
+            state.pointerY = 0;
+          };
+          resize();
+          window.addEventListener('resize', resize);
+          canvas.addEventListener('pointermove', onPointerMove);
+          canvas.addEventListener('pointerleave', onPointerLeave);
+
+          const start = performance.now();
+          const duration = 5000;
+          const segments = [0, 0.16, 0.32, 0.48, 0.64, 0.78, 0.9, 1];
+          const draw = (now) => {
+            const elapsed = now - start;
+            const raw = Math.min(elapsed / duration, 1);
+            const ease = raw >= 1 ? 1 : (1 - Math.pow(1 - raw, 3));
+            const blend = getBlendState(ease, segments, poses);
+            const travel = 1 - Math.min(ease / 0.62, 1);
+            const entryX = -state.width * 0.19 * Math.pow(travel, 1.2);
+            const settleY = raw > 0.88 ? -state.height * 0.008 * Math.sin((raw - 0.88) / 0.12 * Math.PI) : 0;
+            state.currentX += ((state.pointerX * 10) - state.currentX) * 0.08;
+            state.currentY += ((state.pointerY * 8) - state.currentY) * 0.08;
+
+            ctx.clearRect(0, 0, state.width, state.height);
+            ctx.globalCompositeOperation = 'source-over';
+
+            drawBackgroundField(ctx, state.width, state.height, stars, now, raw);
+
+            const centerX = state.width * 0.47 + entryX + state.currentX;
+            const centerY = state.height * 0.585 + settleY + state.currentY;
+            const baseScale = Math.min(state.width, state.height);
+            const scaleX = baseScale * 0.53;
+            const scaleY = baseScale * 0.96;
+            const targetPoints = blend.points.map((point, index) => {
+              const drift = Math.sin(now * 0.0011 + index * 0.52) * 0.28;
+              const pulse = Math.cos(now * 0.0009 + index * 0.36) * 0.2;
+              const finalX = centerX + (point.x - 0.5) * scaleX + drift;
+              const finalY = centerY + (point.y - 0.55) * scaleY + pulse;
+              return {
+                x: finalX,
+                y: finalY,
+                a: point.a,
+                edge: point.edge,
+                rank: point.rank,
+                angle: point.angle
+              };
+            });
+            if (!state.renderPoints || state.renderPoints.length !== targetPoints.length) {
+              state.renderPoints = targetPoints.map((point) => ({ ...point }));
+            } else {
+              const smoothing = raw < 0.2 ? 0.2 : 0.14;
+              state.renderPoints = state.renderPoints.map((point, index) => {
+                const target = targetPoints[index];
+                return {
+                  x: point.x + (target.x - point.x) * smoothing,
+                  y: point.y + (target.y - point.y) * smoothing,
+                  a: point.a + (target.a - point.a) * 0.2,
+                  edge: target.edge,
+                  rank: target.rank,
+                  angle: point.angle + (target.angle - point.angle) * 0.16
+                };
+              });
+            }
+            const points = state.renderPoints;
+
+            drawPoseUnderlay(
+              ctx,
+              tintedPoses[blend.fromIndex],
+              tintedPoses[blend.toIndex],
+              blend.mix,
+              centerX,
+              centerY,
+              scaleX,
+              scaleY,
+              blend.alpha,
+              1
+            );
+            drawConstellationDog(
+              ctx,
+              points,
+              0.88 * blend.alpha,
+              now,
+              1,
+              1
+            );
+            state.restFrame = {
+              centerX,
+              centerY,
+              scaleX,
+              scaleY,
+              alpha: blend.alpha,
+              outlineProgress: 1
+            };
+
+            if (!state.completed && raw >= 0.965) {
+              state.completed = true;
+              onComplete();
+            }
+            if (raw < 1) {
+              requestAnimationFrame(draw);
+            } else {
+              requestAnimationFrame(function idleLoop(idleNow) {
+                ctx.clearRect(0, 0, state.width, state.height);
+                drawBackgroundField(ctx, state.width, state.height, stars, idleNow, 1);
+                if (state.restFrame) {
+                  drawPoseUnderlay(
+                    ctx,
+                    tintedPoses[tintedPoses.length - 1],
+                    null,
+                    0,
+                    state.restFrame.centerX,
+                    state.restFrame.centerY,
+                    state.restFrame.scaleX,
+                    state.restFrame.scaleY,
+                    state.restFrame.alpha,
+                    state.restFrame.outlineProgress
+                  );
+                }
+                const idlePoints = points.map((point, index) => ({
+                  x: point.x + Math.sin(idleNow * 0.001 + index * 0.24) * 0.12,
+                  y: point.y + Math.cos(idleNow * 0.00084 + index * 0.22) * 0.12,
+                  a: point.a,
+                  edge: point.edge,
+                  rank: point.rank,
+                  angle: point.angle
+                }));
+                drawConstellationDog(ctx, idlePoints, 0.82, idleNow, 1, 1);
+                requestAnimationFrame(idleLoop);
+              });
+            }
+          };
+          requestAnimationFrame(draw);
+        }).catch(() => {
+          onComplete();
         });
+
+        function extractPosePoints(img, targetCount) {
+          const offscreen = document.createElement('canvas');
+          offscreen.width = img.naturalWidth;
+          offscreen.height = img.naturalHeight;
+          const offCtx = offscreen.getContext('2d', { willReadFrequently: true });
+          offCtx.drawImage(img, 0, 0);
+          offCtx.clearRect(0, Math.floor(offscreen.height * 0.91), offscreen.width, Math.ceil(offscreen.height * 0.09));
+          const { data, width, height } = offCtx.getImageData(0, 0, offscreen.width, offscreen.height);
+          const edgePoints = [];
+          const innerPoints = [];
+          for (let y = 2; y < height - 2; y += 4) {
+            for (let x = 2; x < width - 2; x += 4) {
+              const index = (y * width + x) * 4 + 3;
+              const alpha = data[index];
+              if (alpha < 28) continue;
+              const neighbors = [
+                data[((y - 2) * width + x) * 4 + 3],
+                data[((y + 2) * width + x) * 4 + 3],
+                data[(y * width + (x - 2)) * 4 + 3],
+                data[(y * width + (x + 2)) * 4 + 3]
+              ];
+              const edge = neighbors.some((value) => value < 24);
+              if (!edge && ((x + y) % 16 !== 0)) continue;
+              const point = {
+                x: x / width,
+                y: y / height,
+                a: alpha / 255,
+                edge
+              };
+              if (edge) {
+                edgePoints.push(point);
+              } else {
+                innerPoints.push(point);
+              }
+            }
+          }
+          const points = edgePoints.concat(innerPoints);
+          if (!points.length) {
+            return Array.from({ length: targetCount }, (_, i) => ({
+              x: 0.5,
+              y: 0.5,
+              a: 1,
+              edge: i % 2 === 0,
+              rank: i / targetCount,
+              angle: ((i / Math.max(1, targetCount - 1)) * Math.PI * 2) - Math.PI
+            }));
+          }
+          const edgeTarget = Math.min(edgePoints.length, Math.round(targetCount * 0.76));
+          const innerTarget = Math.max(0, targetCount - edgeTarget);
+          const centroidSource = edgePoints.length ? edgePoints : points;
+          const centroid = centroidSource.reduce((acc, point) => {
+            acc.x += point.x;
+            acc.y += point.y;
+            return acc;
+          }, { x: 0, y: 0 });
+          centroid.x /= centroidSource.length;
+          centroid.y /= centroidSource.length;
+          const orderedEdgePoints = edgePoints.map((point) => ({
+            ...point,
+            angle: Math.atan2(point.y - centroid.y, point.x - centroid.x),
+            distance: Math.hypot(point.x - centroid.x, point.y - centroid.y)
+          })).sort((a, b) => a.angle - b.angle || b.distance - a.distance);
+          const orderedInnerPoints = innerPoints.map((point) => ({
+            ...point,
+            angle: Math.atan2(point.y - centroid.y, point.x - centroid.x)
+          })).sort((a, b) => a.y - b.y || a.x - b.x);
+          const sampled = [];
+          const angleStep = (Math.PI * 2) / Math.max(1, edgeTarget);
+          for (let i = 0; i < edgeTarget; i++) {
+            const minAngle = -Math.PI + angleStep * i;
+            const maxAngle = minAngle + angleStep;
+            const slice = orderedEdgePoints.filter((point) => point.angle >= minAngle && point.angle < maxAngle);
+            const point = slice.reduce((best, candidate) => (
+              !best || candidate.distance > best.distance ? candidate : best
+            ), null) || orderedEdgePoints[Math.floor(i * orderedEdgePoints.length / Math.max(1, edgeTarget))];
+            sampled.push({
+              x: point.x,
+              y: point.y,
+              a: point.a,
+              edge: true,
+              rank: i / Math.max(1, targetCount - 1),
+              angle: point.angle
+            });
+          }
+          for (let i = 0; i < innerTarget; i++) {
+            const point = orderedInnerPoints[Math.floor(i * orderedInnerPoints.length / Math.max(1, innerTarget))];
+            sampled.push({
+              x: point.x,
+              y: point.y,
+              a: point.a,
+              edge: false,
+              rank: (edgeTarget + i) / Math.max(1, targetCount - 1),
+              angle: point.angle
+            });
+          }
+          return sampled;
+        }
+
+        function createTintedPoseCanvas(img) {
+          const offscreen = document.createElement('canvas');
+          offscreen.width = img.naturalWidth;
+          offscreen.height = img.naturalHeight;
+          const offCtx = offscreen.getContext('2d');
+          if (!offCtx) return offscreen;
+          offCtx.clearRect(0, 0, offscreen.width, offscreen.height);
+          offCtx.drawImage(img, 0, 0);
+          offCtx.clearRect(0, Math.floor(offscreen.height * 0.91), offscreen.width, Math.ceil(offscreen.height * 0.09));
+          offCtx.globalCompositeOperation = 'source-in';
+          const gradient = offCtx.createLinearGradient(0, 0, 0, offscreen.height);
+          gradient.addColorStop(0, 'rgba(239,246,255,0.96)');
+          gradient.addColorStop(0.45, 'rgba(171,213,255,0.88)');
+          gradient.addColorStop(1, 'rgba(114,176,255,0.82)');
+          offCtx.fillStyle = gradient;
+          offCtx.fillRect(0, 0, offscreen.width, offscreen.height);
+          offCtx.globalCompositeOperation = 'source-over';
+          return offscreen;
+        }
+
+        function getBlendState(progress, segments, poses) {
+          let poseIndex = poses.length - 1;
+          let local = 1;
+          for (let i = 0; i < segments.length - 1; i++) {
+            if (progress <= segments[i + 1]) {
+              poseIndex = Math.min(i, poses.length - 2);
+              const range = segments[i + 1] - segments[i] || 1;
+              local = (progress - segments[i]) / range;
+              break;
+            }
+          }
+          const eased = local < 1 ? 0.5 - Math.cos(local * Math.PI) / 2 : 1;
+          const from = poses[poseIndex];
+          const to = poses[Math.min(poseIndex + 1, poses.length - 1)];
+          const interpolateAngle = (startAngle, endAngle, t) => {
+            const delta = Math.atan2(Math.sin(endAngle - startAngle), Math.cos(endAngle - startAngle));
+            return startAngle + delta * t;
+          };
+          return {
+            alpha: Math.min(1, 0.18 + progress * 1.2),
+            fromIndex: poseIndex,
+            toIndex: Math.min(poseIndex + 1, poses.length - 1),
+            mix: eased,
+            points: from.map((point, index) => ({
+              x: point.x + (to[index].x - point.x) * eased,
+              y: point.y + (to[index].y - point.y) * eased,
+              a: point.a + (to[index].a - point.a) * eased,
+              edge: point.edge || to[index].edge,
+              rank: point.rank,
+              angle: interpolateAngle(point.angle, to[index].angle ?? point.angle, eased)
+            }))
+          };
+        }
+
+        function drawBackgroundField(context, width, height, stars, now, progress) {
+          context.save();
+          context.globalAlpha = 0.7;
+          for (const star of stars) {
+            const x = star.x * width + Math.sin(now * 0.0002 + star.y * 5) * 8;
+            const y = star.y * height * 0.8 + Math.cos(now * 0.00024 + star.x * 7) * 6;
+            const radius = star.r + Math.sin(now * 0.0014 + star.x * 14) * 0.2;
+            context.fillStyle = `rgba(184,225,255,${star.a * (0.5 + progress * 0.5)})`;
+            context.beginPath();
+            context.arc(x, y, radius, 0, Math.PI * 2);
+            context.fill();
+          }
+          context.restore();
+        }
+
+        function drawConstellationDog(context, points, alpha, now, sketchProgress, resolveProgress) {
+          context.save();
+          const edgePoints = points.filter((point) => point.edge).sort((a, b) => a.angle - b.angle);
+          const innerPoints = points.filter((point) => !point.edge);
+          context.lineCap = 'round';
+          context.lineJoin = 'round';
+          if (edgePoints.length) {
+            context.lineWidth = 2.1;
+            context.strokeStyle = `rgba(236,244,255,${0.46 * alpha})`;
+            context.shadowBlur = 12;
+            context.shadowColor = `rgba(110,176,255,${0.14 * alpha})`;
+            context.beginPath();
+            context.moveTo(edgePoints[0].x, edgePoints[0].y);
+            for (let i = 1; i < edgePoints.length; i++) {
+              const prev = edgePoints[i - 1];
+              const point = edgePoints[i];
+              const midX = (prev.x + point.x) / 2;
+              const midY = (prev.y + point.y) / 2;
+              context.quadraticCurveTo(prev.x, prev.y, midX, midY);
+            }
+            const last = edgePoints[edgePoints.length - 1];
+            const first = edgePoints[0];
+            context.quadraticCurveTo(last.x, last.y, (last.x + first.x) / 2, (last.y + first.y) / 2);
+            context.stroke();
+          }
+          context.globalAlpha = 1;
+          if (innerPoints.length) {
+            for (let i = 0; i < innerPoints.length; i += 10) {
+              const point = innerPoints[i];
+              context.fillStyle = `rgba(198,224,248,${0.05 * alpha})`;
+              context.beginPath();
+              context.arc(point.x, point.y, 0.42, 0, Math.PI * 2);
+              context.fill();
+            }
+          }
+          context.restore();
+        }
+
+        function drawPoseUnderlay(context, fromPose, toPose, mix, centerX, centerY, scaleX, scaleY, alpha, revealProgress) {
+          if (!fromPose || alpha <= 0.01) return;
+          const width = scaleX * 1.08;
+          const height = scaleY * 1.06;
+          const drawX = centerX - width / 2;
+          const drawY = centerY - height * 0.56;
+          const drawLayer = (pose, layerAlpha) => {
+            if (!pose || layerAlpha <= 0) return;
+            context.globalAlpha = layerAlpha;
+            context.drawImage(pose, drawX, drawY, width, height);
+          };
+          context.save();
+          context.globalCompositeOperation = 'screen';
+          context.beginPath();
+          context.rect(drawX, drawY + height * (1 - revealProgress), width, height * revealProgress);
+          context.clip();
+          context.filter = 'none';
+          drawLayer(fromPose, 0.16 * alpha);
+          if (toPose && toPose !== fromPose && mix > 0) {
+            drawLayer(toPose, 0.16 * alpha * mix);
+          }
+          context.save();
+          context.beginPath();
+          context.rect(drawX, drawY, width, height * 0.48);
+          context.clip();
+          drawLayer(fromPose, 0.11 * alpha);
+          if (toPose && toPose !== fromPose && mix > 0) {
+            drawLayer(toPose, 0.11 * alpha * mix);
+          }
+          context.restore();
+          context.filter = 'blur(2.4px)';
+          drawLayer(fromPose, 0.06 * alpha);
+          if (toPose && toPose !== fromPose && mix > 0) {
+            drawLayer(toPose, 0.06 * alpha * mix);
+          }
+          context.restore();
+        }
       }
     // --- Normalize Writing CTAs based on destination host ---
     (function normalizeWritingCTAs(){
