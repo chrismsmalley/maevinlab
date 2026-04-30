@@ -278,21 +278,42 @@
     @media (prefers-reduced-motion: reduce) {
       .reveal, .reveal.in { opacity: 1 !important; transform: none !important; transition: none !important; }
     }
+    footer { text-align: center; margin: 64px 0 20px; color: var(--muted); font-size: 14px; }
+    header { width: 100%; max-width: 1180px; margin: 0 auto; padding: 18px 12px 10px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    header .brand { min-width: 0; }
+    header .brand-pill { display: inline-flex; align-items: center; gap: 14px; color: var(--text); }
+    header .brand-mark { width: 64px; height: 64px; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; flex: 0 0 auto; margin-right: -4px; background: transparent; border: 0; }
+    header .brand-mark img { width: 64px; height: 64px; object-fit: contain; display: block; }
+    header .brand-divider { width: 1px; height: 34px; background: linear-gradient(180deg, transparent, rgba(127,146,181,.45), transparent); flex: 0 0 auto; }
+    header .brand-name { display: inline-flex; align-items: baseline; gap: 14px; font-size: 22px; font-weight: 600; letter-spacing: .26em; text-transform: uppercase; white-space: nowrap; }
+    header .brand-name .labs { color: #2d6ed8; }
+    header nav { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; justify-content: flex-end; }
+    header nav a { position: relative; color: var(--text); font-size: 12px; letter-spacing: .22em; text-transform: uppercase; opacity: .82; }
+    header nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -7px; height: 1px; transform: scaleX(0); transform-origin: left; background: linear-gradient(90deg, #2d6ed8, rgba(45,110,216,0)); transition: transform .25s ease; }
+    header nav a:hover { opacity: 1; }
+    header nav a:hover::after { transform: scaleX(1); }
+    @media (max-width: 900px) { header { flex-direction: column; align-items: flex-start; gap: 8px; } header nav { gap: 14px; justify-content: flex-start; margin-left: 60px; } }
+    @media (max-width: 560px) { header { padding: 12px 0 8px; gap: 6px; } header .brand-pill { gap: 8px; } header .brand-mark { width: 50px; height: 50px; } header .brand-mark img { width: 50px; height: 50px; } header .brand-divider { height: 24px; } header .brand-name { font-size: 15px; letter-spacing: .16em; } header nav { gap: 10px; margin-left: 50px; } header nav a { font-size: 10px; letter-spacing: .08em; opacity: .9; } header nav a::after { display: none; } }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div id="site-header"></div>
-    <script>
-      (async () => {
-        try {
-          const r = await fetch('/header.html', { cache: 'no-cache' });
-          const html = await r.text();
-          const mount = document.getElementById('site-header');
-          if (mount) mount.outerHTML = html;
-        } catch (_) {}
-      })();
-    </script>
+    <header aria-label="Site header">
+      <div class="brand">
+        <a href="/" aria-label="Maevin Labs home" class="brand-pill">
+          <span class="brand-mark"><img src="/assets/brand_mark.png" alt="" /></span>
+          <span class="brand-divider" aria-hidden="true"></span>
+          <span class="brand-name"><span>Maevin</span><span class="labs">Labs</span></span>
+        </a>
+      </div>
+      <nav aria-label="Primary">
+        <a href="/projects.html">Projects</a>
+        <a href="/writings.html">Writing</a>
+        <a href="/about.html">About</a>
+        <a href="/support.html">Support</a>
+        <a href="mailto:hello@maevinlabs.com">Contact</a>
+      </nav>
+    </header>
 
     <section class="hero reveal s1">
       <span class="kicker">Projects</span>
@@ -335,7 +356,7 @@
             <span class="tag">Product Design</span>
           </div>
           <div class="actions">
-            <a class="btn btn-primary" href="https://apps.apple.com/us/app/delvr/id6751447997" target="_blank" rel="noopener noreferrer" aria-label="Delvr on the Apple App Store"> App Store</a>
+            <a class="btn btn-primary" href="https://apps.apple.com/us/app/delvr/id6751447997" target="_blank" rel="noopener noreferrer" aria-label="Delvr on the Apple App Store">App Store</a>
             <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.chrissmalley.delvr" target="_blank" rel="noopener noreferrer" aria-label="Delvr on Google Play">▶ Google Play</a>
           </div>
         </div>
@@ -403,17 +424,12 @@
       </article>
     </section>
 
-    <div id="site-footer"></div>
-    <script>
-      (async () => {
-        try {
-          const r = await fetch('/footer.html', { cache: 'no-cache' });
-          const html = await r.text();
-          const mount = document.getElementById('site-footer');
-          if (mount) mount.outerHTML = html;
-        } catch (_) {}
-      })();
-    </script>
+    <footer>
+      <div style="text-align:left; margin-bottom:8px;">
+        <a href="/" style="color:var(--accent); text-decoration:none; font-weight:500;">← Home</a>
+      </div>
+      <div style="text-align:center;">© 2026 Maevin Labs LLC</div>
+    </footer>
   </div>
   <script>
   (function(){

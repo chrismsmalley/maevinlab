@@ -9,34 +9,25 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/Logo_blue.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/Logo_blue.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/Logo_blue.png" />
-  <link rel="stylesheet" href="style.css" />
-  <link rel="preload" as="image" href="/assets/Screenshot_2026-04-24_at_10.34.42_PM.png" />
-  <link rel="preload" as="video" href="/assets/openart-02177708215844300000000000000000000ffffc0a8b52b130db2_1777082357632_2e4729c4.mp4" type="video/mp4" />
+  <meta property="og:title" content="Maevin Labs" />
+  <meta property="og:description" content="Maevin Labs builds thoughtful, modern digital products — from playful ideas to production‑ready apps." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://maevinlabs.com" />
+  <meta property="og:image" content="https://maevinlabs.com/assets/Logo_blue.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Maevin Labs" />
+  <meta name="twitter:description" content="Maevin Labs builds thoughtful, modern digital products — from playful ideas to production‑ready apps." />
+  <meta name="twitter:image" content="https://maevinlabs.com/assets/Logo_blue.png" />
+  <link rel="canonical" href="https://maevinlabs.com" />
+  <link rel="preload" as="image" href="/assets/brand_mark.png" />
   <link rel="preload" as="image" href="/assets/new12-removebg-preview.png" />
   <link rel="preload" as="image" href="/assets/dog_walk_flipped-removebg-preview.png" />
   <link rel="preload" as="image" href="/assets/dog_flipped2.png" />
   <link rel="preload" as="image" href="/assets/22-removebg-preview.png" />
   <link rel="preload" as="image" href="/assets/42-removebg-preview.png" />
-  <link rel="preload" as="image" href="/assets/2ndtolast-removebg-preview.png" />
   <link rel="preload" as="image" href="/assets/52-removebg-preview.png" />
 
   <style>
-    /* Hide ALL hero-rail connector/continuation lines on mobile and clip overflow */
-    @media (max-width: 700px){
-      .hero { overflow: hidden; } /* prevents any long pseudo-element from spilling into next section */
-      .hero-rail .vmenu li > a::before,
-      .hero-rail .vmenu li > a::after{
-        display: none !important;
-        content: none !important;
-      }
-    }
-    /* Nuke Medium-injected UI sitewide (header and elsewhere) */
-    [class*="medium"], [id*="medium"],
-    [class*="Medium"], [id*="Medium"],
-    iframe[src*="medium.com"] {
-      display: none !important;
-      visibility: hidden !important;
-    }
     :root {
       --bg: #fcfcfb;
       --card: rgba(252, 252, 251, 0.82);
@@ -53,13 +44,6 @@
       --rail-gap: 64px;       /* vertical distance between link baselines */
       --rail-clear: 24px;     /* space not covered by the line */
     }
-    /* Hero rail link highlight: use hover and .is-active only (avoid sticky :focus color) */
-    .hero-rail nav a::after { display: none !important; }
-    .hero-rail nav a { opacity: 1; transition: color .18s ease; }
-    .hero-rail nav a:hover { color: var(--accent); }
-    .hero-rail .vmenu a.is-active { color: var(--accent); }
-    /* Keep focus visible for a11y without color change */
-    .hero-rail nav a:focus { outline: 2px solid rgba(59,130,246,.35); outline-offset: 2px; }
     html, body { height: 100%; }
     body {
       margin: 0;
@@ -77,18 +61,22 @@
     nav a:hover { opacity: 1; }
     .wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px 44px; position: relative; z-index: 1; }
 
-    /* Light header (for injected header.html) */
-    header { background: transparent; }
-    .brand h1 { color: var(--text); }
-    nav a { color: var(--text); }
-    .socials-inline svg { fill: var(--text); opacity:.8; }
-    nav a:hover::after { background: linear-gradient(90deg, var(--accent), transparent); }
-
     /* Header */
-    header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 0; padding: 0; }
-    .brand { display: flex; align-items: center; gap: 12px; }
-    .brand img { width: 152px; height: 152px; border-radius: 12px; }
-    .brand h1 { font-size: 30px; font-weight: 600; letter-spacing: .2px; margin: 0; }
+    header { width: 100%; max-width: 1180px; margin: 0 auto; padding: 18px 12px 10px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    header .brand { min-width: 0; }
+    header .brand-pill { display: inline-flex; align-items: center; gap: 14px; color: var(--text); }
+    header .brand-mark { width: 64px; height: 64px; display: inline-flex; align-items: center; justify-content: center; border-radius: 0; border: 0; background: transparent; box-shadow: none; overflow: hidden; flex: 0 0 auto; margin-right: -4px; }
+    header .brand-mark img { width: 64px; height: 64px; object-fit: contain; display: block; }
+    header .brand-divider { width: 1px; height: 34px; background: linear-gradient(180deg, transparent, rgba(127,146,181,.45), transparent); flex: 0 0 auto; }
+    header .brand-name { display: inline-flex; align-items: baseline; gap: 14px; min-width: 0; font-size: 22px; font-weight: 600; letter-spacing: .26em; text-transform: uppercase; white-space: nowrap; }
+    header .brand-name .labs { color: #2d6ed8; }
+    header nav { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; justify-content: flex-end; }
+    header nav a { position: relative; color: var(--text); font-size: 12px; letter-spacing: .22em; text-transform: uppercase; margin-left: 0; opacity: .82; }
+    header nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -7px; height: 1px; transform: scaleX(0); transform-origin: left; background: linear-gradient(90deg, #2d6ed8, rgba(45,110,216,0)); transition: transform .25s ease; }
+    header nav a:hover { opacity: 1; }
+    header nav a:hover::after { transform: scaleX(1); }
+    @media (max-width: 900px) { header { flex-direction: column; align-items: flex-start; gap: 8px; } header nav { gap: 14px; justify-content: flex-start; margin-left: 60px; } }
+    @media (max-width: 560px) { header { padding: 12px 0 8px; gap: 6px; } header .brand-pill { gap: 8px; } header .brand-mark { width: 50px; height: 50px; margin-right: -3px; } header .brand-mark img { width: 50px; height: 50px; } header .brand-divider { height: 24px; } header .brand-name { gap: 8px; font-size: 15px; letter-spacing: .16em; } header nav { gap: 10px; padding: 0; border-radius: 0; border: 0; background: transparent; margin-left: 50px; } header nav a { padding: 0; font-size: 10px; letter-spacing: .08em; opacity: .9; } header nav a::after { display: none; } }
     
 
     /* Hero */
@@ -743,55 +731,6 @@
 
     /* --- New hero (centered dog only) --- */
 
-    /* Continuation cue under the last rail item (anchor‑based for exact centering) */
-    .hero-rail .vmenu li:last-child{ position: relative; --tail: calc((var(--rail-gap) - var(--rail-clear)) * 5); }
-
-    /* Default: nothing visible (let generic rules apply) */
-    .hero-rail .vmenu li:last-child > a::before,
-    .hero-rail .vmenu li:last-child > a::after{ content: none; }
-
-    /* Desktop/tablet: show cue and animation */
-    @media (min-width: 701px){
-      /* Static continuation line (same style as the link connectors) */
-      .hero-rail .vmenu li:last-child > a::after{
-        content: "";
-        position: absolute;
-        left: 50%; transform: translateX(-50%);
-        top: calc(100% + (var(--rail-clear)/2));
-        width: 1px; height: var(--tail);
-        background: var(--border);
-        display: block !important;           /* override generic nav a::after hide */
-        pointer-events: none;
-        z-index: 0;
-      }
-      /* Animated glow rider */
-      @property --glide { syntax: '<length>'; inherits: false; initial-value: 0px; }
-      .hero-rail .vmenu li:last-child > a::before{
-        content: "";
-        position: absolute;
-        left: 50%; transform: translate(-50%, var(--glide));
-        top: calc(100% + (var(--rail-clear)/2));
-        width: 1px; height: 22px;
-        background: linear-gradient(180deg, var(--accent), rgba(59,130,246,0));
-        filter: drop-shadow(0 4px 8px rgba(59,130,246,.25));
-        border-radius: 1px;
-        display: block !important;           /* ensure visible on desktop */
-        animation: railHint 5s ease-in-out infinite;
-        pointer-events: none;
-        z-index: 1;
-      }
-      @keyframes railHint{
-        0%,100% { --glide: 0px; }
-        60%     { --glide: calc(var(--tail) - 22px); }
-      }
-    }
-
-    /* Mobile: force-hide cue (placed after to win cascade) */
-    @media (max-width: 700px){
-      .hero-rail .vmenu li:last-child > a::before,
-      .hero-rail .vmenu li:last-child > a::after{ display: none !important; content: none !important; }
-    }
-
     .orbit {
       position: relative;
       width: min(37vw, 420px);
@@ -1016,17 +955,22 @@
 </head>
 <body>
   <div class="wrap">
-    <div id="site-header"></div>
-    <script>
-      (async () => {
-        try {
-          const r = await fetch('/header.html', { cache: 'no-cache' });
-          const html = await r.text();
-          const mount = document.getElementById('site-header');
-          if (mount) mount.outerHTML = html;
-        } catch (_) {}
-      })();
-    </script>
+    <header aria-label="Site header">
+      <div class="brand">
+        <a href="/" aria-label="Maevin Labs home" class="brand-pill">
+          <span class="brand-mark"><img src="/assets/brand_mark.png" alt="" /></span>
+          <span class="brand-divider" aria-hidden="true"></span>
+          <span class="brand-name"><span>Maevin</span><span class="labs">Labs</span></span>
+        </a>
+      </div>
+      <nav aria-label="Primary">
+        <a href="/projects.html">Projects</a>
+        <a href="/writings.html">Writing</a>
+        <a href="/about.html">About</a>
+        <a href="/support.html">Support</a>
+        <a href="mailto:hello@maevinlabs.com">Contact</a>
+      </nav>
+    </header>
 
     <section class="hero hero-grid" aria-label="Intro">
       <div class="hero-col hero-art">
@@ -1115,7 +1059,7 @@
     </section>
 
     <footer>
-      © 2025 Maevin Labs LLC
+      © 2026 Maevin Labs LLC
     </footer>
     </div>
   </div>
@@ -1182,32 +1126,6 @@
       renderWritingPreview();
       // Trigger hero enter animation on DOM ready
       document.addEventListener('DOMContentLoaded', () => document.body.classList.add('is-ready'));
-      // Aggressively remove Medium-injected bubbles/widgets anywhere on the page
-      const killMedium = (root = document) => {
-        root.querySelectorAll(
-          'iframe[src*="medium.com"], [class*="medium"], [id*="medium"], [class*="Medium"], [id*="Medium"]'
-        ).forEach(n => n.remove());
-      };
-      // Initial pass now and on DOM ready
-      killMedium();
-      document.addEventListener('DOMContentLoaded', killMedium);
-      // Watch for future injections
-      const mobserver = new MutationObserver(muts => {
-        for (const m of muts) {
-          m.addedNodes && m.addedNodes.forEach(node => {
-            if (!(node instanceof Element)) return;
-            if (node.matches(
-              'iframe[src*="medium.com"], [class*="medium"], [id*="medium"], [class*="Medium"], [id*="Medium"]'
-            )) {
-              node.remove();
-            } else {
-              // scan subtree of this new element
-              killMedium(node);
-            }
-          });
-        }
-      });
-      mobserver.observe(document.documentElement, { childList: true, subtree: true });
       const addReveal = (selector) => {
         document.querySelectorAll(selector).forEach((el, i) => {
           el.classList.add('reveal');
@@ -1246,7 +1164,7 @@
         const duration = Number.isFinite(heroVideo.duration) ? heroVideo.duration : 0;
         const msUntilRelease = duration > 0
           ? Math.max(0, (duration - 1) * 1000)
-          : 5200;
+          : 2000;
         earlyReleaseTimer = window.setTimeout(releaseLowerSections, msUntilRelease);
       };
       if (heroVideo && !prefersReducedMotion) {
